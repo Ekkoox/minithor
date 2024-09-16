@@ -1,6 +1,7 @@
 NAME = minishell
 
 C_FILES = main.c\
+			prompt.c\
 
 SRCS = $(addprefix srcs/,$(C_FILES))
 

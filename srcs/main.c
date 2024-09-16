@@ -6,33 +6,20 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/16 21:51:00 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:06:23 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main()
+int main(int ac, char **av, char **ev)
 {
-	char	*buffer = NULL;
-	size_t	buf_size = 2048;
+	(void) av;
+	(void) ev;
 
-	// alloc buffer qui stockera la commande entree par l'user
-	buffer = (char *)ft_calloc(sizeof(char), buf_size);
-	if (buffer == NULL) {
-		perror("Malloc failure");
-		return (EXIT_FAILURE);
-	}
-
-	// ecriture d'un prompt
-	write(1, "$> ", 3);
-
-	// lecture de STDIN en boucle
-	while (getline(&buffer, &buf_size, stdin) > 0) {
-		ft_printf("cmd = %s\n", buffer);
-		write(1, "$> ", 3);
-	}
-
-	printf("Bye \n");
-	free(buffer);
+	if (ac != 1)
+		return (ft_putstr_fd("Error number of arguments\n", 2), EXIT_FAILURE);
+	creat_the_prompt();
+	return (EXIT_SUCCESS);
 }
+

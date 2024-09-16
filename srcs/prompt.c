@@ -6,22 +6,33 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/16 21:47:57 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:17:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int creat_the_prompt(int fd)
+int	creat_the_prompt(void)
 {
-	char buffer[BUFFER_SIZE];
-	int read_line;
-	
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (EXIT_FAILURE);
-	while (1)
+	char *buffer;
+	size_t buf_size;
+
+	buf_size = BUFFER_SIZE;
+
+	// alloc buffer qui stockera la commande entree par l'user
+	buffer = (char *)ft_calloc(sizeof(char), buf_size);
+	if (buffer == NULL)
 	{
-		read_line = read (fd, buffer, BUFFER_SIZE);
+		perror("Malloc failure");
+		return (EXIT_FAILURE);
 	}
+	ft_putstr_fd(">", 1);
+	// lecture de STDIN en boucle
+	while (getline(&buffer, &buf_size, stdin) > 0)
+	{
+		ft_printf("cmd = %s\n", buffer);
+		ft_putstr_fd(">", 1);
+	}
+	free(buffer);
 	return (EXIT_SUCCESS);
 }
