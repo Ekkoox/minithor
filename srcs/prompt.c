@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/16 21:46:35 by enschnei         ###   ########.fr       */
+/*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
+/*   Updated: 2024/09/16 21:47:57 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10000
-#endif 
-
-# include "libft.h"
-# include "ft_printf.h"
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-
-
-#endif
+int creat_the_prompt(int fd)
+{
+	char buffer[BUFFER_SIZE];
+	int read_line;
+	
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (EXIT_FAILURE);
+	while (1)
+	{
+		read_line = read (fd, buffer, BUFFER_SIZE);
+	}
+	return (EXIT_SUCCESS);
+}
