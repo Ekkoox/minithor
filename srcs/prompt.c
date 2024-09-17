@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/17 18:19:24 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:06:53 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
-int	creat_the_prompt(void)
+int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex)
 {
 	char	*buffer;
 	size_t	buf_size;
 	ssize_t	bytes_read;
 
 	buf_size = BUFFER_SIZE;
-	bytes_read = 0;
+	bytes_read = 0;	
 	buffer = (char *)ft_calloc(sizeof(char), buf_size);
 	if (!buffer)
 		error_prompt(buffer, bytes_read);
@@ -57,6 +57,7 @@ int	creat_the_prompt(void)
 			buffer[bytes_read - 1] = '\0';
 		if (exit_prompt(buffer) == 0)
 			break ;
+		army_of_fork(ac, av, ev, pipex);
 		ft_printf("cmd = %s\n", buffer);
 		ft_putstr_fd(">", 1);
 	}
