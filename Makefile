@@ -1,50 +1,3 @@
-# NAME = minishell
-
-# C_FILES = main.c\
-# 			pipe.c\
-# 			prompt.c\
-# 			pipe_utils.c\
-
-# SRCS = $(addprefix srcs/,$(C_FILES))
-
-# CFLAGS = -Wall -Werror -Wextra -I includes/ -g
-
-# LIB = ft_printf/libftprintf.a libft/libft.a
-# DEPS = $(addprefix lib/,$(LIB))
-
-# RED=\033[0;31m
-# ROSE=\033[0;95m
-# GREEN=\033[0;32m
-# NC=\033[0m
-# YELLOW=\033[0;33m
-# CYAN=\033[1;34m
-
-# all: ${NAME}
-
-# ${NAME}: ${SRCS}
-# 	@echo "$(YELLOW)compilation en cur"
-# 	make -C lib/libft
-# 	make -C lib/ft_printf
-# 	cc ${CFLAGS} ${SRCS} -o ${NAME} ${DEPS}
-# 	@echo "$(GREEN)C'EST TOUT BON"
-
-# clean:
-# 	@echo "$(RED)TOUT SUPRIMER"
-# 	make -C lib/libft fclean
-# 	make -C lib/ft_printf fclean
-# 	@rm -f $(OBJS) 
-
-# fclean:	clean
-# 	@rm -f $(NAME)
-# 	@echo "Deleted $(NAME)."
-
-# re:             fclean all
-
-# .PHONY:         all clean fclean re
-
-
-
-
 
 
 NAME = minishell
@@ -52,7 +5,8 @@ NAME = minishell
 C_FILES = main.c \
           pipe.c \
           prompt.c \
-          pipe_utils.c
+          pipe_utils.c\
+		  token.c
 
 BOLD = \033[1m
 RED = \033[31m
@@ -69,7 +23,7 @@ SRCS = $(addprefix srcs/, $(C_FILES))
 
 CFLAGS = -Wall -Werror -Wextra -I includes/ -g
 
-LIB = ft_printf/libftprintf.a libft/libft.a
+LIB = ft_printf/libftprintf.a libft/libft.a 
 DEPS = $(addprefix lib/, $(LIB))
 
 all: $(NAME)
@@ -85,7 +39,7 @@ $(NAME): $(SRCS)
 	@echo "$(BLUE)|||$(RESET)$(GREEN)compilation de Printf fini$(RESET)$(BLUE)|||$(RESET)"
 	@echo "$(BLUE)////////////////////////////////$(RESET)"
 	@echo "$(BOLD)$(RED)Creation de $(NAME)...$(RESET)"
-	@cc $(CFLAGS) $(SRCS) -o $(NAME) $(DEPS)
+	@cc $(CFLAGS) $(SRCS) -o $(NAME) $(DEPS) -lreadline
 	@echo "$(BOLD)$(YELLOW) COMPILATION TERMINER $(RESET)"
 
 clean:

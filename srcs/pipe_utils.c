@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/18 15:53:33 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/23 21:01:24 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static char	*search_the_path(t_pipex *pipex, char *command)
 char	*get_the_command(t_pipex *pipex)
 {
 	char	*path;
-
+	
 	if (!pipex->command_1)
 	{
 		ft_putstr_fd("Malloc error\n", 2);

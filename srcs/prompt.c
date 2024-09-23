@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/18 17:09:07 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/23 21:00:57 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ while (str[i])
 }
 */
 
-int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex)
+int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	size_t	buf_size;
@@ -59,17 +59,20 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex)
 	buffer = (char *)ft_calloc(sizeof(char), buf_size);
 	if (!buffer)
 		error_prompt(buffer, bytes_read);
-	ft_putstr_fd(">", 1);
-	while ((bytes_read = read(STDIN_FILENO, buffer, buf_size - 1)) > 0)
+	while(1)
 	{
+		ft_putstr_fd(">", 1);
+		buffer = readline(STDIN_FILENO);
+		bytes_read = ft_strlen(buffer);
 		buffer[bytes_read] = '\0';
 		if (buffer[bytes_read - 1] == '\n')
 			buffer[bytes_read - 1] = '\0';
 		if (exit_prompt(buffer) == 0)
 			break ;
-		ft_putstr_fd(">", 1);
 		pipex->command_1 = buffer;
-		army_of_fork(ac, buffer, ev, pipex); //c de la merde
+		minishell->buffer = buffer;
+		tokenisation(token, minishell, pipex);
+		army_of_fork(ac, buffer, ev, pipex);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);

@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/18 17:08:38 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:53:58 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static void	create_the_pipe(t_pipex *pipex)
-// {
-	// 	if (pipe(pipex->fd) == -1)
-// 	{
-// 		perror("Error pipe\n");
-// 		free_all(pipex);
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
 
 static void	error_execve(t_pipex *pipex)
 {
@@ -31,22 +21,7 @@ static void	error_execve(t_pipex *pipex)
 
 static void	first_child(t_pipex *pipex)
 {
-	// int		fd;
 	char	*path;
-
-	// fd = open(pipex->file_1, O_RDONLY);
-	// if (fd == -1)
-	// {	
-	// 	ft_putstr_fd("Permission denied\n", 2);
-	// 	return ;
-	// }
-	// if (dup2(fd, 0) == -1)
-	// 	return ;
-	// if (dup2(pipex->fd[1], 1) == -1)
-	// 	return ;
-	// close(fd);
-	// close(pipex->fd[0]);
-	// close(pipex->fd[1]);
 	char **split;
 
 	split = ft_split(pipex->command_1, '0');
@@ -57,7 +32,6 @@ static void	first_child(t_pipex *pipex)
 		free_all(pipex);
 		exit(EXIT_FAILURE);
 	}
-	// fprintf(stderr, "cmd1 is:%s\n", pipex->command_1);
 	if (execve(path, split, pipex->ev) == -1)
 		error_execve(pipex);
 }
@@ -68,7 +42,6 @@ void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex)
 
 	find_the_path(ac, &av, ev, pipex);
 	split_the_path(pipex);
-	// create_the_pipe(pipex);
 	id_fork = fork();
 	if (id_fork == -1)
 	{
@@ -79,6 +52,4 @@ void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex)
 	if (id_fork == 0)
 		first_child(pipex);
 	wait(NULL);
-	// close(pipex->fd[0]);
-	// close(pipex->fd[1]);
 }
