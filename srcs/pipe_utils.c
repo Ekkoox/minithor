@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/23 21:01:24 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:42:32 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	**split_the_path(t_pipex *pipex)
 	return (pipex->path);
 }
 
-static char	*search_the_path(t_pipex *pipex, char *command)
+char	*search_the_path(t_pipex *pipex, char *command)
 {
 	int		i;
 	char	*tmp;

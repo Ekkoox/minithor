@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/24 00:23:14 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:51:23 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,37 +44,48 @@ static int grap_mot(t_minishell *minishell, int index)
 	return(index);
 }
 
+static int search_the_command(char *commande, t_pipex *pipex)
+{
+	char *path;
+	
+	if (!ft_strchr(commande, '/') && commande[0] != '.')
+	{
+		path = search_the_path(pipex, commande);
+		if (!path)
+		{
+			ft_putstr_fd("Command not found\n", 2);
+			return(1);
+		}
+	}
+	return(0);
+}
 
 
 static void	get_type(char *mot, t_token *token, t_pipex *pipex)
 {
-	(void)pipex;
 	if (chdir(mot) == 0)
 		creat_node("dossier", token, mot);
-	ft_printf("%s\n", mot);
-	// if (path_is_good(pipex, mot) == 0)
-	// 	creat_node("commande", token, mot);
+	if (search_the_command(mot, pipex) == 0)
+		creat_node("commande", token, mot);
 }
 
 
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int i;
-	// t_token *tmp = token;
+	//t_token *tmp = token;
 	// int y = 0;
 	pipex->path = pipex->ev;
 	
 	i = 0;
 	while(minishell->buffer[i])
 	{
-		while(minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t')
+		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
 		i = grap_mot(minishell, i);
 		get_type(minishell->current, token, pipex);
-		free(minishell->current);
-		ft_printf("le type: %s\n", token->next->type);
-		ft_printf("le value: %s\n", token->next->value);
-		token = token->next;
+		ft_printf("le type: %s\n", token->type);
+		ft_printf("le value: %s\n", token->value);
 	}
 	
 	
