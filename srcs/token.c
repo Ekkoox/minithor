@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/24 16:51:23 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/24 19:02:00 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,64 @@ static void	get_type(char *mot, t_token *token, t_pipex *pipex)
 {
 	if (chdir(mot) == 0)
 		creat_node("dossier", token, mot);
-	if (search_the_command(mot, pipex) == 0)
+	else if (search_the_command(mot, pipex) == 0)
 		creat_node("commande", token, mot);
+	else if (ft_strcmp(mot, ">") == 0)
+		creat_node("redirect output", token, mot);
+	else if (ft_strcmp(mot, "<") == 0)
+		creat_node("redirect input", token, mot);
+	
+}
+
+static char *dans_cot(char *buffer, int *index)
+{
+	int i;
+	char *mot;
+	int y;
+	
+	i = *index;
+	y = 0;
+	while(buffer[*index] && buffer[*index] != '"')
+	{
+		if (buffer[i] == '\0')
+			return (NULL);
+		i++;
+	}
+	mot = ft_calloc(sizeof(char), i - *index + 1);
+	while(index < i)
+	{
+		mot[y] = buffer[*index];
+		y++;
+		index++;
+	}
+	return(mot);
+}
+
+static void get_double_cot(char *buffer, int *index, t_token *token)
+{
+	int i;
+	char *mot;
+	int y;
+	
+	i = *index;
+	y = 0;
+	while(buffer[*index] && buffer[*index] != '"')
+	{
+		if (buffer[i] == '\0')
+			return (0);
+		i++;
+	}
+	mot = ft_calloc(sizeof(char), i - *index + 1);
+	while(index < i)
+	{
+		mot[y] = buffer[*index];
+		y++;
+		index++;
+	}
+	
+	/*
+		fait ne sorte que la fonction comprenne le cas "l"s"" utilise la fonctione juste au dessus
+	*/
 }
 
 
@@ -82,21 +138,13 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
+		if (minishell->buffer[i] == '"')
+			i = get_double_cot(minishell->buffer, &i, token);
 		i = grap_mot(minishell, i);
 		get_type(minishell->current, token, pipex);
 		ft_printf("le type: %s\n", token->type);
 		ft_printf("le value: %s\n", token->value);
 	}
-	
-	
-	// token = tmp;
-	// while(y < 1)
-	// {
-	// 	ft_printf("le type de la node N %d: %s\n", y, token->type);
-	// 	ft_printf("le value de la node N %d: %s\n", y, token->value);
-	// 	y++;
-	// 	token = token->next;
-	// }
 	return (EXIT_SUCCESS);	
 }
 
