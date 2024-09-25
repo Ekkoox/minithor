@@ -6,7 +6,8 @@ C_FILES = main.c \
           pipe.c \
           prompt.c \
           pipe_utils.c\
-		  token.c
+		  token.c\
+		  token_utils.c\
 
 BOLD = \033[1m
 RED = \033[31m

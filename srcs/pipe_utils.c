@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/24 16:42:32 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:37:03 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_all(t_pipex *pipex)
 	if (pipex->path)
 		ft_free(pipex->path, ft_count_line_split(pipex->path));
 	// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 }
 
 char	*find_the_path(int ac, char **av, char **ev, t_pipex *pipex)
@@ -49,7 +49,7 @@ char	**split_the_path(t_pipex *pipex)
 	{
 		ft_putstr_fd("No such file or directory\n", 2);
 		// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
 	return (pipex->path);
 }
@@ -97,7 +97,7 @@ char	*get_the_command(t_pipex *pipex)
 		{
 			ft_putstr_fd("Command not found\n", 2);
 			free_all(pipex);
-			exit(EXIT_FAILURE);
+			// exit(EXIT_FAILURE);
 		}
 		return (path);
 	}

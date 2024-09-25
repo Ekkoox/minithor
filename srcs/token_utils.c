@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/25 17:03:39 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:19:59 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static char	**split_the_path_for_the_token(t_pipex *pipex)
 	pipex->path = ft_split(pipex->ligne_path + 5, ':');
 	if (!pipex->path)
 	{
-		ft_putstr_fd("No such file or directory\n", 2);
-		exit(EXIT_FAILURE);
+		//ft_putstr_fd("No such file or directory\n", 2);
+		// exit(EXIT_FAILURE);
 	}
 	return (pipex->path);
 }
@@ -85,14 +85,14 @@ static int get_the_command_for_the_token(t_pipex *pipex)
 	{
 		ft_putstr_fd("Malloc error\n", 2);
 		free_all(pipex);
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
 	if (!ft_strchr(pipex->command_1, '/') && pipex->command_1[0] != '.')
 	{
 		path = search_the_path_for_the_token(pipex, pipex->command_1);
 		if (!path)
 		{
-			ft_putstr_fd("Command not found\n", 2);
+			//ft_putstr_fd("Command not found\n", 2);
 			free_all(pipex);
 			return (EXIT_FAILURE);
 		}
