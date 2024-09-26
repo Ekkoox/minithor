@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/26 19:37:32 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/26 20:33:41 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,49 +78,46 @@ static int count_chef(char *mot)
 	return (c);
 }
 
-// static char *dans_cot(char *buffer, int *index, char chef)
-// {
-// 	int i;
-// 	char *mot;
-// 	int y;
-	
-// 	i = *index + 1;
-// 	y = 0;
-// 	while (buffer[i] && buffer[i + 1] != chef)
-// 	{
-// 		if (buffer[i] == '\0')
-// 			return (NULL);
-// 		i++;
-// 	}
-// 	mot = ft_calloc(sizeof(char), (i - *index) + 1);
-// 	while(*index < i)
-// 	{
-// 		*index += 1;
-// 		mot[y] = buffer[*index];
-// 		y++;
-// 	}
-// 	mot[y] = '\0';
-// 	return(mot);
-// }
-
-static void get_double_cot(char *mot, int *index, t_token *token, t_pipex *pipex, int chef)
+static char *dans_cot(char *mot, int chef)
 {
-	(void)chef;
 	int i;
-	//char *mot;
+	int y;
+	char *clear_mot;
+	char cot;
+
+	i = 0;
+	y = 0;
+	cot = mot[i];
+	clear_mot = ft_calloc(sizeof(char), (ft_strlen(mot) - chef) + 1);
+	while(mot[i])
+	{
+		if (mot[i] == cot)
+			i++;
+		clear_mot[y] = mot[i];
+		i++;
+		y++;
+	}
+	return(clear_mot);
+}
+
+static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef)
+{
+	
+	int i;
+	char *in_cot;
 	int y;
 	int c;
 	
-	i = *index;
+	i = 0;
 	y = 0;
 	c = 0;
-	//mot = dans_cot(buffer, index, chef);
-	ft_printf("enzo le pute: ||%s||\n", mot);
-	while(mot[y])
+	in_cot = dans_cot(mot, chef);
+	ft_printf(": ||%s||\n", in_cot);
+	while(in_cot[i])
 	{
-		if (mot[y] == ' ')
+		if (mot[i] == ' ')
 			c++;
-		y++;
+		i++;
 	}
 	if(c == 0)
 	{
@@ -150,7 +147,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			i++;
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
-			get_double_cot(minishell->current, &i, token, pipex, count_chef(minishell->current));
+			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current));
 		get_type(minishell->current, token, pipex);
 		// ft_printf("le type: %s\n", token->type);
 		// ft_printf("le value: %s\n", token->value);
