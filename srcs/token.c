@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/25 20:54:09 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:37:32 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static int count_chef(char *mot)
 			c++;
 		i++;
 	}
-	ft_printf("nombre de chef : %d\n", c);
 	return (c);
 }
 
@@ -116,7 +115,7 @@ static void get_double_cot(char *mot, int *index, t_token *token, t_pipex *pipex
 	y = 0;
 	c = 0;
 	//mot = dans_cot(buffer, index, chef);
-	ft_printf("le mot a la fin : ||%s||\n", mot);
+	ft_printf("enzo le pute: ||%s||\n", mot);
 	while(mot[y])
 	{
 		if (mot[y] == ' ')
@@ -161,5 +160,4 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 }
 
 
-//ESSAYE DE FAIRE UNE FONCTION QUI VERIFIE SI LE PATH EST EST BON POUR VOIR SI C'EST UNE COMMANDE OU PAS
 
