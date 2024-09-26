@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/26 19:37:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:11:44 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,6 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
-/*
-
-while (str[i])
-{
-	if (is_redirect(str[i])
-		redirect_management(str, &i)
-}
-*/
-
 int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
@@ -72,11 +63,15 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		pipex->command_1 = buffer;
 		minishell->buffer = buffer;
 		tokenisation(token, minishell, pipex);
-		army_of_fork(ac, buffer, ev, pipex);
+		while(token->next)
+		{
+			if (ft_strcmp("command", token->type) == 0)
+				army_of_fork(ac, token->value, ev, pipex);
+			token = token->next;
+		}
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
-	ft_printf("BITE\n");
 	free(buffer);
 	return (EXIT_SUCCESS);
 }
