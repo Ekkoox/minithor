@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/25 17:03:55 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:47:49 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 
 typedef struct s_minishell
 {
+	int				flag;
 	char			*current;
 	char			*buffer;
 	t_pipex			pipex;

@@ -6,14 +6,16 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/26 20:33:41 by razouani         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:54:06 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	creat_node(char *type, t_token *token, char *value)
+static void	creat_node(char *type, t_token *token, char *value, t_minishell minishell)
 {
+	if (ft_strcmp(type, "commande") == 0)
+		minishell->flag = 1;
 	token->type = ft_strdup(type);
 	token->value = ft_strdup(value);
 	token->next = ft_calloc(sizeof(t_token), 1);
@@ -45,16 +47,19 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 
 
-static int	get_type(char *mot, t_token *token, t_pipex *pipex)
+static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
+	ft_printf("%d\n", minishell->flag);
+	if (minishell->flag == 1)
+	 	return(creat_node("argument", token, mot, minishell), 0);
 	if (chdir(mot) == 0)
-		return (creat_node("dossier", token, mot), 0);
+		return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
-		return (creat_node("commande", token, mot), 0);
+		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, ">") == 0)
-		return (creat_node("redirect output", token, mot), 0);
+		return (creat_node("redirect output", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "<") == 0)
-		return (creat_node("redirect input", token, mot), 0);
+		return (creat_node("redirect input", token, mot, minishell), 0);
 	return (1);
 	
 }
@@ -136,11 +141,11 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef)
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int i;
-	//t_token *tmp = token;
-	// int y = 0;
+	int flag;
 	pipex->path = pipex->ev;
 	
 	i = 0;
+	flag = 0;
 	while(minishell->buffer[i])
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
@@ -148,9 +153,9 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current));
-		get_type(minishell->current, token, pipex);
-		// ft_printf("le type: %s\n", token->type);
-		// ft_printf("le value: %s\n", token->value);
+		get_type(minishell->current, token, pipex), minishell;
+		ft_printf("le type: %s\n", token->type);
+		ft_printf("le value: %s\n", token->value);
 		token = token->next;
 	}
 	return (EXIT_SUCCESS);	
