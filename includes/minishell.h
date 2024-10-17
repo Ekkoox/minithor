@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/27 19:06:52 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:48:32 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 
 typedef struct s_minishell
 {
+	int				flag;
 	char			*current;
 	char			*buffer;
 	t_pipex			pipex;
