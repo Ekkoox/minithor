@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/09/26 21:12:15 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:59:54 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex)
 	int fd;
 
 	fd = 0;
-	fd = open(mot, fd);
+	fd = open(mot, fd); // c'est de la merde
 	if (chdir(mot) == 0)
 		return (creat_node("dossier", token, mot), 0);
 	else if (fd > 0)
@@ -121,7 +121,7 @@ static void get_double_cot(char *mot, int *index, t_token *token, t_pipex *pipex
 	y = 0;
 	c = 0;
 	//mot = dans_cot(buffer, index, chef);
-	ft_printf("enzo le pute: ||%s||\n", mot);
+	// ft_printf("enzo le pute: ||%s||\n", mot);
 	while(mot[y])
 	{
 		if (mot[y] == ' ')
@@ -158,3 +158,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	}
 	return (EXIT_SUCCESS);
 }
+
+// faire un enum pour differencier les types au lieu des strings (plus maintenable et opti)
+// ne pas verifier si un argument est un fichier si c'est pas une redirection
+// convertir la liste chainee en tableaux pour l'envoyer a execve

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/26 21:11:44 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/03 23:38:38 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 	size_t	buf_size;
 	ssize_t	bytes_read;
 	(void) av;
+	(void) ac;
 
 	buf_size = BUFFER_SIZE;
 	bytes_read = 0;	
@@ -60,15 +61,8 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 			buffer[bytes_read - 1] = '\0';
 		if (exit_prompt(buffer) == 0)
 			break ;
-		pipex->command_1 = buffer;
 		minishell->buffer = buffer;
 		tokenisation(token, minishell, pipex);
-		while(token->next)
-		{
-			if (ft_strcmp("command", token->type) == 0)
-				army_of_fork(ac, token->value, ev, pipex);
-			token = token->next;
-		}
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);

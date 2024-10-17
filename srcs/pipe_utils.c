@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/25 17:37:03 by razouani         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:41:15 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ void	free_all(t_pipex *pipex)
 	// exit(EXIT_SUCCESS);
 }
 
-char	*find_the_path(int ac, char **av, char **ev, t_pipex *pipex)
+char	*find_the_path(char **ev, t_pipex *pipex)
 {
 	int	i;
 
-	(void)ac;
-	(void)av;
 	i = 0;
 	pipex->ligne_path = NULL;
 	while (ev[i])

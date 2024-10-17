@@ -1,5 +1,3 @@
-
-
 NAME = minishell
 
 C_FILES = main.c \
