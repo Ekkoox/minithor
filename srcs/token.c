@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/21 17:57:39 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:02:21 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	ft_printf("%d\n", minishell->flag);
 	if (minishell->flag == 1)
 	 	return(creat_node("argument", token, mot, minishell), 0);
 	if (chdir(mot) == 0)
@@ -60,6 +59,8 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 		return (creat_node("redirect output", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "<") == 0)
 		return (creat_node("redirect input", token, mot, minishell), 0);
+	else
+		return(creat_node("trash", token, mot, minishell), 0);
 	return (1);
 }
 
@@ -105,7 +106,7 @@ static char *dans_cot(char *mot, int chef)
 	return(clear_mot);
 }
 
-static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef)
+static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, t_minishell *minishell)
 {
 	
 	int i;
@@ -126,21 +127,48 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef)
 	}
 	if(c == 0)
 	{
-		if (get_type(mot, token, pipex) == 0)
+		if (get_type(mot, token, pipex, minishell) == 0)
 			return;
 		else
-			creat_node("string", token, mot);
+			creat_node("string", token, mot, minishell);
 	}
 }
+static void	put_in(t_token *token, t_minishell *minishell)
+{
+	t_token *tmp;
+	int i;
+	int len;
 
+	tmp = token;
+	len = 0;
+	i = 0;
+	while(token->next != NULL)
+	{
+		token = token->next;
+		len++;
+	}
+	token = tmp;
+	minishell->command_exac = ft_calloc(sizeof(char *), len + 1);
+	while (token->next != NULL)
+	{
+		minishell->command_exac[i] = ft_calloc(sizeof(char), ft_strlen(token->value) + 1);
+		minishell->command_exac[i] = ft_strdup(token->value);
+		token = token->next;
+		i++;
+	}
+	minishell->command_exac[i] = NULL;
+	token = tmp;
+}
 
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int i;
 	int flag;
 	pipex->path = pipex->ev;
+	t_token *tmp;
 	
 	i = 0;
+	tmp = token;
 	flag = 0;
 	while(minishell->buffer[i])
 	{
@@ -148,15 +176,18 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			i++;
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
-			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current));
-		get_type(minishell->current, token, pipex), minishell;
-		ft_printf("le type: %s\n", token->type);
-		ft_printf("le value: %s\n", token->value);
+			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
+		get_type(minishell->current, token, pipex, minishell);
+		// ft_printf("le type: %s\n", token->type);
+		// ft_printf("le value: %s\n", token->value);
 		token = token->next;
 	}
-	return (EXIT_SUCCESS);
+	token = tmp;
+	put_in(token, minishell);	
+	minishell->flag = 0;
+	return (EXIT_SUCCESS);	
 }
 
-// faire un enum pour differencier les types au lieu des strings (plus maintenable et opti)
-// ne pas verifier si un argument est un fichier si c'est pas une redirection
-// convertir la liste chainee en tableaux pour l'envoyer a execve
+
+
+

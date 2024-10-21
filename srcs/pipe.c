@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/27 19:12:26 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:02:18 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,18 @@ static void	error_execve(t_pipex *pipex)
 	// exit(EXIT_FAILURE);
 }
 
-static void	first_child(t_pipex *pipex, t_token *token)
+static void	first_child(t_pipex *pipex, t_minishell *minishell)
 {
 	char	*path;
-	char **split;
-	// int fd;
+	//char **split;
+	int y = 0;
+	while(minishell->command_exac[y])
+	{
+		ft_printf("%s\n", minishell->command_exac[y]);
+		y++;
+	}
 
-	split = ft_split(token->value, '0');
-	// fd = open(pipex->file_1, O_RDONLY);
-	// if (fd == -1)
-	// {
-	// 	ft_putstr_fd("Permission denied\n", 2);
-	// 	return ;
-	// }
-	// close(fd);
+	//split = ft_split(pipex->command_1, '0');
 	path = get_the_command(pipex);
 	if (!path)
 	{
@@ -40,11 +38,11 @@ static void	first_child(t_pipex *pipex, t_token *token)
 		free_all(pipex);
 		// exit(EXIT_FAILURE);
 	}
-	if (execve(path, split, pipex->ev) == -1)
+	if (execve(path, minishell->command_exac, pipex->ev) == -1)
 		error_execve(pipex);
 }
 
-void	army_of_fork(char **ev, t_pipex *pipex, t_token *token)
+void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex, t_minishell *minishell)
 {
 	int	id_fork;
 
@@ -58,6 +56,6 @@ void	army_of_fork(char **ev, t_pipex *pipex, t_token *token)
 		// exit(EXIT_FAILURE);
 	}
 	if (id_fork == 0)
-		first_child(pipex, token);
+		first_child(pipex, minishell);
 	wait(NULL);
 }

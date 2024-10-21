@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/17 16:48:28 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:02:20 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 			break ;
 		minishell->buffer = buffer;
 		tokenisation(token, minishell, pipex);
+		pipex->command_1 = token->value;
+		army_of_fork(ac, buffer, ev, pipex, minishell);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
