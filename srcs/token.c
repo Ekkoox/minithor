@@ -6,13 +6,13 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/17 16:48:46 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:57:39 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	creat_node(char *type, t_token *token, char *value, t_minishell minishell)
+static void	creat_node(char *type, t_token *token, char *value, t_minishell *minishell)
 {
 	if (ft_strcmp(type, "commande") == 0)
 		minishell->flag = 1;
