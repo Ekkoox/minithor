@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/09/25 17:36:46 by razouani         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:08:20 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,18 @@ static void	error_execve(t_pipex *pipex)
 	// exit(EXIT_FAILURE);
 }
 
-static void	first_child(t_pipex *pipex)
+static void	first_child(t_pipex *pipex, t_minishell *minishell)
 {
 	char	*path;
-	char **split;
+	//char **split;
+	int y = 0;
+	while(minishell->command_exac[y])
+	{
+		ft_printf("%s\n", minishell->command_exac[y]);
+		y++;
+	}
 
-	split = ft_split(pipex->command_1, '0');
+	//split = ft_split(pipex->command_1, '0');
 	path = get_the_command(pipex);
 	if (!path)
 	{
@@ -32,11 +38,11 @@ static void	first_child(t_pipex *pipex)
 		free_all(pipex);
 		// exit(EXIT_FAILURE);
 	}
-	if (execve(path, split, pipex->ev) == -1)
+	if (execve(path, minishell->command_exac, pipex->ev) == -1)
 		error_execve(pipex);
 }
 
-void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex)
+void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex, t_minishell *minishell)
 {
 	int	id_fork;
 
@@ -50,6 +56,6 @@ void	army_of_fork(int ac, char *av, char **ev, t_pipex *pipex)
 		// exit(EXIT_FAILURE);
 	}
 	if (id_fork == 0)
-		first_child(pipex);
+		first_child(pipex, minishell);
 	wait(NULL);
 }
