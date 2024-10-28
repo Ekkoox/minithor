@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/21 18:01:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:34:22 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_token
 
 typedef struct s_minishell
 {
+	int				flag_builtin;
 	int				flag;
 	char			*current;
 	char			*buffer;
@@ -58,20 +59,26 @@ typedef struct s_pipex
 	pid_t			pid;
 }					t_pipex;
 
+//FONCTION
+int 				ft_cd(t_token *token);
+int					ft_echo(t_token *token);
+
 // PROMPT
 int					creat_the_prompt(int ac, char **av, char **ev,
 						t_pipex *pipex, t_token *token, t_minishell *minishell);
 
 // PIPE
 void				free_all(t_pipex *pipex);
-void				army_of_fork(int ac, char *av, char **ev, t_pipex *pipex);
+void				army_of_fork(int ac, char *av, char **ev, t_pipex *pipex, t_minishell *minishell);
 char				*get_the_command(t_pipex *pipex);
 char				**split_the_path(t_pipex *pipex);
-char				*find_the_path(char **ev, t_pipex *pipex);
+char				*find_the_path(int ac, char **av, char **ev,
+						t_pipex *pipex);
 char				*search_the_path(t_pipex *pipex, char *command);
 
 // TOKEN
-int					tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex);
+int					tokenisation(t_token *token, t_minishell *minishell,
+						t_pipex *pipex);
 int					search_command_for_token(t_pipex *pipex, char *mot);
 
-# endif
+#endif

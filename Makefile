@@ -1,10 +1,12 @@
 NAME = minishell
 
 C_FILES = main.c \
+		  cd.c\
+		  echo.c\
           pipe.c \
+		  token.c\
           prompt.c \
           pipe_utils.c\
-		  token.c\
 		  token_utils.c\
 
 BOLD = \033[1m

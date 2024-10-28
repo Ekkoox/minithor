@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/21 18:02:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/24 18:25:44 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 	else
 		return(creat_node("trash", token, mot, minishell), 0);
 	return (1);
+	
 }
-
 
 static int count_chef(char *mot)
 {
@@ -118,7 +118,7 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 	y = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
-	ft_printf(": ||%s||\n", in_cot);
+	// ft_printf(": ||%s||\n", in_cot);
 	while(in_cot[i])
 	{
 		if (mot[i] == ' ')
