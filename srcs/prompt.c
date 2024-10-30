@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/18 17:40:39 by razouani         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:44:46 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,6 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
-/*
-
-while (str[i])
-{
-	if (is_redirect(str[i])
-		redirect_management(str, &i)
-}
-*/
-
 int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
@@ -61,8 +52,9 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		error_prompt(buffer, bytes_read);
 	while(1)
 	{
-		ft_putstr_fd(">", 1);
-		buffer = readline(STDIN_FILENO);
+		buffer = readline(">");
+		if (!buffer)
+			return (EXIT_FAILURE);
 		bytes_read = ft_strlen(buffer);
 		buffer[bytes_read] = '\0';
 		if (buffer[bytes_read - 1] == '\n')
@@ -72,7 +64,12 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		minishell->buffer = buffer;
 		tokenisation(token, minishell, pipex);
 		pipex->command_1 = token->value;
-		army_of_fork(ac, buffer, ev, pipex, minishell);
+		if (ft_strncmp(token->value, "echo", 4) == 0)
+			ft_echo(token);
+		else if (ft_strncmp(token->value, "cd", 2) == 0)
+			ft_cd(token);
+		else
+			army_of_fork(ac, buffer, ev, pipex, minishell);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
