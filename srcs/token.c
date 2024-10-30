@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/24 19:40:14 by razouani         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:13:35 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ static char *dans_cot(char *mot, int chef)
 		i++;
 		y++;
 	}
+	clear_mot[y] = '\0';
 	//ft_printf("le mot sans les chefs: %s\n", clear_mot);
 	return(clear_mot);
 }
