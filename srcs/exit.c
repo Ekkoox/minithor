@@ -1,25 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 18:43:10 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/29 18:44:22 by enschnei         ###   ########.fr       */
+/*   Created: 2024/10/29 18:57:31 by enschnei          #+#    #+#             */
+/*   Updated: 2024/10/29 18:57:48 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int ft_cd(t_token *token) 
-{ 
-    token = token->next;
-    
-    if (chdir(token->value) == -1) 
-    {
-        perror("cd error");
-        return (EXIT_FAILURE);
-    }
-    return (EXIT_SUCCESS);
-}
