@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/28 19:34:22 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:45:25 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
 
 typedef struct s_token
 {
@@ -61,6 +60,8 @@ typedef struct s_pipex
 
 //FONCTION
 int 				ft_cd(t_token *token);
+int					ft_pwd(t_token *token);
+int					ft_env(t_token *token);
 int					ft_echo(t_token *token);
 
 // PROMPT

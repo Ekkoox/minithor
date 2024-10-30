@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/24 18:25:44 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:12:12 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 {
 	if (minishell->flag == 1)
 	 	return(creat_node("argument", token, mot, minishell), 0);
-	if (chdir(mot) == 0)
-		return (creat_node("dossier", token, mot, minishell), 0);
+	// if (chdir(mot) == 0)
+	// 	return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, ">") == 0)

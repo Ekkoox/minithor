@@ -2,6 +2,8 @@ NAME = minishell
 
 C_FILES = main.c \
 		  cd.c\
+		  pwd.c\
+		  env.c\
 		  echo.c\
           pipe.c \
 		  token.c\

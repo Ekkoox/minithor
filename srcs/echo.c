@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/28 19:16:31 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:56:52 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ int ft_echo(t_token *token)
     }
     while(token->next)
     {
-        ft_printf("mon echo = %s", token->value);
+        ft_printf("%s", token->value);
         token = token->next;
     }
     if (!flag)
-        printf("\n");
+        ft_printf("\n");
     return (EXIT_SUCCESS);
 }
