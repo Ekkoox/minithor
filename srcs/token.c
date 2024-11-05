@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/10/30 17:27:45 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:39:03 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ static void		clear_cot(char *buffer, char *dest, int *index, int start, int *ind
 	if (start == *index)
 	{
 		*index += 1;
-		while((buffer[*index] != 34) || (buffer[*index] != 39 && buffer[*index]))
+		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
 		{
 			dest[i] = buffer[*index];
 			i++;
 			*index += 1;
 		}
-		buffer[*index] = '\0';
+		i--;
+		dest[i] = '\0';
 	}
 	else	
 	{
@@ -62,7 +63,6 @@ static void grap_mot(t_minishell *minishell, int *index)
 	j = 0;
 	while(minishell->buffer[i] != ' ' && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
-	ft_printf("%d\n", i);
 	len = i - *index;
 	if (len <= 0)
 		return;
@@ -141,7 +141,6 @@ static char *dans_cot(char *mot, int chef)
 		y++;
 	}
 	clear_mot[y] = '\0';
-	//ft_printf("le mot sans les chefs: %s\n", clear_mot);
 	return(clear_mot);
 }
 
@@ -157,7 +156,6 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 	y = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
-	// ft_printf(": ||%s||\n", in_cot);
 	while(in_cot[i])
 	{
 		if (mot[i] == ' ')
@@ -172,6 +170,7 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 			creat_node("string", token, mot, minishell);
 	}
 }
+
 static void	put_in(t_token *token, t_minishell *minishell)
 {
 	t_token *tmp;

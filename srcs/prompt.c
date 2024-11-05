@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/29 18:42:33 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/05 17:50:38 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
-int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
+int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell, t_historique *historique)
 {
 	char	*buffer;
 	size_t	buf_size;
@@ -62,6 +62,11 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		if (exit_prompt(buffer) == 0)
 			break ;
 		minishell->buffer = buffer;
+		historique->commande = ft_strdup(minishell->buffer);
+		ft_printf("%s\n", historique->commande);
+		historique->next = ft_calloc(sizeof(t_historique), 1);
+		historique = historique->next;
+		add_history(buffer);
 		tokenisation(token, minishell, pipex);
 		pipex->command_1 = token->value;
 		if (ft_strncmp(token->value, "echo", 4) == 0)
