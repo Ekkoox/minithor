@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/29 18:42:33 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:26:39 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,26 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
+// static void is_buiting(t_token *token)
+// {
+// 	if (ft_strncmp(token->value, "echo", 4) == 0)
+// 		ft_echo(token);
+// 	else if (ft_strncmp(token->value, "cd", 2) == 0)
+// 		ft_cd(token);
+// 	else if (ft_strncmp(token->value, "pwd", 3) == 0)
+// 		ft_pwd(token);
+// 	else if (ft_strncmp(token->value, "env", 3) == 0)
+// 		ft_env(token);
+// }
+
 int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
-	size_t	buf_size;
 	ssize_t	bytes_read;
 	(void) av;
 
-	buf_size = BUFFER_SIZE;
 	bytes_read = 0;	
-	buffer = (char *)ft_calloc(sizeof(char), buf_size);
+	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE);
 	if (!buffer)
 		error_prompt(buffer, bytes_read);
 	while(1)
