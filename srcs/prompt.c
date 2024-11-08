@@ -6,9 +6,10 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/06 18:43:41 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:14:42 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -38,6 +39,7 @@ static int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
+// int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell, t_historique *historique)
 // static void is_buiting(t_token *token)
 // {
 // 	if (ft_strncmp(token->value, "echo", 4) == 0)
@@ -50,7 +52,56 @@ static int	exit_prompt(char *buffer)
 // 		ft_env(token);
 // }
 
-int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
+// static char *join_ev(char **ev)
+// {
+// 	char *env;
+// 	int j;
+// 	int i;
+
+// 	i = 0;
+// 	j = 0;
+// 	while(ev[i])
+// 	{
+// 		env = ft_strjoin(env, ev[i]);
+// 		while(env[j])
+// 			j++;
+// 		env[j] = ' ';
+// 		i++;
+// 	}
+// 	env[j] = '\0';
+// 	return (env);
+// }
+
+static t_env	*creat_env_list(char **ev, t_minishell *minishell)
+{
+	int i;
+	int j;
+	char **split_env;
+	t_env *env = minishell->env;
+	t_env *tmp;
+
+	i = 0;
+	j = 0;
+	env = ft_calloc(sizeof(t_env), 1);
+	tmp = env;
+	while(ev[i])
+	{
+		split_env = ft_split_env(ev[i], '=');
+		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[0]));
+		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[1]));
+		env->type = split_env[0];
+		env->value = split_env[1];
+		env->next = ft_calloc(sizeof(t_env), 1);
+		env = env->next;
+		i++;
+	}
+	env = tmp;
+	return (env);
+}
+
+
+
+int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
@@ -59,6 +110,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE);
 	if (!buffer)
 		error_prompt(buffer, bytes_read);
+	minishell->env = creat_env_list(ev, minishell);
 	while(1)
 	{
 		buffer = readline(">");
@@ -71,16 +123,18 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		if (exit_prompt(buffer) == 0)
 			break ;
 		minishell->buffer = buffer;
+		add_history(buffer);
 		tokenisation(token, minishell, pipex);
+		check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (ft_strncmp(token->value, "echo", 4) == 0)
 			ft_echo(token);
 		else if (ft_strncmp(token->value, "cd", 2) == 0)
-			ft_cd(token);
+			ft_cd(token, minishell->env);
 		else if (ft_strncmp(token->value, "pwd", 3) == 0)
 			ft_pwd(token);
-		// else if (ft_strncmp(token->value, "env", 3) == 0)
-		// 	ft_env(token);
+		else if (ft_strncmp(token->value, "env", 3) == 0)
+		 	ft_env(minishell);
 		else
 			army_of_fork(ev, pipex, minishell);
 	}
@@ -89,3 +143,6 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 	free(buffer);
 	return (EXIT_SUCCESS);
 }
+
+
+//

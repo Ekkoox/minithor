@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/07 16:57:40 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:16:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,45 @@ static void	creat_node(char *type, t_token *token, char *value, t_minishell *min
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
+static void		clear_cot(char *buffer, char *dest, int *index, int start, int *index_dest)
+{
+	int i;
+
+	i = 0;
+	if (start == *index)
+	{
+		*index += 1;
+		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
+		{
+			dest[i] = buffer[*index];
+			i++;
+			*index += 1;
+		}
+		i--;
+		dest[i] = '\0';
+	}
+	else	
+	{
+		while((buffer[*index] != 34) || (buffer[*index] != 39 && buffer[*index]))
+		{
+			dest[*index_dest] = buffer[*index];
+			*index += 1;
+			*index_dest += 1;
+		}
+		buffer[*index] = '\0';
+	}
+	return;
+}
+
 static void grap_mot(t_minishell *minishell, int *index)
 {
 	int i;
 	int len;
 	int j;
+	int y;
 
 	i = *index;
+	y = *index;
 	j = 0;
 	while(minishell->buffer[i] != ' ' && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
@@ -40,6 +72,11 @@ static void grap_mot(t_minishell *minishell, int *index)
 	while (*index < i && minishell->buffer[*index])
 	{
 		minishell->current[j] = minishell->buffer[*index];
+		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
+		{
+			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
+			return;
+		}
 		j++;
 		*index += 1;
 	}
@@ -51,18 +88,21 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	if (minishell->flag == 1)
-	{
-        if (ft_strcmp(mot, "|") == 0)
-            return (creat_node("pipe", token, mot, minishell), 0);
-        return(creat_node("argument", token, mot, minishell), 0);	
+	if (minishell->flag == 1){
+		if (ft_strcmp(mot, "|") == 0)
+			return (creat_node("pipe", token, mot, minishell), 0);
+		return(creat_node("argument", token, mot, minishell), 0);
 	}
+	// if (chdir(mot) == 0)
+	// 	return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, ">") == 0)
 		return (creat_node("redirect output", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "<") == 0)
 		return (creat_node("redirect input", token, mot, minishell), 0);
+	else if (ft_strcmp(mot, "|") == 0)
+		return (creat_node("pipe", token, mot, minishell), 0);
 	else
 		return(creat_node("trash", token, mot, minishell), 0);
 	return (1);
@@ -107,6 +147,7 @@ static char *dans_cot(char *mot, int chef)
 		i++;
 		y++;
 	}
+	clear_mot[y] = '\0';
 	return(clear_mot);
 }
 
@@ -122,7 +163,6 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 	y = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
-	// ft_printf(": ||%s||\n", in_cot);
 	while(in_cot[i])
 	{
 		if (mot[i] == ' ')
@@ -137,6 +177,7 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 			creat_node("string", token, mot, minishell);
 	}
 }
+
 static void	put_in(t_token *token, t_minishell *minishell)
 {
 	t_token *tmp;
@@ -181,7 +222,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
-		get_type(minishell->current, token, pipex, minishell);
+		else
+			get_type(minishell->current, token, pipex, minishell);
 		// ft_printf("le type: %s\n", token->type);
 		// ft_printf("le value: %s\n", token->value);
 		token = token->next;

@@ -10,6 +10,8 @@ C_FILES = main.c \
           prompt.c \
           pipe_utils.c\
 		  token_utils.c\
+		  split_env.c\
+		  check_token.c\
 
 BOLD = \033[1m
 RED = \033[31m
