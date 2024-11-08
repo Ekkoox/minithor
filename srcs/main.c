@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/06 18:29:30 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:10:41 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 int main(int ac, char **av, char **ev)
 {
+	(void) ac;
+	(void) av;
 	t_pipex pipex;
 	t_token *token;
 	t_minishell minishell;
 
-	if (ac != 1)
-		return (ft_putstr_fd("Error number of arguments\n", 2), EXIT_FAILURE);
 	token = ft_calloc(sizeof(t_token), 1);
 	pipex.ev = ev;
-	creat_the_prompt(ac, av, ev, &pipex, token, &minishell);
+	creat_the_prompt(ev, &pipex, token, &minishell);
 	return (EXIT_SUCCESS);
 }
 

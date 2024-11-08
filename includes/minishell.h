@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 01:21:10 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:12:30 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+enum			e_token
+{	
+	PIPE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+	REDIRECTION,
+};
 
 typedef struct s_env
 {
@@ -62,9 +70,10 @@ typedef struct	s_historique
 	struct s_historique	*prev; 
 }				t_historique;
 
-typedef struct s_pipex
-{
-	int				fd[2];
+typedef struct s_pipex {
+	int				*fd;
+	int				**pipes;     
+	int				num_cmds;
 	char			*file_1;
 	char			*command_1;
 	char			*ligne_path;
@@ -84,17 +93,14 @@ int					ft_env(t_minishell *minishell);
 int					ft_echo(t_token *token);
 
 // PROMPT
-int					creat_the_prompt(int ac, char **av, char **ev,
-						t_pipex *pipex, t_token *token, t_minishell *minishell);
+int					creat_the_prompt(char **ev,	t_pipex *pipex, t_token *token, t_minishell *minishell);
 
 // PIPE
 void				free_all(t_pipex *pipex);
-void				army_of_fork(int ac, char *av, char **ev, t_pipex *pipex,
-						t_minishell *minishell);
+void				army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token);
 char				*get_the_command(t_pipex *pipex);
 char				**split_the_path(t_pipex *pipex);
-char				*find_the_path(int ac, char **av, char **ev,
-						t_pipex *pipex);
+char				*find_the_path(char **ev, t_pipex *pipex);
 char				*search_the_path(t_pipex *pipex, char *command);
 
 // TOKEN

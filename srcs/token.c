@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/07 16:20:58 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:16:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	creat_node(char *type, t_token *token, char *value, t_minishell *min
 	if (ft_strcmp(type, "commande") == 0)
 		minishell->flag = 1;
 	if (ft_strcmp(type, "pipe") == 0)
-		minishell->flag = 0;
+        minishell->flag = 0;
 	token->type = ft_strdup(type);
 	token->value = ft_strdup(value);
 	token->next = ft_calloc(sizeof(t_token), 1);

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/11/08 15:46:43 by razouani         ###   ########.fr       */
+=======
+/*   Updated: 2024/11/08 17:12:49 by enschnei         ###   ########.fr       */
+>>>>>>> origin/Enzo
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +100,13 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 		i++;
 	}
 	env = tmp;
-	return(env);
-		
+	return (env);
 }
 
-
-
-int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
+int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
-	(void) av;
 
 	bytes_read = 0;	
 	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE);
@@ -139,14 +139,7 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		else if (ft_strncmp(token->value, "env", 3) == 0)
 		 	ft_env(minishell);
 		else
-			army_of_fork(ac, buffer, ev, pipex, minishell);
-		// while(minishell->env->next)
-		// {
-		// 	ft_printf("%s", minishell->env->type);
-		// 	ft_printf("%c", '=');
-		// 	ft_printf("%s\n", minishell->env->value);
-		// 	minishell->env = minishell->env->next;
-		// }
+			army_of_fork(ev, pipex, minishell, token);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
