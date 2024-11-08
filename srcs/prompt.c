@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/05 18:26:39 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:43:41 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,10 @@ static int	exit_prompt(char *buffer)
 // 		ft_env(token);
 // }
 
-int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
+int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
-	(void) av;
 
 	bytes_read = 0;	
 	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE);
@@ -80,10 +79,10 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 			ft_cd(token);
 		else if (ft_strncmp(token->value, "pwd", 3) == 0)
 			ft_pwd(token);
-		else if (ft_strncmp(token->value, "env", 3) == 0)
-			ft_env(token);
+		// else if (ft_strncmp(token->value, "env", 3) == 0)
+		// 	ft_env(token);
 		else
-			army_of_fork(ac, buffer, ev, pipex, minishell);
+			army_of_fork(ev, pipex, minishell);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
