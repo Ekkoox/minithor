@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 16:10:08 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:12:30 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int					creat_the_prompt(char **ev,	t_pipex *pipex, t_token *token, t_minishell 
 
 // PIPE
 void				free_all(t_pipex *pipex);
-void				army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell);
+void				army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token);
 char				*get_the_command(t_pipex *pipex);
 char				**split_the_path(t_pipex *pipex);
 char				*find_the_path(char **ev, t_pipex *pipex);

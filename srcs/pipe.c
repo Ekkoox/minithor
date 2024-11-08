@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 16:10:48 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:28:21 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,23 @@ static void error_execve(t_pipex *pipex)
 	exit(EXIT_FAILURE);
 }
 
-static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_index)
+// static char **find_pipe(t_token *token)
+// {
+// 	char **res;
+// 	t_token *tmp;
+
+// 	tmp = token;
+// 	while(token->next && ft_strcmp(token->type, "pipe") == 1)
+// 	{
+		
+// 	}
+// }
+
+static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_index,t_token *token)
 {
 	char *path;
 	int i;
+	(void)token;
 
 	path = get_the_command(pipex);
 	if (!path)
@@ -84,11 +97,16 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 		close(pipex->pipes[i][1]);
 		i++;
 	}
-	if (execve(path, minishell->command_exac + cmd_index, pipex->ev) == -1)
-		error_execve(pipex);
+	//while(token->next)
+	//{
+		// minishell->command_exac = find_pipe(token);
+		//ft_printf("%s\n", minishell->command_exac[i]);
+		if (execve(path, minishell->command_exac + cmd_index, pipex->ev) == -1)
+			error_execve(pipex);
+	//}
 }
 
-void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell)
+void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token)
 {
 	int i;
 	pid_t pid;
@@ -122,7 +140,7 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell)
 		}
 		ft_printf("%s\n", minishell->command_exac[0]);
 		if (pid == 0)
-			execute_command(pipex, minishell, i);
+			execute_command(pipex, minishell, i, token);
 		if (i > 0)
 			close(pipex->pipes[i - 1][0]);
 		if (i < pipex->num_cmds - 1)

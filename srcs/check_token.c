@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_token.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
+/*   Updated: 2024/11/08 16:42:01 by enschnei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
 {
