@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:16:19 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/05 19:09:22 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:38:51 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ static char	*ft_strndup(const char *str, int index, int n)
 	return (s);
 }
 
-static void	*ft_free(char **strs, int count)
-{
-	int	i;
+// static void	*ft_free(char **strs, int count)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < count)
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
-	return (NULL);
-}
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		free(strs[i]);
+// 		i++;
+// 	}
+// 	free(strs);
+// 	return (NULL);
+// }
 
 char	**ft_split_env(char const *s, char c)
 {

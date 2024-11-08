@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/04 14:39:03 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:20:58 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	creat_node(char *type, t_token *token, char *value, t_minishell *min
 {
 	if (ft_strcmp(type, "commande") == 0)
 		minishell->flag = 1;
+	if (ft_strcmp(type, "pipe") == 0)
+		minishell->flag = 0;
 	token->type = ft_strdup(type);
 	token->value = ft_strdup(value);
 	token->next = ft_calloc(sizeof(t_token), 1);
@@ -86,8 +88,11 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	if (minishell->flag == 1)
-	 	return(creat_node("argument", token, mot, minishell), 0);
+	if (minishell->flag == 1){
+		if (ft_strcmp(mot, "|") == 0)
+			return (creat_node("pipe", token, mot, minishell), 0);
+		return(creat_node("argument", token, mot, minishell), 0);
+	}
 	// if (chdir(mot) == 0)
 	// 	return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
@@ -96,6 +101,8 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 		return (creat_node("redirect output", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "<") == 0)
 		return (creat_node("redirect input", token, mot, minishell), 0);
+	else if (ft_strcmp(mot, "|") == 0)
+		return (creat_node("pipe", token, mot, minishell), 0);
 	else
 		return(creat_node("trash", token, mot, minishell), 0);
 	return (1);

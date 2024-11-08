@@ -6,13 +6,10 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/04 13:55:19 by razouani         ###   ########.fr       */
-=======
-/*   Updated: 2024/11/05 19:09:10 by enschnei         ###   ########.fr       */
->>>>>>> Enzo
+/*   Updated: 2024/11/08 01:21:10 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -81,14 +78,14 @@ typedef struct s_pipex
 char				**ft_split_env(char const *s, char c);
 
 // FONCTION
-int					ft_cd(t_token *token);
+int 				ft_cd(t_token *token, t_env *env);
 int					ft_pwd(t_token *token);
-int					ft_env(t_token *token);
+int					ft_env(t_minishell *minishell);
 int					ft_echo(t_token *token);
 
 // PROMPT
 int					creat_the_prompt(int ac, char **av, char **ev,
-						t_pipex *pipex, t_token *token, t_minishell *minishell, t_historique *historique);
+						t_pipex *pipex, t_token *token, t_minishell *minishell);
 
 // PIPE
 void				free_all(t_pipex *pipex);
@@ -104,5 +101,7 @@ char				*search_the_path(t_pipex *pipex, char *command);
 int					tokenisation(t_token *token, t_minishell *minishell,
 						t_pipex *pipex);
 int					search_command_for_token(t_pipex *pipex, char *mot);
+void				check_token(t_token *token, t_env *env);
+
 
 #endif
