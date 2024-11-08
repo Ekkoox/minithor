@@ -19,9 +19,10 @@ static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
 	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
 	free(token->value);
 	token->value = ft_calloc(sizeof(char), len + 1);
-	while(dup_value[i])
+	//ft_printf("||%s||\n", dup_value);
+	while(dup_value[y])
 	{
-		if (dup_value[i] == '$')
+		if (dup_value[y] == '$')
 		{
 			while(env->value[j])
 			{

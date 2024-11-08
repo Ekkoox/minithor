@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 01:21:04 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:46:43 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *toke
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
 		check_token(token, minishell->env);
+		//ft_printf("%s\n", token->next->value);
 		pipex->command_1 = token->value;
 		if (ft_strncmp(token->value, "echo", 4) == 0)
 			ft_echo(token);
