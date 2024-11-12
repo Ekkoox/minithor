@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 17:12:49 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:18:17 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		else if (ft_strncmp(token->value, "env", 3) == 0)
 		 	ft_env(minishell);
 		else
-			army_of_fork(ev, pipex, minishell, token);
+			army_of_fork(ev, pipex, token, minishell);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);

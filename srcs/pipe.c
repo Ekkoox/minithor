@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 17:28:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 22:02:43 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,103 +61,164 @@ static void error_execve(t_pipex *pipex)
 	exit(EXIT_FAILURE);
 }
 
-// static char **find_pipe(t_token *token)
-// {
-// 	char **res;
-// 	t_token *tmp;
 
-// 	tmp = token;
-// 	while(token->next && ft_strcmp(token->type, "pipe") == 1)
-// 	{
-		
-// 	}
-// }
 
-static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_index,t_token *token)
+static int count_pipe(t_token *token)
+{
+	t_token *tmp;
+	int i;
+
+	tmp = token;
+	i = 0;
+	while(token->next)
+	{
+		if (ft_strcmp(token->type, "pipe") == 0)
+			i++;
+		token = token->next;
+	}
+	token = tmp;
+	return (i + 1);
+}
+
+static void dup_command(t_token *token)
+{
+	t_token *tmp;
+
+	tmp = token;
+	while(token->next)
+	{
+		dup2()
+		token = token->next;
+	}
+}
+}
+
+static void execute_command(t_pipex *pipex, int cmd_index, t_token *token, t_minishell *minishell)
 {
 	char *path;
+	t_token *tmp;
 	int i;
-	(void)token;
+	int command_n;
 
+	tmp = token;
 	path = get_the_command(pipex);
-	if (!path)
+	command_n = count_pipe(token);
+	minishell->pid = ft_calloc(sizeof(minishell->pid), 1);
+	if (!path)	
 	{
 		ft_putstr_fd("No such file or directory\n", 2);
 		free_all(pipex);
-		exit(EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	}
-	// if (cmd_index > 0)
-	// 	dup2(pipex->pipes[cmd_index - 1][0], STDIN_FILENO);
-	// if (cmd_index < pipex->num_cmds - 1)
-	// 	dup2(pipex->pipes[cmd_index][1], STDOUT_FILENO);
-	i = 0;
-	while (i < pipex->num_cmds - 1)
+	dup_command(token);
+	while(command_n > 0)
 	{
-		close(pipex->pipes[i][0]);
-		close(pipex->pipes[i][1]);
-		i++;
+		minishell->pid->pid_n = fork();
+		command_n--;
 	}
-	//while(token->next)
-	//{
-		// minishell->command_exac = find_pipe(token);
-		//ft_printf("%s\n", minishell->command_exac[i]);
-		if (execve(path, minishell->command_exac + cmd_index, pipex->ev) == -1)
-			error_execve(pipex);
-	//}
+	
 }
 
-void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token)
-{
-	int i;
-	pid_t pid;
+// 	char *path;
+// 	t_token *tmp;
+// 	int i;
 
-	find_the_path(ev, pipex);
-	split_the_path(pipex);
-	pipex->num_cmds = 3;
-	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
+// 	tmp = token;
+// 	path = get_the_command(pipex);
+// 	if (!path)	
+// 	{
+// 		ft_putstr_fd("No such file or directory\n", 2);
+// 		free_all(pipex);
+// 		exit (EXIT_FAILURE);
+// 	}
+// 	if (cmd_index > 0)
+// 		dup2(pipex->pipes[cmd_index - 1][0], STDIN_FILENO);
+// 	if (cmd_index < pipex->num_cmds - 1)
+// 		dup2(pipex->pipes[cmd_index][1], STDOUT_FILENO);
+// 	i = 0;
+// 	while (i < pipex->num_cmds - 1)
+// 	{
+// 		close(pipex->pipes[i][0]);
+// 		close(pipex->pipes[i][1]);
+// 		i++;
+// 	}
+// 	token = tmp;
+// 	// while(token && ft_strcmp(token->value, "|") != 0)
+// 	// {
+// 	// 	ft_printf("%s\n", token->value);
+// 	// 	command[i] = token->value;
+// 	// 	ft_printf("commande  = %s\n", command[i]);
+// 	// 	token = token->next;
+// 	// 	i++;
+// 	// }	
+// 	ft_printf("%s\n", token->value);
+// 	if (execve(path, minishell->command_exac, pipex->ev) == -1)
+// 		error_execve(pipex);
+// }
+// // static void next_command(t_token *token)
+// // {
+// // 	token = token->next;
+// // 	while((token->next) && (ft_strcmp(token->type, "commande") == 1)){
+// // 		token = token->next;
+// // 	}
+// // 	token = token->next;
+// // 	ft_printf("%s\n", token->value);
+// // }
 
-	i = 0;
-	while (i < pipex->num_cmds - 1)
-	{
-		pipex->pipes[i] = malloc(sizeof(int) * 2);
-		if (pipe(pipex->pipes[i]) == -1)
-		{
-			perror("Pipe creation failed");
-			free_all(pipex);
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-	i = 0;
-	while (i < pipex->num_cmds)
-	{
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("Fork failed");
-			free_all(pipex);
-			exit(EXIT_FAILURE);
-		}
-		ft_printf("%s\n", minishell->command_exac[0]);
-		if (pid == 0)
-			execute_command(pipex, minishell, i, token);
-		if (i > 0)
-			close(pipex->pipes[i - 1][0]);
-		if (i < pipex->num_cmds - 1)
-			close(pipex->pipes[i][1]);
-		i++;
-	}
-	i = 0;
-	while (i < pipex->num_cmds)
-	{
-		wait(NULL);
-		i++;
-	}
-	i = 0;
-	while (i < pipex->num_cmds - 1)
-	{
-		free(pipex->pipes[i]);
-		i++;
-	}
-	free(pipex->pipes);
-}
+// void army_of_fork(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
+// {
+// 	int i;
+// 	pid_t pid;
+
+// 	find_the_path(ev, pipex);
+// 	split_the_path(pipex);
+// 	pipex->num_cmds = count_pipe(token);
+// 	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
+
+// 	i = 0;
+// 	while (i < pipex->num_cmds - 1)
+// 	{
+// 		pipex->pipes[i] = malloc(sizeof(int) * 2);
+// 		if (pipe(pipex->pipes[i]) == -1)
+// 		{
+// 			perror("Pipe creation failed");
+// 			free_all(pipex);
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		i++;
+// 	}
+// 	// while(token && ft_strcmp(token->value, "|") != 0)
+// 	// 	token = token->next;
+// 	i = 0;
+// 	while (i < pipex->num_cmds)
+// 	{
+// 		pid = fork();
+// 		if (pid == -1)
+// 		{
+// 			perror("Fork failed");
+// 			free_all(pipex);
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		if (pid == 0)
+// 		{
+// 			execute_command(pipex, i, token, minishell);
+// 		}
+// 		if (i > 0)
+// 			close(pipex->pipes[i - 1][0]);
+// 		if (i < pipex->num_cmds - 1)
+// 			close(pipex->pipes[i][1]);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < pipex->num_cmds)
+// 	{
+// 		wait(NULL);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < pipex->num_cmds - 1)
+// 	{
+// 		free(pipex->pipes[i]);
+// 		i++;
+// 	}
+// 	free(pipex->pipes);

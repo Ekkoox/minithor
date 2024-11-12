@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/08 16:16:26 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:08:14 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,10 @@ static int count_chef(char *mot)
 
 	i = 0;
 	c = 0;
+	chef = 0;
 	while(mot[i])
 	{
-		if ((mot[i] == 34 || mot[i] == 39) && (c == 0))
+		if ((mot[i] == '"' || mot[i] == '\'') && (c == 0))
 			chef = mot[i];
 		if (mot[i] == chef)
 			c++;

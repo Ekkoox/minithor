@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 17:12:30 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 21:35:59 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ enum			e_token
 	REDIRECTION,
 };
 
+typedef struct s_pid
+{
+	pid_t			pid_n;
+	struct s_pid	*next;
+}				t_pid;
+
 typedef struct s_env
 {
 	char			*type;
@@ -61,6 +67,7 @@ typedef struct s_minishell
 	// t_pipex			*pipex;
 	t_token			*token;
 	t_env			*env;
+	t_pid			*pid;
 }					t_minishell;
 
 typedef struct	s_historique
@@ -97,7 +104,7 @@ int					creat_the_prompt(char **ev,	t_pipex *pipex, t_token *token, t_minishell 
 
 // PIPE
 void				free_all(t_pipex *pipex);
-void				army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token);
+void				army_of_fork(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell);
 char				*get_the_command(t_pipex *pipex);
 char				**split_the_path(t_pipex *pipex);
 char				*find_the_path(char **ev, t_pipex *pipex);
