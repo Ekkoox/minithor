@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/08 15:46:43 by razouani         ###   ########.fr       */
-=======
-/*   Updated: 2024/11/08 17:12:49 by enschnei         ###   ########.fr       */
->>>>>>> origin/Enzo
+/*   Updated: 2024/11/08 17:36:53 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "minishell.h"

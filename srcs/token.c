@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/08 16:16:26 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:50:01 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,13 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	if (minishell->flag == 1){
+	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0)){
+		if (ft_strcmp(mot, ">") == 0)
+		return (creat_node("redirect output", token, mot, minishell), 0);
+	else if (ft_strcmp(mot, "<") == 0)
+		return (creat_node("redirect input", token, mot, minishell), 0);
+	}
+	else if (minishell->flag == 1){
 		if (ft_strcmp(mot, "|") == 0)
 			return (creat_node("pipe", token, mot, minishell), 0);
 		return(creat_node("argument", token, mot, minishell), 0);
@@ -97,10 +103,6 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 	// 	return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
-	else if (ft_strcmp(mot, ">") == 0)
-		return (creat_node("redirect output", token, mot, minishell), 0);
-	else if (ft_strcmp(mot, "<") == 0)
-		return (creat_node("redirect input", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "|") == 0)
 		return (creat_node("pipe", token, mot, minishell), 0);
 	else

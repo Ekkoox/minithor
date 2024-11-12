@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 16:42:01 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:08:08 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,15 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 	i = *index;
 	expand_plus(token, env, i, expand);
 }
-
+static void check_file(char *file, char *chevron)
+{
+	if (ft_strlen(chevron) == 1)
+		open(file, O_CREAT | O_WRONLY);
+	else
+		open(file, O_CREAT | O_APPEND);
+	
+	
+}
 
 void	check_token(t_token *token, t_env *env)
 {
@@ -77,19 +85,17 @@ void	check_token(t_token *token, t_env *env)
 	i = 0;
 	while(token->next)
 	{
-		if (ft_strcmp(token->type, "argument") == 0)
-		{
-			while(token->value[i])
-			{	
-				if(token->value[i] == '$')
-				{
+		if (ft_strcmp(token->type, "argument") == 0){
+			while(token->value[i]){	
+				if(token->value[i] == '$'){
 					i++;
 					expand_env(token, env, &i);
 				}
 				i++;
-			}
-				
+			}	
 		}
+		if (ft_strcmp(token->type, "redirect output") == 0)
+			check_file(token->next->value, token->type);
 		token = token->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 17:28:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/12 22:06:59 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,16 @@ static void error_execve(t_pipex *pipex)
 		
 // 	}
 // }
+// static void check_redeirection(t_token *token)
+// {
+// 	t_token *tmp;
+
+// 	tmp = token;
+// 	while(token->next)
+// 	{
+// 		token = token->next;
+// 	}
+// }
 
 static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_index,t_token *token)
 {
@@ -101,6 +111,8 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	//{
 		// minishell->command_exac = find_pipe(token);
 		//ft_printf("%s\n", minishell->command_exac[i]);
+		// if (check_redirection(token))
+		// 	dup2()
 		if (execve(path, minishell->command_exac + cmd_index, pipex->ev) == -1)
 			error_execve(pipex);
 	//}
@@ -138,7 +150,6 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 			free_all(pipex);
 			exit(EXIT_FAILURE);
 		}
-		ft_printf("%s\n", minishell->command_exac[0]);
 		if (pid == 0)
 			execute_command(pipex, minishell, i, token);
 		if (i > 0)
