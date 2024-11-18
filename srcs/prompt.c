@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/12 18:18:17 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:51:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,11 @@ static int	exit_prompt(char *buffer)
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
-	int j;
 	char **split_env;
 	t_env *env = minishell->env;
 	t_env *tmp;
 
 	i = 0;
-	j = 0;
 	env = ft_calloc(sizeof(t_env), 1);
 	tmp = env;
 	while(ev[i])
@@ -116,8 +114,8 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 			return (EXIT_FAILURE);
 		bytes_read = ft_strlen(buffer);
 		buffer[bytes_read] = '\0';
-		if (buffer[bytes_read - 1] == '\n')
-			buffer[bytes_read - 1] = '\0';
+		// if (bytes_read > 0 && buffer[bytes_read - 1] == '\n')
+		// 	buffer[bytes_read - 1] = '\0';
 		if (exit_prompt(buffer) == 0)
 			break ;
 		minishell->buffer = buffer;
@@ -125,16 +123,19 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		tokenisation(token, minishell, pipex);
 		check_token(token, minishell->env);
 		pipex->command_1 = token->value;
-		if (ft_strncmp(token->value, "echo", 4) == 0)
-			ft_echo(token);
-		else if (ft_strncmp(token->value, "cd", 2) == 0)
-			ft_cd(token, minishell->env);
-		else if (ft_strncmp(token->value, "pwd", 3) == 0)
-			ft_pwd(token);
-		else if (ft_strncmp(token->value, "env", 3) == 0)
-		 	ft_env(minishell);
-		else
-			army_of_fork(ev, pipex, token, minishell);
+		if (bytes_read > 0)
+		{
+			if (ft_strncmp(token->value, "echo", 4) == 0)
+				ft_echo(token);
+			else if (ft_strncmp(token->value, "cd", 2) == 0)
+				ft_cd(token, minishell->env);
+			else if (ft_strncmp(token->value, "pwd", 3) == 0)
+				ft_pwd(token);
+			else if (ft_strncmp(token->value, "env", 3) == 0)
+		 		ft_env(minishell);
+			else
+				army_of_fork(ev, pipex, minishell);
+		}
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);

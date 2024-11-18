@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/12 14:08:14 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:43:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,12 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	if (minishell->flag == 1){
+	if (minishell->flag == 1)
+	{
 		if (ft_strcmp(mot, "|") == 0)
 			return (creat_node("pipe", token, mot, minishell), 0);
 		return(creat_node("argument", token, mot, minishell), 0);
 	}
-	// if (chdir(mot) == 0)
-	// 	return (creat_node("dossier", token, mot, minishell), 0);
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, ">") == 0)
@@ -106,7 +105,6 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 	else
 		return(creat_node("trash", token, mot, minishell), 0);
 	return (1);
-	
 }
 
 static int count_chef(char *mot)
@@ -157,11 +155,9 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 	
 	int i;
 	char *in_cot;
-	int y;
 	int c;
 	
 	i = 0;
-	y = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
 	while(in_cot[i])
@@ -209,13 +205,11 @@ static void	put_in(t_token *token, t_minishell *minishell)
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int i;
-	int flag;
 	pipex->path = pipex->ev;
 	t_token *tmp;
 	
 	i = 0;
 	tmp = token;
-	flag = 0;
 	while(minishell->buffer[i])
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 16:10:41 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:42:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int main(int ac, char **av, char **ev)
 	(void) av;
 	t_pipex pipex;
 	t_token *token;
-	t_minishell minishell;
+	t_minishell *minishell;
 
 	token = ft_calloc(sizeof(t_token), 1);
+	minishell = ft_calloc(sizeof(t_minishell), 1);
 	pipex.ev = ev;
-	creat_the_prompt(ev, &pipex, token, &minishell);
+	creat_the_prompt(ev, &pipex, token, minishell);
 	return (EXIT_SUCCESS);
 }
 

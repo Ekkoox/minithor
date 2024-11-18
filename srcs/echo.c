@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/29 18:56:52 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:21:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ static int check_n(char *str)
 int ft_echo(t_token *token)
 {
     int flag;
-    int i;
 
     flag = 0;
-    i = 0;
     token = token->next;
     while(token->next && token->value[0] == '-' && check_n(token->value + 1))
     {
