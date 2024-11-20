@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/18 19:51:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/20 18:20:15 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,20 @@ static int	exit_prompt(char *buffer)
 // 	return (env);
 // }
 
+static void free_env_list(t_env *env) 
+{
+    t_env *tmp;
+
+    while (env) 
+	{
+        tmp = env->next;
+        free(env->type);
+        free(env->value);
+        free(env);
+        env = tmp;
+    }
+}
+
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
@@ -81,15 +95,23 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 
 	i = 0;
 	env = ft_calloc(sizeof(t_env), 1);
+	if (!env)
+		return (NULL);
 	tmp = env;
 	while(ev[i])
 	{
 		split_env = ft_split_env(ev[i], '=');
 		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[0]));
+		if (!env->type)
+			return (NULL);
 		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[1]));
+		if (!env->type)
+			return (NULL);
 		env->type = split_env[0];
 		env->value = split_env[1];
 		env->next = ft_calloc(sizeof(t_env), 1);
+		if (!env->next)
+			return (NULL);
 		env = env->next;
 		i++;
 	}
@@ -139,9 +161,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
+	free_env_list(minishell->env);
 	free(buffer);
 	return (EXIT_SUCCESS);
 }
-
-
-//

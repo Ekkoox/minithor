@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:16:19 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/06 18:38:51 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:21:07 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**ft_split_env(char const *s, char c)
 
 	i = 0;
 	j = 0;
-	tab = malloc(sizeof(char *) * 3);
+	tab = malloc(sizeof(char *) * 3); // hardcode ?
 	if (!tab || !s)
 		return (free(tab), NULL);
 	if (s[i] != '\0')
