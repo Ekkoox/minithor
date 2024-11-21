@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/14 18:06:12 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:32:31 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -90,6 +91,9 @@ typedef struct s_pipex {
 	pid_t			pid;
 }					t_pipex;
 
+//HEREDOC
+int 				heredoc(t_token *token);
+
 //UTILS
 char				**ft_split_env(char const *s, char c);
 
@@ -100,6 +104,8 @@ int					ft_env(t_minishell *minishell);
 int					ft_echo(t_token *token);
 
 // PROMPT
+int					exit_prompt(char *buffer);
+int					error_prompt(char *buffer, ssize_t bytes_read);
 int					creat_the_prompt(char **ev,	t_pipex *pipex, t_token *token, t_minishell *minishell);
 
 // PIPE
@@ -111,10 +117,10 @@ char				*find_the_path(char **ev, t_pipex *pipex);
 char				*search_the_path(t_pipex *pipex, char *command);
 
 // TOKEN
+void				check_token(t_token *token, t_env *env);
 int					tokenisation(t_token *token, t_minishell *minishell,
 						t_pipex *pipex);
 int					search_command_for_token(t_pipex *pipex, char *mot);
-void				check_token(t_token *token, t_env *env);
 
 
 #endif

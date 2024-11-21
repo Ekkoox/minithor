@@ -6,14 +6,14 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/20 18:20:15 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:36:16 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
-static int	error_prompt(char *buffer, ssize_t bytes_read)
+int	error_prompt(char *buffer, ssize_t bytes_read)
 {
 	if (!buffer)
 	{
@@ -23,13 +23,12 @@ static int	error_prompt(char *buffer, ssize_t bytes_read)
 	if (bytes_read < 0)
 	{
 		perror("Error reading input");
-		free(buffer);
 		exit(EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int	exit_prompt(char *buffer)
+int	exit_prompt(char *buffer)
 {
 	if (ft_strcmp(buffer, "exit") == 0)
 	{
@@ -38,39 +37,6 @@ static int	exit_prompt(char *buffer)
 	}
 	return (EXIT_FAILURE);
 }
-
-// int	creat_the_prompt(int ac, char **av, char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell, t_historique *historique)
-// static void is_buiting(t_token *token)
-// {
-// 	if (ft_strncmp(token->value, "echo", 4) == 0)
-// 		ft_echo(token);
-// 	else if (ft_strncmp(token->value, "cd", 2) == 0)
-// 		ft_cd(token);
-// 	else if (ft_strncmp(token->value, "pwd", 3) == 0)
-// 		ft_pwd(token);
-// 	else if (ft_strncmp(token->value, "env", 3) == 0)
-// 		ft_env(token);
-// }
-
-// static char *join_ev(char **ev)
-// {
-// 	char *env;
-// 	int j;
-// 	int i;
-
-// 	i = 0;
-// 	j = 0;
-// 	while(ev[i])
-// 	{
-// 		env = ft_strjoin(env, ev[i]);
-// 		while(env[j])
-// 			j++;
-// 		env[j] = ' ';
-// 		i++;
-// 	}
-// 	env[j] = '\0';
-// 	return (env);
-// }
 
 static void free_env_list(t_env *env) 
 {
@@ -85,6 +51,7 @@ static void free_env_list(t_env *env)
         env = tmp;
     }
 }
+
 
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
@@ -119,16 +86,24 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 	return (env);
 }
 
+static void handle_sigint(int sig)
+{
+    (void)sig;
+
+	ft_printf("\n");
+    rl_replace_line("", 0);
+    rl_on_new_line();
+    rl_redisplay();
+}
+
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
 
 	bytes_read = 0;	
-	buffer = (char *)ft_calloc(sizeof(char), BUFFER_SIZE);
-	if (!buffer)
-		error_prompt(buffer, bytes_read);
 	minishell->env = creat_env_list(ev, minishell);
+	signal(SIGINT, handle_sigint);
 	while(1)
 	{
 		buffer = readline(">");
@@ -136,8 +111,6 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 			return (EXIT_FAILURE);
 		bytes_read = ft_strlen(buffer);
 		buffer[bytes_read] = '\0';
-		// if (bytes_read > 0 && buffer[bytes_read - 1] == '\n')
-		// 	buffer[bytes_read - 1] = '\0';
 		if (exit_prompt(buffer) == 0)
 			break ;
 		minishell->buffer = buffer;
@@ -155,13 +128,15 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 				ft_pwd(token);
 			else if (ft_strncmp(token->value, "env", 3) == 0)
 		 		ft_env(minishell);
+			else if (ft_strcmp(token->value, "<<") == 0)
+				heredoc(token);
 			else
 				army_of_fork(ev, pipex, minishell);
 		}
+		free(buffer);
 	}
 	if (bytes_read < 0)
 		error_prompt(buffer, bytes_read);
 	free_env_list(minishell->env);
-	free(buffer);
 	return (EXIT_SUCCESS);
 }

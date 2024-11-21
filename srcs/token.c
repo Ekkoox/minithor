@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/18 17:43:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:02:41 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	creat_node(char *type, t_token *token, char *value, t_minishell *min
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
-static void		clear_cot(char *buffer, char *dest, int *index, int start, int *index_dest)
+static void	clear_cot(char *buffer, char *dest, int *index, int start, int *index_dest)
 {
 	int i;
 
@@ -138,6 +138,8 @@ static char *dans_cot(char *mot, int chef)
 	y = 0;
 	cot = mot[i];
 	clear_mot = ft_calloc(sizeof(char), (ft_strlen(mot) - chef) + 1);
+	if (!clear_mot)
+		return (NULL);
 	while(mot[i])
 	{
 		if (mot[i] == cot)
