@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/21 17:32:31 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:59:51 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_pipex {
 int 				heredoc(t_token *token);
 
 //UTILS
+void 				handle_sigint(int sig);
 char				**ft_split_env(char const *s, char c);
 
 // FONCTION

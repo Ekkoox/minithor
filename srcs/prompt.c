@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/21 18:36:16 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:41:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 	return (env);
 }
 
-static void handle_sigint(int sig)
+void handle_sigint(int sig)
 {
     (void)sig;
 
-	ft_printf("\n");
     rl_replace_line("", 0);
     rl_on_new_line();
+	ft_printf("\n");
     rl_redisplay();
 }
 
@@ -108,7 +108,10 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 	{
 		buffer = readline(">");
 		if (!buffer)
+		{
+			ft_printf("exit\n");
 			return (EXIT_FAILURE);
+		}
 		bytes_read = ft_strlen(buffer);
 		buffer[bytes_read] = '\0';
 		if (exit_prompt(buffer) == 0)
