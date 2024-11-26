@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/13 18:21:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/26 17:47:44 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,32 @@ static int check_n(char *str)
 		return (EXIT_FAILURE);
 	while (str[i])
 	{
-		if (str[i])
+		if (str[i] != 'n')
 			return (EXIT_FAILURE);
+        i++;
 	}
 	return (EXIT_SUCCESS);
 }
-int ft_echo(t_token *token)
-{
-    int flag;
 
-    flag = 0;
+int	ft_echo(t_token *token)
+{
+	int flag;
+
+	flag = 0;
     token = token->next;
-    while(token->next && token->value[0] == '-' && check_n(token->value + 1))
-    {
-        flag = 1;
+	while (token->value && token->value[0] == '-' && check_n(token->value + 1))
+	{
+		flag = 1;
+		token = token->next;
+	}
+	while (token->next)
+	{
+		ft_printf("%s", token->value);
+		if (token->next->value)
+			ft_printf(" ");
         token = token->next;
-    }
-    while(token->next)
-    {
-        ft_printf("%s", token->value);
-        token = token->next;
-    }
-    if (!flag)
-        ft_printf("\n");
-    return (EXIT_SUCCESS);
+	}
+	if (!flag)
+		ft_printf("\n");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/25 18:02:24 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:12:58 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int heredoc(t_token *token)
         exit (EXIT_SUCCESS);
     }
     wait(NULL);
+    signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
     return (EXIT_SUCCESS);
 }
