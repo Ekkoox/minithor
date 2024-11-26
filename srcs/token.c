@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/12 16:50:01 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/26 01:42:45 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ static void		clear_cot(char *buffer, char *dest, int *index, int start, int *ind
 	int i;
 
 	i = 0;
-	if (start == *index)
-	{
+	if (start == *index){
 		*index += 1;
 		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
 		{
@@ -40,8 +39,7 @@ static void		clear_cot(char *buffer, char *dest, int *index, int start, int *ind
 		i--;
 		dest[i] = '\0';
 	}
-	else	
-	{
+	else	{
 		while((buffer[*index] != 34) || (buffer[*index] != 39 && buffer[*index]))
 		{
 			dest[*index_dest] = buffer[*index];
@@ -69,11 +67,9 @@ static void grap_mot(t_minishell *minishell, int *index)
 	if (len <= 0)
 		return;
 	minishell->current = ft_calloc(sizeof(char), len + 1);
-	while (*index < i && minishell->buffer[*index])
-	{
+	while (*index < i && minishell->buffer[*index]){
 		minishell->current[j] = minishell->buffer[*index];
-		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
-		{
+		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39){
 			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
 			return;
 		}
@@ -158,11 +154,11 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 	
 	int i;
 	char *in_cot;
-	int y;
+	//int y;
 	int c;
 	
 	i = 0;
-	y = 0;
+	//y = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
 	while(in_cot[i])

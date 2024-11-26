@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/08 17:36:53 by razouani         ###   ########.fr       */
+/*   Updated: 2024/11/19 07:02:00 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ static int	exit_prompt(char *buffer)
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
-	int j;
+	//int j;
 	char **split_env;
 	t_env *env = minishell->env;
 	t_env *tmp;
 
 	i = 0;
-	j = 0;
+	//j = 0;
 	env = ft_calloc(sizeof(t_env), 1);
 	tmp = env;
 	while(ev[i])

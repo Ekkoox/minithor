@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/10/24 17:40:31 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/11/19 07:02:37 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,11 @@ static int get_the_command_for_the_token(t_pipex *pipex)
 
 int	search_command_for_token(t_pipex *pipex, char *mot)
 {
-	char **split;
+	//char **split;
 
 	pipex->command_1 = mot;
-	split = ft_split(pipex->command_1, '0');
+	// split = ft_split(pipex->command_1, '0');
+	ft_split(pipex->command_1, '0');
 	find_the_path_for_token(pipex);
 	split_the_path_for_the_token(pipex);
 	if (get_the_command_for_the_token(pipex) == 0)
