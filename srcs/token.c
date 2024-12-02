@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/26 01:42:45 by roane            ###   ########.fr       */
+/*   Updated: 2024/11/30 06:10:27 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,26 @@ static void		clear_cot(char *buffer, char *dest, int *index, int start, int *ind
 	return;
 }
 
+static int is_space(char c)
+{
+	if (c == ' ')
+		return(0);
+	else if(c == '|')
+		return(0);
+	else if(c == '<')
+		return(0);
+	else if (c == '>')
+		return(0);
+	return(1);
+}
+
+static void cas_spe(t_minishell *minishell, int *index)
+{
+	minishell->current = ft_calloc(sizeof(char), 2);
+	minishell->current[0] = minishell->buffer[*index];
+	minishell->current[1] = '\0';
+}
+
 static void grap_mot(t_minishell *minishell, int *index)
 {
 	int i;
@@ -61,7 +81,11 @@ static void grap_mot(t_minishell *minishell, int *index)
 	i = *index;
 	y = *index;
 	j = 0;
-	while(minishell->buffer[i] != ' ' && minishell->buffer[i] != '\t' && minishell->buffer[i])
+	if(is_space(minishell->buffer[i]) == 0){
+		cas_spe(minishell, index);
+		*index += 1;
+		return;}
+	while((is_space(minishell->buffer[i]) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
 	if (len <= 0)
@@ -71,13 +95,10 @@ static void grap_mot(t_minishell *minishell, int *index)
 		minishell->current[j] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39){
 			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
-			return;
-		}
+			return;}
 		j++;
-		*index += 1;
-	}
+		*index += 1;}
 	minishell->current[*index] = '\0';
-	return;
 }
 
 
@@ -206,13 +227,13 @@ static void	put_in(t_token *token, t_minishell *minishell)
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int i;
-	int flag;
+	//int flag;
 	pipex->path = pipex->ev;
 	t_token *tmp;
 	
 	i = 0;
 	tmp = token;
-	flag = 0;
+	//flag = 0;
 	while(minishell->buffer[i])
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
@@ -222,9 +243,11 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type: %s\n", token->type);
-		// ft_printf("le value: %s\n", token->value);
+		// ft_printf("le type: ||%s||\n", token->type);
+		// ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
+		while(minishell->buffer[i] == ' ')
+			i++;
 	}
 	token = tmp;
 	put_in(token, minishell);	

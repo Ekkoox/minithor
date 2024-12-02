@@ -1,7 +1,8 @@
+Makefile
 caca.txt
 includes
 lib
-Makefile
 minishell
+minishell.dSYM
 rl.supp
 srcs

@@ -6,11 +6,25 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/26 01:38:05 by roane            ###   ########.fr       */
+/*   Updated: 2024/11/30 04:17:21 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static char *dup_spe(char *str)
+// {
+// 	int i;
+// 	char *res;
+
+// 	i = 0;
+// 	res = ft_calloc(sizeof(char), ft_strlen(str) + 1);
+// 	while(str[i])
+// 	{
+// 		while()
+// 		i++;
+// 	}
+// }
 
 
 static void error_execve(t_pipex *pipex)
@@ -119,8 +133,10 @@ static char **creat_tab_command(t_token *token, int command_n)
 		if (i == 0){
 			res[i] = ft_strdup(token->value);
 		}
-		else if ((ft_strcmp(token->type, "pipe") == 0) && i != 0)
+		else if ((ft_strcmp(token->type, "pipe") == 0) && i != 0){
 			res[i] = ft_strdup(token->next->value);
+			token = token->next;
+		}
 		i++;
 		token = token->next;
 	}
@@ -132,8 +148,10 @@ static char **creat_tab_command(t_token *token, int command_n)
 static int count_command(t_token *token)
 {
 	int i;
+	t_token *tmp;
 
 	i = 0;
+	tmp = token;
 	while(token->next)
 	{
 		if (i == 0)
@@ -143,6 +161,7 @@ static int count_command(t_token *token)
 				i++;
 		token = token->next;
 	}
+	token = tmp;
 	return(i);
 }
 
@@ -156,6 +175,10 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 	pipex->num_cmds = count_command(token);
 	creat_pipelin(pipex, token);
 	char **command = creat_tab_command(token, pipex->num_cmds);
+	// ft_printf("%s\n", command[0]);
+	// ft_printf("%s\n", command[1]);
+	// ft_printf("%s\n", command[2]);
+	// ft_printf("%s\n", command[3]);
 	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
 	int c = -1;
 
@@ -182,8 +205,10 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 			free_all(pipex);
 			exit(EXIT_FAILURE);
 		}
-		if (pid == 0)
+		if (pid == 0){
+			//ft_printf("%s|||\n", command[c]);
 			execute_command(pipex, minishell, i, token, command[c]);
+		}
 		if (i > 0)
 			close(pipex->pipes[i - 1][0]);
 		if (i < pipex->num_cmds - 1)
