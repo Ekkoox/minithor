@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:10:14 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:19:06 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
+		ft_printf("%s\n", token->value);
 		check_token(token, minishell->env);
-		//ft_printf("%s\n", token->next->value);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
@@ -137,7 +137,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 			else if (ft_strcmp(token->value, "<<") == 0)
 				heredoc(token);
 			else
-				army_of_fork(ev, pipex, minishell);
+				army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
 	}

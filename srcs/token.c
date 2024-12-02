@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/02 16:11:11 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:22:09 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,20 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 	return;
 }
 
-static int is_space(char c)
+static int is_space(char *str, int *index)
 {
-	if (c == ' ')
+	int i;
+
+	i = *index;
+	if (str[i] == ' ')
 		return(0);
-	else if(c == '|')
+	else if(str[i] == '|')
 		return(0);
-	else if(c == '<')
-		return(0);
-	else if (c == '>')
+	else if(str[i] == '<'){
+		if (str[i + 1] == '<')
+			return (-1);
+		return(0);}
+	else if (str[i] == '>')
 		return(0);
 	return(1);
 }
@@ -81,11 +86,15 @@ static void grap_mot(t_minishell *minishell, int *index)
 	i = *index;
 	y = *index;
 	j = 0;
-	if(is_space(minishell->buffer[i]) == 0){
+	if (is_space(minishell->buffer, index) == -1)
+	{
+		
+	}
+	if(is_space(minishell->buffer, index) == 0){
 		cas_spe(minishell, index);
 		*index += 1;
 		return;}
-	while((is_space(minishell->buffer[i]) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
+	while((is_space(minishell->buffer, index) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
 	if (len <= 0)
@@ -233,6 +242,11 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	tmp = token;
 	while(minishell->buffer[i])
 	{
+		if (minishell->buffer[i] == '<' && i == 0)
+			if(minishell->buffer[i] == '<'){
+				get_type("<<", token, pipex, minishell);
+				i += 2;
+			}
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
 		grap_mot(minishell, &i);

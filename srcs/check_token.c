@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/12 17:08:08 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:38:05 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@ static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
 	int j;
 	int y;
 
-	len = 0;
 	i = 0;
 	y = 0;
 	j = 0;
+	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
 	dup_value = ft_strdup(token->value);
 	while(env->next && (ft_strcmp(env->type, expand)))
 		env = env->next;
-	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
 	free(token->value);
 	token->value = ft_calloc(sizeof(char), len + 1);
 	//ft_printf("||%s||\n", dup_value);
@@ -74,8 +73,6 @@ static void check_file(char *file, char *chevron)
 		open(file, O_CREAT | O_WRONLY);
 	else
 		open(file, O_CREAT | O_APPEND);
-	
-	
 }
 
 void	check_token(t_token *token, t_env *env)

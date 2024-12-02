@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:09:27 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:28:02 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,28 +165,32 @@ static int count_command(t_token *token)
 	return(i);
 }
 
-void	army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell)
+
+void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token)
 {
-	int	id_fork;
+	int i;
+	pid_t pid;
 
 	find_the_path(ev, pipex);
 	split_the_path(pipex);
 	pipex->num_cmds = count_command(token);
 	creat_pipelin(pipex, token);
 	char **command = creat_tab_command(token, pipex->num_cmds);
-	// ft_printf("%s\n", command[0]);
-	// ft_printf("%s\n", command[1]);
-	// ft_printf("%s\n", command[2]);
-	// ft_printf("%s\n", command[3]);
+
 	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
 	int c = -1;
 
 	i = 0;
 	while (i < pipex->num_cmds - 1)
 	{
-		ft_printf("Error with the fork\n");
-		free_all(pipex);
-		// exit(EXIT_FAILURE);
+		pipex->pipes[i] = malloc(sizeof(int) * 2);
+		if (pipe(pipex->pipes[i]) == -1)
+		{
+			perror("Pipe creation failed");
+			free_all(pipex);
+			exit(EXIT_FAILURE);
+		}
+		i++;
 	}
 	i = 0;
 	while (i < pipex->num_cmds)
@@ -223,12 +227,3 @@ void	army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell)
 	}
 	free(pipex->pipes);
 }
-
-//!!!regarde pour les cas comme celui la " ls | " dans le bash ca ouvre comme un heardoc dans le miens ca casse tout
-//regarde aussi pour ce cas la "ls|pwd" tout coller c'est senser fonctionner pas ici
-//regarde aussi celui la "ls " une commande suivi d'un espace ne fonctionne pas je pense a cause des strdup qui duplique avec les espace
-
-//solution
-//1: tu peux fermer tout le programme si il y a rien juste apres a pipe mais un peu barbar sinon pas d'idee pour lui
-//2: dans la token on peut faire en sorte de compte comme des espace les pipe. "a dester"
-//3: faire un strdup modifier qui suprime les espace dans toute la string a copier mais l'implementer au copie de commande uniquement ou alors un stdup qui suprime espace avamt et apres uniquement.

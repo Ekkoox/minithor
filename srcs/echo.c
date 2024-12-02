@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:09:44 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:31:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int	ft_echo(t_token *token)
 	}
 	if (!flag)
 		ft_printf("\n");
-	return (0);
+	return (EXIT_SUCCESS);
 }
