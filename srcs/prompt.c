@@ -6,9 +6,10 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/26 17:13:29 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:10:14 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "minishell.h"
@@ -121,6 +122,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
 		check_token(token, minishell->env);
+		//ft_printf("%s\n", token->next->value);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/11/21 17:02:41 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:11:11 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 	int i;
 
 	i = 0;
-	if (start == *index)
-	{
+	if (start == *index){
 		*index += 1;
 		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
 		{
@@ -40,8 +39,7 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 		i--;
 		dest[i] = '\0';
 	}
-	else	
-	{
+	else	{
 		while((buffer[*index] != 34) || (buffer[*index] != 39 && buffer[*index]))
 		{
 			dest[*index_dest] = buffer[*index];
@@ -51,6 +49,26 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 		buffer[*index] = '\0';
 	}
 	return;
+}
+
+static int is_space(char c)
+{
+	if (c == ' ')
+		return(0);
+	else if(c == '|')
+		return(0);
+	else if(c == '<')
+		return(0);
+	else if (c == '>')
+		return(0);
+	return(1);
+}
+
+static void cas_spe(t_minishell *minishell, int *index)
+{
+	minishell->current = ft_calloc(sizeof(char), 2);
+	minishell->current[0] = minishell->buffer[*index];
+	minishell->current[1] = '\0';
 }
 
 static void grap_mot(t_minishell *minishell, int *index)
@@ -63,43 +81,44 @@ static void grap_mot(t_minishell *minishell, int *index)
 	i = *index;
 	y = *index;
 	j = 0;
-	while(minishell->buffer[i] != ' ' && minishell->buffer[i] != '\t' && minishell->buffer[i])
+	if(is_space(minishell->buffer[i]) == 0){
+		cas_spe(minishell, index);
+		*index += 1;
+		return;}
+	while((is_space(minishell->buffer[i]) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
 	if (len <= 0)
 		return;
 	minishell->current = ft_calloc(sizeof(char), len + 1);
-	while (*index < i && minishell->buffer[*index])
-	{
+	while (*index < i && minishell->buffer[*index]){
 		minishell->current[j] = minishell->buffer[*index];
-		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
-		{
+		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39){
 			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
-			return;
-		}
+			return;}
 		j++;
-		*index += 1;
-	}
+		*index += 1;}
 	minishell->current[*index] = '\0';
-	return;
 }
 
 
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
-	if (minishell->flag == 1)
+	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
 	{
+		if (ft_strcmp(mot, ">") == 0)
+		return (creat_node("redirect output", token, mot, minishell), 0);
+	else if (ft_strcmp(mot, "<") == 0)
+		return (creat_node("redirect input", token, mot, minishell), 0);
+	}
+	else if (minishell->flag == 1){
 		if (ft_strcmp(mot, "|") == 0)
 			return (creat_node("pipe", token, mot, minishell), 0);
 		return(creat_node("argument", token, mot, minishell), 0);
 	}
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
-	else if (ft_strcmp(mot, ">") == 0)
-		return (creat_node("redirect output", token, mot, minishell), 0);
-	else if (ft_strcmp(mot, "<") == 0)
-		return (creat_node("redirect input", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "|") == 0)
 		return (creat_node("pipe", token, mot, minishell), 0);
 	else
@@ -221,9 +240,11 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type: %s\n", token->type);
-		// ft_printf("le value: %s\n", token->value);
+		// ft_printf("le type: ||%s||\n", token->type);
+		// ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
+		while(minishell->buffer[i] == ' ')
+			i++;
 	}
 	token = tmp;
 	put_in(token, minishell);	
