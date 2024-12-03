@@ -1,7 +1,0 @@
-caca.txt
-includes
-lib
-Makefile
-minishell
-rl.supp
-srcs
