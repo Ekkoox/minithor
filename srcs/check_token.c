@@ -3,33 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:38:05 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:43:08 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
+static void dup_value_expand(char *dup_value, t_token *token, t_env *env, int index)
 {
-	int len;
 	int i;
-	char *dup_value;
-	int j;
 	int y;
+	int j;
 
-	i = 0;
 	y = 0;
+	i = 0;
 	j = 0;
-	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
-	dup_value = ft_strdup(token->value);
-	while(env->next && (ft_strcmp(env->type, expand)))
-		env = env->next;
-	free(token->value);
-	token->value = ft_calloc(sizeof(char), len + 1);
-	//ft_printf("||%s||\n", dup_value);
 	while(dup_value[y])
 	{
 		if (dup_value[y] == '$')
@@ -50,13 +41,61 @@ static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
 	token->value[i] = '\0';
 }
 
+static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
+{
+	int len;
+	char *dup_value;
+
+	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
+	dup_value = ft_strdup(token->value);
+	while(env->next && (ft_strcmp(env->type, expand)))
+		env = env->next;
+	free(token->value);
+	token->value = ft_calloc(sizeof(char), len + 1);
+	if(token->value == NULL)
+		return;
+	dup_value_expand(dup_value, token, env, index);
+}
+
+static int find_on_env(t_token *token, int index, t_env *env)
+{
+	char sup_exp;
+	int i;
+	int len;
+
+	i = index;
+	while(token->value[i] != ' ' && token->value[i])
+		i++;
+	len = (i - index);
+	sup_exp = ft_calloc(sizeof(char), ((i - index) + 1));
+	if (len <= 0 || !sup_exp)
+	while(index < i)
+	{
+		
+		index++;
+	}
+	while((ft_strcmp(sup_exp, env->type) == 0) && env->next)
+	{
+		if (ft_strcmp(sup_exp, env->type) == 1)
+			return()
+		env = env->next;
+	}
+		
+}
+
 static void	expand_env(t_token *token, t_env *env, int *index)
 {
 	char *expand;
 	int i;
+	int len;
 
 	i = 0;
-	expand = ft_calloc(sizeof(char), 256);
+	len = find_on_env(token, *index, env);
+	if(len == 0)
+	{
+		
+	}
+	expand = ft_calloc(sizeof(char), );
 	while(token->value[*index] != ' ' && token->value[*index])
 	{
 		expand[i] = token->value[*index];
@@ -67,6 +106,8 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 	i = *index;
 	expand_plus(token, env, i, expand);
 }
+
+
 static void check_file(char *file, char *chevron)
 {
 	if (ft_strlen(chevron) == 1)

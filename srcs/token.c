@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/03 17:34:35 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:47:07 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,26 @@ static int	is_space(char *str, int *index)
 	return (1);
 }
 
-static void	cas_spe(t_minishell *minishell, int *index)
+static void cas_spe(t_minishell *minishell, int *index, int flag)
 {
-	minishell->current = ft_calloc(sizeof(char), 2);
-	minishell->current[0] = minishell->buffer[*index];
-	minishell->current[1] = '\0';
+	int j;
+
+	j = 0;
+	if(flag == 1){
+		minishell->current = ft_calloc(sizeof(char), 2);
+		minishell->current[0] = minishell->buffer[*index];
+		minishell->current[1] = '\0';
+		*index +=1;
+		return;
+	}
+	else if (flag == 2){
+		minishell->current = ft_calloc(sizeof(char), 3);
+		while(j < 2){
+			minishell->current[j] = minishell->buffer[*index];
+			*index += 1;
+			j++;}
+		return;
+	}
 }
 
 static void	grap_mot(t_minishell *minishell, int *index)
@@ -96,37 +111,30 @@ static void	grap_mot(t_minishell *minishell, int *index)
 	j = 0;
 	if (is_space(minishell->buffer, &i) == -1)
 	{
-		while (j < 2)
-		{
-			minishell->current[j] = minishell->buffer[i];
-			i++;
-			j++;
-		}
-		*index += 2;
-		return ;
+		cas_spe(minishell, index, 2);
+		return;
 	}
-	if (is_space(minishell->buffer, &i) == 0)
+	if(is_space(minishell->buffer, &i) == 0)
 	{
-		cas_spe(minishell, index);
-		*index += 1;
-		return ;
+		cas_spe(minishell, index, 1);
+		return;
 	}
-	while ((is_space(minishell->buffer, &i) == 1)
-		&& minishell->buffer[i] != '\t' && minishell->buffer[i])
+	while((is_space(minishell->buffer, &i) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
 	if (len <= 0)
 		return ;
 	minishell->current = ft_calloc(sizeof(char), len + 1);
+	if (!minishell->current)
+		return ;
 	while (*index < i && minishell->buffer[*index])
 	{
-		minishell->current[j] = minishell->buffer[*index];
+		minishell->current[j++] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
 		{
-			clear_cot(minishell->buffer, minishell->current, index, y, &j);
-			return ;
+			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
+			return;
 		}
-		j++;
 		*index += 1;
 	}
 	minishell->current[*index] = '\0';
@@ -265,14 +273,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	tmp = token;
 	while (minishell->buffer[i])
 	{
-		if (minishell->buffer[i] == '<' && i == 0)
-			if (minishell->buffer[i] == '<')
-			{
-				get_type("<<", token, pipex, minishell);
-				i += 2;
-			}
-		while ((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t')
-			&& (minishell->buffer[i]))
+		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
