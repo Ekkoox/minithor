@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/03 15:21:50 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:05:38 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,8 +271,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		ft_printf("le type: ||%s||\n", token->type);
-		ft_printf("le value: ||%s||\n", token->value);
+		// ft_printf("le type: ||%s||\n", token->type);
+		// ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
 		while(minishell->buffer[i] == ' ')
 			i++;

@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/03 17:43:08 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:56:40 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,50 @@ static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
 
 static int find_on_env(t_token *token, int index, t_env *env)
 {
-	char sup_exp;
+	char *sup_exp;
 	int i;
-	int len;
+	int j;
 
 	i = index;
+	j = 0;
 	while(token->value[i] != ' ' && token->value[i])
 		i++;
-	len = (i - index);
 	sup_exp = ft_calloc(sizeof(char), ((i - index) + 1));
-	if (len <= 0 || !sup_exp)
+	if (!sup_exp)
+		return (0);
 	while(index < i)
 	{
-		
+		sup_exp[j] = token->value[index];
 		index++;
+		j++;
 	}
-	while((ft_strcmp(sup_exp, env->type) == 0) && env->next)
+	while(env->next)
 	{
-		if (ft_strcmp(sup_exp, env->type) == 1)
-			return()
+		if (ft_strcmp(sup_exp, env->type) == 0)
+			return(ft_strlen(sup_exp));
 		env = env->next;
 	}
-		
+	return(0);	
+}
+
+static void get_line(t_token *token)
+{
+	int i;
+	char *str;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(token->value[i] && token->value[i] != '$')
+		i++;
+	str = ft_calloc(sizeof(char), i + 1);
+	while(j < i)
+	{
+		str[j] = token->value[j];
+		j++;
+	}
+	free(token->value);
+	token->value = ft_strdup(str);
 }
 
 static void	expand_env(t_token *token, t_env *env, int *index)
@@ -88,14 +110,18 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 	char *expand;
 	int i;
 	int len;
+	t_env *tmp;
 
 	i = 0;
+	tmp = env;
 	len = find_on_env(token, *index, env);
+	env = tmp;
 	if(len == 0)
 	{
-		
+		get_line(token);
+		return;
 	}
-	expand = ft_calloc(sizeof(char), );
+	expand = ft_calloc(sizeof(char), len + 1);
 	while(token->value[*index] != ' ' && token->value[*index])
 	{
 		expand[i] = token->value[*index];
