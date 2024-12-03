@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/26 17:12:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:43:37 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static int creat_the_heredoc(t_token *token)
 {
     char *buffer;
     int fd;
-    ssize_t bytes_read;
+    //ssize_t bytes_read;
     
-    bytes_read = 0;
+    //bytes_read = 0;
     fd = open("Tmp_file", O_RDWR | O_TRUNC | O_CREAT, 0644);
     if (!fd)
         return (EXIT_FAILURE);

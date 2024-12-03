@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/02 17:22:09 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:56:57 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,20 @@ static void grap_mot(t_minishell *minishell, int *index)
 	i = *index;
 	y = *index;
 	j = 0;
-	if (is_space(minishell->buffer, index) == -1)
+	if (is_space(minishell->buffer, &i) == -1)
 	{
-		
+		while(j < 2){
+			minishell->current[j] = minishell->buffer[i];
+			i++;
+			j++;}
+		*index += 2;
+		return;
 	}
-	if(is_space(minishell->buffer, index) == 0){
+	if(is_space(minishell->buffer, &i) == 0){
 		cas_spe(minishell, index);
 		*index += 1;
 		return;}
-	while((is_space(minishell->buffer, index) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
+	while((is_space(minishell->buffer, &i) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
 	if (len <= 0)
@@ -254,8 +259,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type: ||%s||\n", token->type);
-		// ft_printf("le value: ||%s||\n", token->value);
+		ft_printf("le type: ||%s||\n", token->type);
+		ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
 		while(minishell->buffer[i] == ' ')
 			i++;

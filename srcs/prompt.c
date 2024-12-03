@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 17:19:06 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:57:08 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void handle_sigint(int sig)
 {
     (void)sig;
 
-    rl_replace_line("", 0);
+    //rl_replace_line("", 0);
     rl_on_new_line();
 	ft_printf("\n");
     rl_redisplay();
@@ -121,7 +121,6 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
-		ft_printf("%s\n", token->value);
 		check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
