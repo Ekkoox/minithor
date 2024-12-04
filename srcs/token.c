@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/03 18:05:38 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:17:06 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,37 +56,59 @@ static int is_space(char *str, int *index)
 	int i;
 
 	i = *index;
+	
 	if (str[i] == ' ')
 		return(0);
 	else if(str[i] == '|')
 		return(0);
-	else if(str[i] == '<'){
+	else if(str[i] == '<')
+	{
 		if (str[i + 1] == '<')
 			return (-1);
-		return(0);}
+		return(0);
+	}
 	else if (str[i] == '>')
 		return(0);
 	return(1);
 }
 
+static int get_line(t_minishell *minishell, int *index)
+{
+	int i;
+
+	i = *index;
+	
+	while(((minishell->buffer[i] == '<') || (minishell->buffer[i] == ' ')) && (minishell->buffer[i]))
+		i++;
+	while((minishell->buffer[i] != ' ') && (minishell->buffer[i]))
+		i++;
+	return(i - *index);
+}
+
 static void cas_spe(t_minishell *minishell, int *index, int flag)
 {
 	int j;
+	int len;
 
 	j = 0;
-	if(flag == 1){
+	if(flag == 1)
+	{
 		minishell->current = ft_calloc(sizeof(char), 2);
 		minishell->current[0] = minishell->buffer[*index];
 		minishell->current[1] = '\0';
 		*index +=1;
 		return;
 	}
-	else if (flag == 2){
-		minishell->current = ft_calloc(sizeof(char), 3);
-		while(j < 2){
+	else if (flag == 2)
+	{
+		len = get_line(minishell, index);
+		minishell->current = ft_calloc(sizeof(char), len+ 1);
+		while(j < len)
+		{
 			minishell->current[j] = minishell->buffer[*index];
 			*index += 1;
-			j++;}
+			j++;
+		}
 		return;
 	}
 }
@@ -102,15 +124,9 @@ static void grap_mot(t_minishell *minishell, int *index)
 	y = *index;
 	j = 0;
 	if (is_space(minishell->buffer, &i) == -1)
-	{
-		cas_spe(minishell, index, 2);
-		return;
-	}
+		return(cas_spe(minishell, index, 2));
 	if(is_space(minishell->buffer, &i) == 0)
-	{
-		cas_spe(minishell, index, 1);
-		return;
-	}
+		return(cas_spe(minishell, index, 1));
 	while((is_space(minishell->buffer, &i) == 1) && minishell->buffer[i] != '\t' && minishell->buffer[i])
 		i++;
 	len = i - *index;
@@ -136,6 +152,9 @@ static void grap_mot(t_minishell *minishell, int *index)
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
 {
+	if (mot[0] == '<')
+		if(mot[1] == '<')
+			return(creat_node("heredoc", token, mot, minishell), 0);
 	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
 	{
 		if (ft_strcmp(mot, ">") == 0)
@@ -271,8 +290,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type: ||%s||\n", token->type);
-		// ft_printf("le value: ||%s||\n", token->value);
+		ft_printf("le type: ||%s||\n", token->type);
+		ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
 		while(minishell->buffer[i] == ' ')
 			i++;
