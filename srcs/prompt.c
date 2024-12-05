@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/03 15:25:27 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:21:59 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
-		check_token(token, minishell->env);
+		// check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
@@ -133,10 +133,15 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 				ft_pwd(token);
 			else if (ft_strncmp(token->value, "env", 3) == 0)
 		 		ft_env(minishell);
-			else if (ft_strcmp(token->value, "<<") == 0)
-				heredoc(token);
-			else
-				army_of_fork(ev, pipex, minishell, token);
+			t_token *tmp = token;
+			while(tmp->value)
+			{
+				if (ft_strcmp(tmp->value, "<<") == 0)
+					heredoc(tmp);
+				tmp = tmp->next;
+			}
+			// else
+			army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
 	}

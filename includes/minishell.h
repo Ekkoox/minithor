@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:28:36 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:23:11 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_token
 	char			*type;
 	char			*value;
 	struct s_token	*next;
+	char			flag;
 }					t_token;
 
 typedef struct s_minishell

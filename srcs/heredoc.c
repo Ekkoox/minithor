@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/03 09:43:37 by roane            ###   ########.fr       */
+/*   Updated: 2024/12/05 15:23:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ static int creat_the_heredoc(t_token *token)
 {
     char *buffer;
     int fd;
-    //ssize_t bytes_read;
-    
-    //bytes_read = 0;
+
     fd = open("Tmp_file", O_RDWR | O_TRUNC | O_CREAT, 0644);
     if (!fd)
         return (EXIT_FAILURE);
@@ -54,20 +52,27 @@ static void close_fd(int sig)
 int heredoc(t_token *token)
 {
     int pid;
-    
-    if (!token->next->value)
-        return(EXIT_FAILURE);
+    int status;
+
+    // if (!token->next->next->value)
+    //     return (EXIT_FAILURE);
+    token->flag = 1;
     signal(SIGINT, SIG_IGN);
     pid = fork();
     if (pid == -1)
-        return(ft_putstr_fd("Error fork heredoc", 2), EXIT_FAILURE);
+    {
+        perror("Error fork heredoc");
+        return (EXIT_FAILURE);
+    }
     if (pid == 0)
     {
         signal(SIGINT, close_fd);
-        creat_the_heredoc(token);
-        exit (EXIT_SUCCESS);
+        if (creat_the_heredoc(token) == EXIT_FAILURE)
+            exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
-    wait(NULL);
+    wait(&status);
+    unlink("Tmp_file");
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
     return (EXIT_SUCCESS);
