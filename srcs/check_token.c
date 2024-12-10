@@ -6,56 +6,56 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/09 17:40:09 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:42:36 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void dup_value_expand(char *dup_value, t_token *token, t_env *env, int index)
-// {
-// 	int i;
-// 	int y;
-// 	int j;
+static void dup_value_expand(char *dup_value, t_token *token, t_env *env, int index)
+{
+	int i;
+	int y;
+	int j;
 
-// 	y = 0;
-// 	i = 0;
-// 	j = 0;
-// 	while(dup_value[y])
-// 	{
-// 		if (dup_value[y] == '$')
-// 		{
-// 			while(env->value[j])
-// 			{
-// 				token->value[i] = env->value[j];
-// 				i++;
-// 				j++;
-// 			}
-// 			while(y < index)
-// 				y++;
-// 		}
-// 		token->value[i] = dup_value[y];
-// 		i++;
-// 		y++;
-// 	}
-// 	token->value[i] = '\0';
-// }
+	y = 0;
+	i = 0;
+	j = 0;
+	while(dup_value[y])
+	{
+		if (dup_value[y] == '$')
+		{
+			while(env->value[j])
+			{
+				token->value[i] = env->value[j];
+				i++;
+				j++;
+			}
+			while(y < index)
+				y++;
+		}
+		token->value[i] = dup_value[y];
+		i++;
+		y++;
+	}
+	token->value[i] = '\0';
+}
 
-// static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
-// {
-// 	int len;
-// 	char *dup_value;
+static void	expand_plus(t_token *token, t_env *env, int index, char *expand)
+{
+	int len;
+	char *dup_value;
 
-// 	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
-// 	dup_value = ft_strdup(token->value);
-// 	while(env->next && (ft_strcmp(env->type, expand)))
-// 		env = env->next;
-// 	free(token->value);
-// 	token->value = ft_calloc(sizeof(char), len + 1);
-// 	if(token->value == NULL)
-// 		return;
-// 	dup_value_expand(dup_value, token, env, index);
-// }
+	len = (ft_strlen(token->value) - (ft_strlen(expand) + 1) + ft_strlen(env->value));
+	dup_value = ft_strdup(token->value);
+	while(env->next && (ft_strcmp(env->type, expand)))
+		env = env->next;
+	free(token->value);
+	token->value = ft_calloc(sizeof(char), len + 1);
+	if(token->value == NULL)
+		return;
+	dup_value_expand(dup_value, token, env, index);
+}
 
 static int find_on_env(t_token *token, int index, t_env *env)
 {
@@ -134,13 +134,13 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 }
 
 
-// static void check_file(char *file, char *chevron)
-// {
-// 	if (ft_strlen(chevron) == 1)
-// 		open(file, O_CREAT | O_WRONLY);
-// 	else
-// 		open(file, O_CREAT | O_APPEND);
-// }
+static void check_file(char *file, char *chevron)
+{
+	if (ft_strlen(chevron) == 1)
+		open(file, O_CREAT | O_WRONLY);
+	else
+		open(file, O_CREAT | O_APPEND);
+}
 
 void	check_token(t_token *token, t_env *env)
 {

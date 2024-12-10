@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/05 15:55:17 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/10 23:48:03 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 
 	tmp = token;
 	i = 0;
-	printf("%s\n", command);
+	// printf("%s\n", command);
 	while(ft_strcmp(token->value, command) != 0 && token->next)
 		token = token->next;
 	while(token->next)
@@ -72,7 +72,7 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	get_the_next_command(token, minishell, command);
 	if (!path)
 	{
-		ft_putstr_fd("No such file or directory\n", 2);
+		// ft_putstr_fd("No such file or directory\n", 2);
 		free_all(pipex);
 		// exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/09 17:41:25 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/10 21:40:48 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	creat_node(char *type, t_token *token, char *value,
 		minishell->flag = 0;
 	token->type = ft_strdup(type);
 	token->value = ft_strdup(value);
+	ft_printf("l'adresse de %s a ala creation : %p\n", value, token);
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
@@ -298,6 +299,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 				count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
+		// ft_printf("le type de la node: %s\n", token->type);
+		// ft_printf("la valeur de la node: %s\n", token->value);
 		token = token->next;
 		while (minishell->buffer[i] == ' ')
 			i++;
