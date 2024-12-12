@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/04 17:17:06 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:36:39 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,22 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 		dest[i] = '\0';
 	}
 	else	{
-		while((buffer[*index] != 34) || (buffer[*index] != 39 && buffer[*index]))
+		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
 		{
+			ft_printf("%c\n", buffer[*index]);
+			if(buffer[*index] == 34 || buffer[*index] == 39)
+				*index += 1;
+			ft_printf("%c\n", buffer[*index]);
 			dest[*index_dest] = buffer[*index];
 			*index += 1;
 			*index_dest += 1;
 		}
 		buffer[*index] = '\0';
 	}
+	ft_printf("sdf:%s\n", dest);
 	return;
 }
+
 
 static int is_space(char *str, int *index)
 {
@@ -290,8 +296,8 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		ft_printf("le type: ||%s||\n", token->type);
-		ft_printf("le value: ||%s||\n", token->value);
+		// ft_printf("le type: ||%s||\n", token->type);
+		// ft_printf("le value: ||%s||\n", token->value);
 		token = token->next;
 		while(minishell->buffer[i] == ' ')
 			i++;
@@ -305,3 +311,5 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 
 
 
+//  regarde les cote ex: echo po"ol" fait attentoin a ne pas sauter des case a verifier dasn la fonction "grap_mot"
+//il y a surement un saut de trop avce les commande et le pipe comme ca "ls "srcs" | pwd" 
