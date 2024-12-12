@@ -3,22 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/10 23:47:17 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:07:10 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void delete(t_token *target)
-// {
-//     free(target->flag);
-//     free(target->type);
-//     free(target->value);
-//     free(target->heredoc);
-// }
+static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *tmp, int flag)
+{
+	if (flag == 1)
+	{
+			prev->next = (*head);
+			free(target->value);
+			free(target->type);
+			free(target->heredoc);
+			target->type = NULL;
+			target->value = NULL;
+			target->heredoc =NULL;
+			free(target);
+			*head = tmp;
+	}
+	else
+	{
+			(*head) = prev;
+			free(target->value);
+			free(target->type);
+			free(target->heredoc);
+			target->type = NULL;
+			target->value = NULL;
+			target->heredoc =NULL;
+			free(target);
+			(*head)->next = ft_calloc(sizeof(t_token), 1);
+			*head = tmp;
+	}
+}
 
   static void delete_node_heredoc(t_token *target, t_token **head)
 {
@@ -34,6 +55,7 @@
         *head = target->next;
         free(target);
         target = NULL;
+		return;
     }
     else
         while((*head)->next)
@@ -49,22 +71,7 @@
             }
             prev = prev->next;
         }
-    if (flag ==1){
-        prev->next = (*head);
-    }
-    else
-        (*head) = prev;
-    ft_printf("%s\n", (*head)->value);
-    free((*head)->next->value);
-    free((*head)->next->type);
-    free((*head)->next->heredoc);
-    (*head)->next->type = NULL;
-    (*head)->next->value = NULL;
-    (*head)->next->heredoc =NULL;
-    free((*head)->next);
-    (*head)->next = ft_calloc(sizeof(t_token), 1);
-    *head = tmp;
-    
+		free_node(target, head, prev, tmp, flag);
 }
 
 static void find_the_heredoc(t_token *token)
