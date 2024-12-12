@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/03 15:25:27 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:58:26 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 		env->next = ft_calloc(sizeof(t_env), 1);
 		if (!env->next)
 			return (NULL);
+		ft_printf("%s\n", env->type);
 		env = env->next;
 		i++;
 	}
@@ -133,6 +134,8 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 				ft_pwd(token);
 			else if (ft_strncmp(token->value, "env", 3) == 0)
 		 		ft_env(minishell);
+			else if (ft_strcmp(token->value, "export") == 0)
+		 		ft_export(minishell->env, token);
 			else if (ft_strcmp(token->value, "<<") == 0)
 				heredoc(token);
 			else

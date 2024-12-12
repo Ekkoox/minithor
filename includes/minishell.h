@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:28:36 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:11:41 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int 				ft_cd(t_token *token, t_env *env);
 int					ft_pwd(t_token *token);
 int					ft_env(t_minishell *minishell);
 int					ft_echo(t_token *token);
+void 				ft_export(t_env *env, t_token *token);
+
 
 // PROMPT
 int					exit_prompt(char *buffer);

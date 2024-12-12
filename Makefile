@@ -13,6 +13,7 @@ C_FILES = main.c\
           pipe_utils.c\
 		  token_utils.c\
 		  check_token.c\
+		  export.c\
 
 BOLD = \033[1m
 RED = \033[31m

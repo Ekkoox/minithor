@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/09 19:36:39 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:40:09 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,14 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 	else	{
 		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
 		{
-			ft_printf("%c\n", buffer[*index]);
 			if(buffer[*index] == 34 || buffer[*index] == 39)
 				*index += 1;
-			ft_printf("%c\n", buffer[*index]);
 			dest[*index_dest] = buffer[*index];
 			*index += 1;
 			*index_dest += 1;
 		}
 		buffer[*index] = '\0';
 	}
-	ft_printf("sdf:%s\n", dest);
 	return;
 }
 
@@ -143,13 +140,14 @@ static void grap_mot(t_minishell *minishell, int *index)
 		return ;
 	while (*index < i && minishell->buffer[*index])
 	{
-		minishell->current[j++] = minishell->buffer[*index];
+		minishell->current[j] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
 		{
 			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
 			return;
 		}
 		*index += 1;
+		j++;
 	}
 	minishell->current[*index] = '\0';
 }
