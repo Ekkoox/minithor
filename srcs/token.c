@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/10 21:40:48 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:41:20 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ static void	creat_node(char *type, t_token *token, char *value,
 	if (ft_strcmp(type, "pipe") == 0)
 		minishell->flag = 0;
 	token->type = ft_strdup(type);
+	if (!token->type)
+		return ;
 	token->value = ft_strdup(value);
-	ft_printf("l'adresse de %s a ala creation : %p\n", value, token);
+	if (!token->value)
+		return ;
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/10 16:03:29 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:41:52 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	free_all(t_pipex *pipex)
 {
 	if (pipex->path)
-		ft_free(pipex->path, ft_count_line_split(pipex->path));
+		return ;
+		// ft_free(pipex->path, ft_count_line_split(pipex->path));
 	// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
 	// exit(EXIT_SUCCESS);
 }
