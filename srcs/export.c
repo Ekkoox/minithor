@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:53:35 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/12 19:56:23 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:51:28 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void get_value_env(t_env *env, t_token *token)
 	i = 0;
 	j = 0;
 	token = token->next;
+	ft_printf("%s\n", token->value);
 	if(env->value)
 	{
 		free(env->value);

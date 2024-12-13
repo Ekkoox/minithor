@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/13 16:06:19 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:59:58 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start,
 	}
 	else
 	{
-		while ((buffer[*index] != 34) || (buffer[*index] != 39
-				&& buffer[*index]))
+		while ((buffer[*index] != 34 || buffer[*index] != 39) && (buffer[*index]))
 		{
 			if(buffer[*index] == 34 || buffer[*index] == 39)
 				*index += 1;
@@ -287,8 +286,7 @@ static void	put_in(t_token *token, t_minishell *minishell)
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
 	int		i;
-	t_token			ft_printf("%s\n", env->type);
-*tmp;
+	t_token	*tmp;
 
 	pipex->path = pipex->ev;
 	i = 0;

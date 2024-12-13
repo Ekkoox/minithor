@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/12 17:07:10 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:39:56 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,21 @@ static void close_fd(int sig)
     exit (EXIT_FAILURE);
 }
 
-int heredoc(t_token *token, t_token **head)
+static int juge_heredoc(t_token *token)
+{
+	t_token *tmp;
+
+	tmp = token;
+	if (!(ft_strcmp(token->type, "heredoc") == 0) || (token->next->type))
+	{
+		token = tmp;
+		return(1);
+	}
+	token = tmp;
+	return(0);
+}
+
+int heredoc(t_token *token, t_token **head, int *nb_heredoc)
 {
     int pid;
     int status;
@@ -154,7 +168,8 @@ int heredoc(t_token *token, t_token **head)
     unlink("Tmp_file");
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
-    if (token->next != NULL)
-        delete_node_heredoc(token, head);
+    if (juge_heredoc(*head))
+		delete_node_heredoc(token, head);
+	(*nb_heredoc) = (*nb_heredoc) - 1;
     return (EXIT_SUCCESS);
 }

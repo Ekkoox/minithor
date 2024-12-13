@@ -6,13 +6,10 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/12/12 19:11:41 by razouani         ###   ########.fr       */
-=======
-/*   Updated: 2024/12/10 22:31:22 by enschnei         ###   ########.fr       */
->>>>>>> origin/Enzo
+/*   Updated: 2024/12/13 17:13:25 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -100,7 +97,7 @@ typedef struct s_pipex
 }						t_pipex;
 
 // HEREDOC
-int	heredoc				(t_token *token, t_token **head);
+int	heredoc				(t_token *token, t_token **head, int *nb_heredoc);
 
 	// UTILS
 	void handle_sigint(int sig);
