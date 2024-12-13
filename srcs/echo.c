@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/09 17:59:44 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:37:34 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ int	ft_echo(t_token *token)
 	flag = 0;
     token = token->next;
 	while (token->value && token->value[0] == '-' && check_n(token->value + 1))
-	{
+	{	
 		flag = 1;
 		token = token->next;
 	}
 	while (token->next)
 	{
+		if (ft_strcmp(token->type, "pipe") == 0)
+			break ;
 		ft_printf("%s", token->value);
 		if (token->next->value)
 			ft_printf(" ");

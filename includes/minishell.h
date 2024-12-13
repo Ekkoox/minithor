@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/10 22:31:22 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:51:21 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct s_minishell
 	char				*current;
 	char				*buffer;
 	char				**command_exac;
-	// t_pipex			*pipex;
 	t_token				*token;
 	t_env				*env;
 	t_pid				*pid;
@@ -86,20 +85,23 @@ typedef struct s_pipex
 	int					*fd;
 	int					**pipes;
 	int					num_cmds;
+	char				**ev;
+	char				**path;
 	char				*file_1;
 	char				*command_1;
 	char				*ligne_path;
-	char				**ev;
-	char				**path;
 	t_minishell			*minishell;
 	pid_t				pid;
 }						t_pipex;
 
-// HEREDOC
-int	heredoc				(t_token *token, t_token **head);
+// BUILTIN
+int 					is_builtin(t_minishell *minishell, t_token *token);
 
-	// UTILS
-	void handle_sigint(int sig);
+// HEREDOC
+int						heredoc	(t_token *token, t_token **head);
+
+// UTILS
+void 					handle_sigint(int sig);
 char					**ft_split_env(char const *s, char c);
 
 // FONCTION

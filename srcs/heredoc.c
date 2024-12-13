@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 16:22:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:29:52 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,66 +14,64 @@
 
 static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *tmp, int flag)
 {
-	if (flag == 1)
-	{
-			prev->next = (*head);
-			free(target->value);
-			free(target->type);
-			free(target->heredoc);
-			target->type = NULL;
-			target->value = NULL;
-			target->heredoc =NULL;
-			free(target);
-			*head = tmp;
-	}
-	else
-	{
-			(*head) = prev;
-			free(target->value);
-			free(target->type);
-			free(target->heredoc);
-			target->type = NULL;
-			target->value = NULL;
-			target->heredoc =NULL;
-			free(target);
-			(*head)->next = ft_calloc(sizeof(t_token), 1);
-			*head = tmp;
-	}
+    if (flag == 1)
+    {
+            prev->next = (*head);
+            free(target->value);
+            free(target->type);
+            free(target->heredoc);
+            target->type = NULL;
+            target->value = NULL;
+            target->heredoc =NULL;
+            free(target);
+            *head = tmp;
+    }
+    else
+    {
+            (*head) = prev;
+            free(target->value);
+            free(target->type);
+            free(target->heredoc);
+            target->type = NULL;
+            target->value = NULL;
+            target->heredoc =NULL;
+            free(target);
+            (*head)->next = ft_calloc(sizeof(t_token), 1);
+            *head = tmp;
+    }
 }
 
   static void delete_node_heredoc(t_token *target, t_token **head)
 {
-    t_token *prev = NULL;
-    t_token *current = *head;
-    (void)target;   
+    t_token *prev;
+    t_token *tmp;
+    int flag;
 
-    prev = NULL;
-    current = *head;
-    while (current)
+    prev = *head;
+    tmp = *head;
+    flag = 0;
+    if (ft_strcmp((*head)->type, "heredoc") == 0)
     {
         *head = target->next;
         free(target);
         target = NULL;
-		return;
+        return;
     }
     else
         while((*head)->next)
         {
-            if (prev)
-                prev->next = current->next;
-            else
-                *head = current->next;
-            if (current->value)
-                free(current->value);
-            if (current->type)
-                free(current->type);
-            if (current->heredoc)
-                free(current->heredoc);
-
-            free(current);
-            return;
+            (*head) = (*head)->next;
+            if (ft_strcmp((*head)->type, "heredoc") == 0)
+            {
+                if (target->next->value != NULL){
+                    flag = 1;
+                    (*head) = target->next;
+                }
+                break;
+            }
+            prev = prev->next;
         }
-		free_node(target, head, prev, tmp, flag);
+        free_node(target, head, prev, tmp, flag);
 }
 
 static void find_the_heredoc(t_token *token)

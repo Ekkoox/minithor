@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 16:23:22 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:58:48 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,9 @@ void handle_sigint(int sig)
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
-	t_token *head;
 	ssize_t	bytes_read;
 
 	bytes_read = 0;	
-	head = token;
 	minishell->env = creat_env_list(ev, minishell);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
@@ -122,30 +120,11 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
-		// check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
-			if (ft_strncmp(token->value, "echo", 4) == 0)
-				ft_echo(token);
-			else if (ft_strncmp(token->value, "cd", 2) == 0)
-				ft_cd(token, minishell->env);
-			else if (ft_strncmp(token->value, "pwd", 3) == 0)
-				ft_pwd(token);
-			else if (ft_strncmp(token->value, "env", 3) == 0)
-		 		ft_env(minishell);
-			while(token->next)
-			{
-				if (ft_strcmp(token->type, "heredoc") == 0)
-				{
-					heredoc(token, &head);
-					break;
-				}
-				token = token->next;
-			}
-			token = head;
-			// ft_printf("%s\n", token->type);
-			army_of_fork(ev, pipex, minishell, token);
+			if (is_builtin(minishell, token) != 0)
+				army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
 	}
