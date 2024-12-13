@@ -3,36 +3,115 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/03 09:43:37 by roane            ###   ########.fr       */
+/*   Updated: 2024/12/12 17:07:10 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *tmp, int flag)
+{
+	if (flag == 1)
+	{
+			prev->next = (*head);
+			free(target->value);
+			free(target->type);
+			free(target->heredoc);
+			target->type = NULL;
+			target->value = NULL;
+			target->heredoc =NULL;
+			free(target);
+			*head = tmp;
+	}
+	else
+	{
+			(*head) = prev;
+			free(target->value);
+			free(target->type);
+			free(target->heredoc);
+			target->type = NULL;
+			target->value = NULL;
+			target->heredoc =NULL;
+			free(target);
+			(*head)->next = ft_calloc(sizeof(t_token), 1);
+			*head = tmp;
+	}
+}
+
+  static void delete_node_heredoc(t_token *target, t_token **head)
+{
+    t_token *prev;
+    t_token *tmp;
+    int flag;
+
+    prev = *head;
+    tmp = *head;
+    flag = 0;
+    if (ft_strcmp((*head)->type, "heredoc") == 0)
+    {
+        *head = target->next;
+        free(target);
+        target = NULL;
+		return;
+    }
+    else
+        while((*head)->next)
+        {
+            (*head) = (*head)->next;
+            if (ft_strcmp((*head)->type, "heredoc") == 0)
+            {
+                if (target->next->value != NULL){
+                    flag = 1;
+                    (*head) = target->next;
+                }
+                break;
+            }
+            prev = prev->next;
+        }
+		free_node(target, head, prev, tmp, flag);
+}
+
+static void find_the_heredoc(t_token *token)
+{
+    int i = 0;
+    int y = 0;
+
+    while(token->value[i] != '<')
+        i++;
+    while (token->value[i] == '<' || token->value[i] == ' ')
+        i++;
+    token->heredoc = ft_calloc(sizeof(char), ft_strlen(token->value));
+    if (!token->heredoc)
+        return ;
+    while (token->value[i])
+        token->heredoc[y++] = token->value[i++];
+    token->heredoc[y] = '\0';
+}
+
 static int creat_the_heredoc(t_token *token)
 {
     char *buffer;
     int fd;
-    //ssize_t bytes_read;
-    
-    //bytes_read = 0;
+
     fd = open("Tmp_file", O_RDWR | O_TRUNC | O_CREAT, 0644);
     if (!fd)
         return (EXIT_FAILURE);
+    find_the_heredoc(token);
     while(1)    
     {
         buffer = readline("heredoc>");
         if (!buffer)
         {
-            dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->next->value);
+            dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->value);
             return (EXIT_FAILURE);
         }
-        if (ft_strcmp(token->next->value, buffer) == 0)
+        if (ft_strcmp(buffer, token->heredoc) == 0)
         {
             unlink("Tmp_file");
+            free(token->heredoc);
             free(buffer);
             break ;
         }
@@ -51,24 +130,31 @@ static void close_fd(int sig)
     exit (EXIT_FAILURE);
 }
 
-int heredoc(t_token *token)
+int heredoc(t_token *token, t_token **head)
 {
     int pid;
-    
-    if (!token->next->value)
-        return(EXIT_FAILURE);
+    int status;
+
+    token->flag = 1;
     signal(SIGINT, SIG_IGN);
     pid = fork();
     if (pid == -1)
-        return(ft_putstr_fd("Error fork heredoc", 2), EXIT_FAILURE);
+    {
+        perror("Error fork heredoc");
+        return (EXIT_FAILURE);
+    }
     if (pid == 0)
     {
         signal(SIGINT, close_fd);
-        creat_the_heredoc(token);
-        exit (EXIT_SUCCESS);
+        if (creat_the_heredoc(token) == EXIT_FAILURE)
+            exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
-    wait(NULL);
+    wait(&status);
+    unlink("Tmp_file");
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
+    if (token->next != NULL)
+        delete_node_heredoc(token, head);
     return (EXIT_SUCCESS);
 }

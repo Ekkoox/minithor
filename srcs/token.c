@@ -6,31 +6,36 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/12 18:40:09 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:06:19 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	creat_node(char *type, t_token *token, char *value, t_minishell *minishell)
+static void	creat_node(char *type, t_token *token, char *value,
+		t_minishell *minishell)
 {
 	if (ft_strcmp(type, "commande") == 0)
 		minishell->flag = 1;
 	if (ft_strcmp(type, "pipe") == 0)
-        minishell->flag = 0;
+		minishell->flag = 0;
 	token->type = ft_strdup(type);
 	token->value = ft_strdup(value);
+	//ft_printf("l'adresse de %s a ala creation : %p\n", value, token);
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
-static void	clear_cot(char *buffer, char *dest, int *index, int start, int *index_dest)
+static void	clear_cot(char *buffer, char *dest, int *index, int start,
+		int *index_dest)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if (start == *index){
+	if (start == *index)
+	{
 		*index += 1;
-		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
+		while (((buffer[*index] != 34) || (buffer[*index] != 39))
+			&& buffer[*index])
 		{
 			dest[i] = buffer[*index];
 			i++;
@@ -39,8 +44,10 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 		i--;
 		dest[i] = '\0';
 	}
-	else	{
-		while(((buffer[*index] != 34) || (buffer[*index] != 39)) && buffer[*index])
+	else
+	{
+		while ((buffer[*index] != 34) || (buffer[*index] != 39
+				&& buffer[*index]))
 		{
 			if(buffer[*index] == 34 || buffer[*index] == 39)
 				*index += 1;
@@ -50,13 +57,12 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start, int *inde
 		}
 		buffer[*index] = '\0';
 	}
-	return;
+	return ;
 }
 
-
-static int is_space(char *str, int *index)
+static int	is_space(char *str, int *index)
 {
-	int i;
+	int	i;
 
 	i = *index;
 	
@@ -71,8 +77,8 @@ static int is_space(char *str, int *index)
 		return(0);
 	}
 	else if (str[i] == '>')
-		return(0);
-	return(1);
+		return (0);
+	return (1);
 }
 
 static int get_line(t_minishell *minishell, int *index)
@@ -116,12 +122,12 @@ static void cas_spe(t_minishell *minishell, int *index, int flag)
 	}
 }
 
-static void grap_mot(t_minishell *minishell, int *index)
+static void	grap_mot(t_minishell *minishell, int *index)
 {
-	int i;
-	int len;
-	int j;
-	int y;
+	int	i;
+	int	len;
+	int	j;
+	int	y;
 
 	i = *index;
 	y = *index;
@@ -134,7 +140,7 @@ static void grap_mot(t_minishell *minishell, int *index)
 		i++;
 	len = i - *index;
 	if (len <= 0)
-		return;
+		return ;
 	minishell->current = ft_calloc(sizeof(char), len + 1);
 	if (!minishell->current)
 		return ;
@@ -152,9 +158,8 @@ static void grap_mot(t_minishell *minishell, int *index)
 	minishell->current[*index] = '\0';
 }
 
-
-
-static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *minishell)
+static int	get_type(char *mot, t_token *token, t_pipex *pipex,
+		t_minishell *minishell)
 {
 	if (mot[0] == '<')
 		if(mot[1] == '<')
@@ -162,34 +167,35 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex, t_minishell *mini
 	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
 	{
 		if (ft_strcmp(mot, ">") == 0)
-		return (creat_node("redirect output", token, mot, minishell), 0);
-	else if (ft_strcmp(mot, "<") == 0)
-		return (creat_node("redirect input", token, mot, minishell), 0);
+			return (creat_node("redirect output", token, mot, minishell), 0);
+		else if (ft_strcmp(mot, "<") == 0)
+			return (creat_node("redirect input", token, mot, minishell), 0);
 	}
-	else if (minishell->flag == 1){
+	else if (minishell->flag == 1)
+	{
 		if (ft_strcmp(mot, "|") == 0)
 			return (creat_node("pipe", token, mot, minishell), 0);
-		return(creat_node("argument", token, mot, minishell), 0);
+		return (creat_node("argument", token, mot, minishell), 0);
 	}
 	else if (search_command_for_token(pipex, mot) == 0)
 		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "|") == 0)
 		return (creat_node("pipe", token, mot, minishell), 0);
 	else
-		return(creat_node("trash", token, mot, minishell), 0);
+		return (creat_node("trash", token, mot, minishell), 0);
 	return (1);
 }
 
-static int count_chef(char *mot)
+static int	count_chef(char *mot)
 {
-	int i;
-	int c;
-	char chef;
+	int		i;
+	int		c;
+	char	chef;
 
 	i = 0;
 	c = 0;
 	chef = 0;
-	while(mot[i])
+	while (mot[i])
 	{
 		if ((mot[i] == '"' || mot[i] == '\'') && (c == 0))
 			chef = mot[i];
@@ -200,12 +206,12 @@ static int count_chef(char *mot)
 	return (c);
 }
 
-static char *dans_cot(char *mot, int chef)
+static char	*dans_cot(char *mot, int chef)
 {
-	int i;
-	int y;
-	char *clear_mot;
-	char cot;
+	int		i;
+	int		y;
+	char	*clear_mot;
+	char	cot;
 
 	i = 0;
 	y = 0;
@@ -213,7 +219,7 @@ static char *dans_cot(char *mot, int chef)
 	clear_mot = ft_calloc(sizeof(char), (ft_strlen(mot) - chef) + 1);
 	if (!clear_mot)
 		return (NULL);
-	while(mot[i])
+	while (mot[i])
 	{
 		if (mot[i] == cot)
 			i++;
@@ -222,29 +228,29 @@ static char *dans_cot(char *mot, int chef)
 		y++;
 	}
 	clear_mot[y] = '\0';
-	return(clear_mot);
+	return (clear_mot);
 }
 
-static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, t_minishell *minishell)
+static void	get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef,
+		t_minishell *minishell)
 {
-	
-	int i;
-	char *in_cot;
-	int c;
-	
+	int		i;
+	char	*in_cot;
+	int		c;
+
 	i = 0;
 	c = 0;
 	in_cot = dans_cot(mot, chef);
-	while(in_cot[i])
+	while (in_cot[i])
 	{
 		if (mot[i] == ' ')
 			c++;
 		i++;
 	}
-	if(c == 0)
+	if (c == 0)
 	{
 		if (get_type(mot, token, pipex, minishell) == 0)
-			return;
+			return ;
 		else
 			creat_node("string", token, mot, minishell);
 	}
@@ -252,14 +258,14 @@ static void get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef, 
 
 static void	put_in(t_token *token, t_minishell *minishell)
 {
-	t_token *tmp;
-	int i;
-	int len;
+	t_token	*tmp;
+	int		i;
+	int		len;
 
 	tmp = token;
 	len = 0;
 	i = 0;
-	while(token->next != NULL)
+	while (token->next != NULL)
 	{
 		token = token->next;
 		len++;
@@ -268,7 +274,8 @@ static void	put_in(t_token *token, t_minishell *minishell)
 	minishell->command_exac = ft_calloc(sizeof(char *), len + 1);
 	while (token->next != NULL)
 	{
-		minishell->command_exac[i] = ft_calloc(sizeof(char), ft_strlen(token->value) + 1);
+		minishell->command_exac[i] = ft_calloc(sizeof(char),
+				ft_strlen(token->value) + 1);
 		minishell->command_exac[i] = ft_strdup(token->value);
 		token = token->next;
 		i++;
@@ -279,31 +286,33 @@ static void	put_in(t_token *token, t_minishell *minishell)
 
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
-	int i;
+	int		i;
+	t_token			ft_printf("%s\n", env->type);
+*tmp;
+
 	pipex->path = pipex->ev;
-	t_token *tmp;
-	
 	i = 0;
 	tmp = token;
-	while(minishell->buffer[i])
+	while (minishell->buffer[i])
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
 		grap_mot(minishell, &i);
 		if (count_chef(minishell->current) != 0)
-			get_double_cot(minishell->current, token, pipex, count_chef(minishell->current), minishell);
+			get_double_cot(minishell->current, token, pipex,
+				count_chef(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type: ||%s||\n", token->type);
-		// ft_printf("le value: ||%s||\n", token->value);
+		// ft_printf("le type de la node: %s\n", token->type);
+		// ft_printf("la valeur de la node: %s\n", token->value);
 		token = token->next;
-		while(minishell->buffer[i] == ' ')
+		while (minishell->buffer[i] == ' ')
 			i++;
 	}
 	token = tmp;
-	put_in(token, minishell);	
+	put_in(token, minishell);
 	minishell->flag = 0;
-	return (EXIT_SUCCESS);	
+	return (EXIT_SUCCESS);
 }
 
 

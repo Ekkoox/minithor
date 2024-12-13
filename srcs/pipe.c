@@ -6,26 +6,11 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/02 16:28:02 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/10 23:48:03 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static char *dup_spe(char *str)
-// {
-// 	int i;
-// 	char *res;
-
-// 	i = 0;
-// 	res = ft_calloc(sizeof(char), ft_strlen(str) + 1);
-// 	while(str[i])
-// 	{
-// 		while()
-// 		i++;
-// 	}
-// }
-
 
 static void error_execve(t_pipex *pipex)
 {
@@ -42,7 +27,8 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 
 	tmp = token;
 	i = 0;
-	while(!(ft_strcmp(token->value, command) == 0) && token->next)
+	// printf("%s\n", command);
+	while(ft_strcmp(token->value, command) != 0 && token->next)
 		token = token->next;
 	while(token->next)
 	{
@@ -54,8 +40,15 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 	free(minishell->command_exac);
 	minishell->command_exac = ft_calloc(sizeof(char *), i + 1);
 	token = tmp;
-	while(c < i){
-		minishell->command_exac[c] = ft_strdup(token->value);
+	while(c < i)
+	{
+		if (ft_strcmp("<<", token->value) == 0)
+		{
+			c++;
+			token = token->next;
+		}
+		else
+			minishell->command_exac[c] = ft_strdup(token->value);
 		c++;
 		token = token->next;
 	}
@@ -67,22 +60,30 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	char *path;
 	int i;
 	(void)token;
+	
 	pipex->command_1 = command;
 	path = get_the_command(pipex);
 	int c = 0;
-	while(minishell->command_exac[c]){
+	while(minishell->command_exac[c])
+	{
 		free(minishell->command_exac[c]);
 		c++;
 	}
 	get_the_next_command(token, minishell, command);
-	if (!path){
-		ft_putstr_fd("No such file or directory\n", 2);
+	if (!path)
+	{
+		// ft_putstr_fd("No such file or directory\n", 2);
 		free_all(pipex);
 		// exit(EXIT_FAILURE);
 	}
-	if (cmd_index > 0)
+	if (token->flag == 1)
+	{
+		int fd = open("Tmp_files", O_RDONLY);
+		dup2(fd, STDIN_FILENO);
+	}
+	else if (cmd_index > 0)
 		dup2(pipex->pipes[cmd_index - 1][0], STDIN_FILENO);
-	if (cmd_index < pipex->num_cmds - 1)
+	else if (cmd_index < pipex->num_cmds - 1)
 		dup2(pipex->pipes[cmd_index][1], STDOUT_FILENO);
 	i = 0;
 	while (i < pipex->num_cmds - 1){
@@ -179,7 +180,6 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 
 	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
 	int c = -1;
-
 	i = 0;
 	while (i < pipex->num_cmds - 1)
 	{

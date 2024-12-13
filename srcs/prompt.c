@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 15:58:11 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:05:29 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static void free_env_list(t_env *env)
     }
 }
 
-
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
@@ -91,7 +90,7 @@ void handle_sigint(int sig)
 {
     (void)sig;
 
-    //rl_replace_line("", 0);
+    rl_replace_line("", 0);
     rl_on_new_line();
 	ft_printf("\n");
     rl_redisplay();
@@ -100,9 +99,11 @@ void handle_sigint(int sig)
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
+	t_token *head;
 	ssize_t	bytes_read;
 
 	bytes_read = 0;	
+	head = token;
 	minishell->env = creat_env_list(ev, minishell);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
@@ -121,7 +122,7 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
-		check_token(token, minishell->env);
+		// check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
@@ -133,12 +134,16 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 				ft_pwd(token);
 			else if (ft_strncmp(token->value, "env", 3) == 0)
 		 		ft_env(minishell);
-			else if (ft_strcmp(token->value, "export") == 0)
-		 		ft_export(minishell->env, token);
-			else if (ft_strcmp(token->value, "<<") == 0)
-				heredoc(token);
-			else
-				army_of_fork(ev, pipex, minishell, token);
+			while(token->next)
+			{
+				if (ft_strcmp(token->type, "heredoc") == 0){
+					heredoc(token, &head);
+					break;
+					}
+				token = token->next;
+			}
+			token = head;
+			army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
 	}
