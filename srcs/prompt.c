@@ -6,8 +6,10 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:04:04 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:28:52 by razouani         ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
 /* ************************************************************************** */
 
 
@@ -113,12 +115,10 @@ static int count_heredoc(t_token *token)
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
-	t_token *head;
 	ssize_t	bytes_read;
 	int nb_heredoc;
 
 	bytes_read = 0;	
-	head = token;
 	minishell->env = creat_env_list(ev, minishell);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
@@ -137,29 +137,10 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
-		nb_heredoc = count_heredoc(token);
-		check_token(token, minishell->env);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
-			while(nb_heredoc > 0)
-			{
-				if (ft_strcmp(token->type, "heredoc") == 0)
-						heredoc(token, &head, &nb_heredoc);
-				token = token->next;
-			}
-			token = head;
-			if (ft_strncmp(token->value, "echo", 4) == 0)
-				ft_echo(token);
-			else if (ft_strncmp(token->value, "cd", 2) == 0)
-				ft_cd(token, minishell->env);
-			else if (ft_strncmp(token->value, "pwd", 3) == 0)
-				ft_pwd(token);
-			else if (ft_strncmp(token->value, "env", 3) == 0)
-		 		ft_env(minishell);
-			else if (ft_strcmp(token->value, "export") == 0)
-		 		ft_export(minishell->env, token);
-			else
+			if (is_builtin(minishell, token) != 0)
 				army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);

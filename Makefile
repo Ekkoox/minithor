@@ -8,6 +8,7 @@ C_FILES = main.c\
           pipe.c\
 		  token.c\
           prompt.c\
+		  builtin.c\
 		  heredoc.c\
 		  split_env.c\
           pipe_utils.c\
