@@ -6,7 +6,11 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/12/13 16:58:48 by enschnei         ###   ########.fr       */
+=======
+/*   Updated: 2024/12/13 22:56:12 by razouani         ###   ########.fr       */
+>>>>>>> origin/Roane
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +100,25 @@ void handle_sigint(int sig)
     rl_redisplay();
 }
 
+static int count_heredoc(t_token *token)
+{
+	int i;
+
+	i  = 0;
+	while(token->next)
+	{
+		if (ft_strcmp(token->type, "heredoc") == 0)
+			i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
+	int nb_heredoc;
 
 	bytes_read = 0;	
 	minishell->env = creat_env_list(ev, minishell);
@@ -120,10 +139,36 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
+<<<<<<< HEAD
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
 			if (is_builtin(minishell, token) != 0)
+=======
+		nb_heredoc = count_heredoc(token);
+		check_token(token, minishell->env);
+		pipex->command_1 = token->value;
+		if (bytes_read > 0)
+		{
+			while(nb_heredoc > 0)
+			{
+				if (ft_strcmp(token->type, "heredoc") == 0)
+						heredoc(token, &head, &nb_heredoc);
+				token = token->next;
+			}
+			token = head;
+			if (ft_strncmp(token->value, "echo", 4) == 0)
+				ft_echo(token);
+			else if (ft_strncmp(token->value, "cd", 2) == 0)
+				ft_cd(token, minishell->env);
+			else if (ft_strncmp(token->value, "pwd", 3) == 0)
+				ft_pwd(token);
+			else if (ft_strncmp(token->value, "env", 3) == 0)
+		 		ft_env(minishell);
+			else if (ft_strcmp(token->value, "export") == 0)
+		 		ft_export(minishell->env, token);
+			else
+>>>>>>> origin/Roane
 				army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
@@ -134,3 +179,15 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 	return (EXIT_SUCCESS);
 }
 
+
+
+//a tester
+//cote double cote ("") ('')
+//heredoc genre double heredoc
+//export en mode bien mechant
+
+
+
+//gere le cas avec les expand commande genre
+//export cmd="ls"
+//suffi de bien tout fusioner comme il faut

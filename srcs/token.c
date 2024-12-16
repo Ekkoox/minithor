@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/13 16:23:56 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:07:08 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ static void	clear_cot(char *buffer, char *dest, int *index, int start,
 	}
 	else
 	{
-		while ((buffer[*index] != 34) || (buffer[*index] != 39
-				&& buffer[*index]))
+		while ((buffer[*index] != 34 || buffer[*index] != 39) && (buffer[*index]))
 		{
+			if(buffer[*index] == 34 || buffer[*index] == 39)
+				*index += 1;
 			dest[*index_dest] = buffer[*index];
 			*index += 1;
 			*index_dest += 1;
@@ -146,13 +147,14 @@ static void	grap_mot(t_minishell *minishell, int *index)
 		return ;
 	while (*index < i && minishell->buffer[*index])
 	{
-		minishell->current[j++] = minishell->buffer[*index];
+		minishell->current[j] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
 		{
 			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
 			return;
 		}
 		*index += 1;
+		j++;
 	}
 	minishell->current[*index] = '\0';
 }
@@ -312,3 +314,9 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	minishell->flag = 0;
 	return (EXIT_SUCCESS);
 }
+
+
+
+
+//  regarde les cote ex: echo po"ol" fait attentoin a ne pas sauter des case a verifier dasn la fonction "grap_mot"
+//il y a surement un saut de trop avce les commande et le pipe comme ca "ls "srcs" | pwd" 

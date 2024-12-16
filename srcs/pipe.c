@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/10 23:48:03 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:41:49 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0){
-			//ft_printf("%s|||\n", command[c]);
+			ft_printf("%s|||\n", command[c]);
 			execute_command(pipex, minishell, i, token, command[c]);
 		}
 		if (i > 0)

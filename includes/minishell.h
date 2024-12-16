@@ -6,9 +6,10 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 16:51:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:07:08 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -105,10 +106,12 @@ void 					handle_sigint(int sig);
 char					**ft_split_env(char const *s, char c);
 
 // FONCTION
-int						ft_cd(t_token *token, t_env *env);
-int						ft_pwd(t_token *token);
-int						ft_env(t_minishell *minishell);
-int						ft_echo(t_token *token);
+int 				ft_cd(t_token *token, t_env *env);
+int					ft_pwd(t_token *token);
+int					ft_env(t_minishell *minishell);
+int					ft_echo(t_token *token);
+void 				ft_export(t_env *env, t_token *token);
+
 
 // PROMPT
 int						exit_prompt(char *buffer);

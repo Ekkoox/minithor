@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/09 17:42:36 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/13 22:55:57 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int  count_sign(char *value)
+{
+	int i;
+	int sign;
+
+	i = 0;
+	sign = 0;
+	while(value[i])
+	{
+		if (value[i] == '$')
+			sign++;
+		i++;
+	}
+	return (sign);
+}
 
 static void dup_value_expand(char *dup_value, t_token *token, t_env *env, int index)
 {
@@ -65,7 +81,7 @@ static int find_on_env(t_token *token, int index, t_env *env)
 
 	i = index;
 	j = 0;
-	while(token->value[i] != ' ' && token->value[i])
+	while((token->value[i]) && (token->value[i] != ' ' && token->value[i] != '$'))
 		i++;
 	sup_exp = ft_calloc(sizeof(char), ((i - index) + 1));
 	if (!sup_exp)
@@ -122,7 +138,7 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 		return;
 	}
 	expand = ft_calloc(sizeof(char), len + 1);
-	while(token->value[*index] != ' ' && token->value[*index])
+	while(token->value[*index] != ' '  && token->value[*index] && token->value[*index] != '$')
 	{
 		expand[i] = token->value[*index];
 		i++;
@@ -142,24 +158,94 @@ static void check_file(char *file, char *chevron)
 		open(file, O_CREAT | O_APPEND);
 }
 
+static void change_le_plan(t_token *token, int index, int start)
+{
+	int i;
+	int len;
+	int j;
+	char *dup_value;
+
+	i = (index - start);
+	j = 0; 
+	len = start;
+	dup_value = ft_strdup(token->value);
+	len = (ft_strlen(token->value) - i);
+	free(token->value);
+	token->value = ft_calloc(sizeof(char), len + 1);
+	while(j < start)
+	{
+		token->value[j] = dup_value[j];
+		j++;
+	}
+	while(dup_value[index])
+	{
+		token->value[j] = dup_value[index];
+		index++;
+		j++;
+	}
+	token->value[j] = '\0';
+	free(dup_value);
+}
+
+static int juge_expand(t_token *token, int *index, t_env *env, int *nb_sign)
+{
+	int i;
+	int j;
+	char *expand;
+	t_env *tmp;
+
+	i = *index + 1;
+	j = 0;
+	tmp = env;
+	while(token->value[i] && (token->value[i] != ' ' && token->value[i] != '$'))
+		i++;
+	if (i == *index + 1)
+		return (0);
+	expand = ft_calloc(sizeof(char), i + 1);
+	i = *index + 1;
+	while(token->value[i] && (token->value[i] != ' ' && token->value[i] != '$'))
+	{
+		expand[j] = token->value[i];
+		i++;
+		j++;
+	}
+	while(env->next)
+	{
+		if (ft_strcmp(expand, env->type) == 0)
+			return(free(expand), 1);
+		env = env->next;
+	}
+	*nb_sign = *nb_sign - 1;
+	env = tmp;
+	return (free(expand), change_le_plan(token, i, *index), 0);
+}
+
 void	check_token(t_token *token, t_env *env)
 {
 	int i;
+	int nb_sign;
 
 	i = 0;
 	while(token->next)
 	{
-		if (ft_strcmp(token->type, "argument") == 0){
-			while(token->value[i]){	
-				if(token->value[i] == '$'){
-					i++;
-					expand_env(token, env, &i);
-				}
+		nb_sign = count_sign(token->value);
+		while(token->value[i] && nb_sign > 0)
+		{	
+			if(token->value[i] == '$' && juge_expand(token, &i, env, &nb_sign))
+			{
 				i++;
-			}	
+				expand_env(token, env, &i);
+				nb_sign--;
+			}
+			if(token->value[i] != '$' && token->value[i])
+				i++;
 		}
 		if (ft_strcmp(token->type, "redirect output") == 0)
-			check_file(token->next->value, token->type);
+		check_file(token->next->value, token->type);
 		token = token->next;
+		i = 0;
 	}
 }
+
+
+
