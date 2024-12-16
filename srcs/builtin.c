@@ -3,37 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 16:55:18 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:33:17 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_builtin(t_minishell *minishell, t_token *token)
+int count_heredoc(t_token *token)
 {
-    t_token *head;
-
-    head = token;
-    if (ft_strncmp(token->value, "echo", 4) == 0)
-		ft_echo(token);
-	else if (ft_strncmp(token->value, "cd", 2) == 0)
-		ft_cd(token, minishell->env);
-	else if (ft_strncmp(token->value, "pwd", 3) == 0)
-		ft_pwd(token);
-	else if (ft_strncmp(token->value, "env", 3) == 0)
-		ft_env(minishell);
-    while(token->next)
+	int i;
+	
+	i  = 0;
+	while(token->next)
 	{
 		if (ft_strcmp(token->type, "heredoc") == 0)
-		{
-			heredoc(token, &head);
-			break;
-		}
+			i++;
 		token = token->next;
 	}
-    token = head;
+	return (i);
+}
+
+int is_builtin(t_minishell *minishell, t_token *token)
+{
+    if (ft_strcmp(token->value, "echo") == 0)
+		ft_echo(token);
+	else if (ft_strcmp(token->value, "cd") == 0)
+		ft_cd(token, minishell->env);
+	else if (ft_strcmp(token->value, "pwd") == 0)
+		ft_pwd(token);
+	else if (ft_strcmp(token->value, "env") == 0)
+		ft_env(minishell);
+	else if (ft_strcmp(token->value, "export") == 0)
+		ft_export(minishell->env, token);
     return (EXIT_SUCCESS);
 }

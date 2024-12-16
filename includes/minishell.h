@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:07:08 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:32:58 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ typedef struct s_pipex
 int 					is_builtin(t_minishell *minishell, t_token *token);
 
 // HEREDOC
-int						heredoc	(t_token *token, t_token **head);
+int 					count_heredoc(t_token *token);
+int 					heredoc(t_token *token, t_token **head, int *nb_heredoc);
 
 // UTILS
 void 					handle_sigint(int sig);

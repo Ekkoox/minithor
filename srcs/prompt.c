@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:28:52 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:52:33 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,15 @@ void handle_sigint(int sig)
     rl_redisplay();
 }
 
-static int count_heredoc(t_token *token)
-{
-	int i;
-
-	i  = 0;
-	while(token->next)
-	{
-		if (ft_strcmp(token->type, "heredoc") == 0)
-			i++;
-		token = token->next;
-	}
-	return (i);
-}
-
 int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
 	char	*buffer;
-	ssize_t	bytes_read;
+	t_token *head;
 	int nb_heredoc;
+	ssize_t	bytes_read;
 
 	bytes_read = 0;	
+	head = token;
 	minishell->env = creat_env_list(ev, minishell);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
@@ -137,11 +125,21 @@ int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *min
 		minishell->buffer = buffer;
 		add_history(buffer);
 		tokenisation(token, minishell, pipex);
+		nb_heredoc = count_heredoc(token);
 		pipex->command_1 = token->value;
 		if (bytes_read > 0)
 		{
-			if (is_builtin(minishell, token) != 0)
-				army_of_fork(ev, pipex, minishell, token);
+			while(nb_heredoc)
+			{
+				if (ft_strcmp(token->type, "heredoc") == 0)
+					if (heredoc(token, &head, &nb_heredoc) == 1)
+						break;
+				token = token->next;
+			}
+			token = head;
+			if (is_builtin(minishell, token) == 0)
+				if(ft_strcmp(token->type, "heredoc") != 0)
+					army_of_fork(ev, pipex, minishell, token);
 		}
 		free(buffer);
 	}

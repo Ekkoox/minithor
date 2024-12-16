@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/12 16:41:52 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:42:09 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ char	*get_the_command(t_pipex *pipex)
 		path = search_the_path(pipex, pipex->command_1);
 		if (!path)
 		{
-			// ft_putstr_fd("Command not found\n", 2);
+			ft_putstr_fd("Command not found\n", 2);
 			free_all(pipex);
-			// exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		}
 		return (path);
 	}

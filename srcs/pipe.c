@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:10:08 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:42:50 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void error_execve(t_pipex *pipex)
 {
 	ft_putstr_fd("Execve error\n", 2);
 	free_all(pipex);
-	// exit(EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
 
 static void get_the_next_command(t_token *token, t_minishell *minishell, char *command)
@@ -27,7 +27,6 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 
 	tmp = token;
 	i = 0;
-	// printf("%s\n", command);
 	while(ft_strcmp(token->value, command) != 0 && token->next)
 		token = token->next;
 	while(token->next)
@@ -72,9 +71,9 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	get_the_next_command(token, minishell, command);
 	if (!path)
 	{
-		// ft_putstr_fd("No such file or directory\n", 2);
+		ft_putstr_fd("No such file or directory\n", 2);
 		free_all(pipex);
-		// exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	if (token->flag == 1)
 	{
@@ -91,6 +90,8 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 		close(pipex->pipes[i][1]);
 		i++;
 	}
+	ft_printf("%s\n", minishell->command_exac[0]);
+	ft_printf("%s\n", minishell->command_exac[1]);
 	if (execve(path, minishell->command_exac, pipex->ev) == -1)
 		error_execve(pipex);
 }

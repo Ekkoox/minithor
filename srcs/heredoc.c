@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:28:08 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/16 19:45:16 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *
     }
 }
 
-  static void delete_node_heredoc(t_token *target, t_token **head)
+  static void delete_node_heredoc(t_token **target, t_token **head)
 {
     t_token *prev;
     t_token *tmp;
@@ -52,9 +52,9 @@ static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *
     flag = 0;
     if (ft_strcmp((*head)->type, "heredoc") == 0)
     {
-        *head = target->next;
-        free(target);
-        target = NULL;
+        *head = (*target)->next;
+        free((*target));
+        (*target) = (*head);
         return;
     }
     else
@@ -63,15 +63,15 @@ static void free_node(t_token *target, t_token ** head, t_token *prev, t_token *
             (*head) = (*head)->next;
             if (ft_strcmp((*head)->type, "heredoc") == 0)
             {
-                if (target->next->value != NULL){
+                if ((*target)->next->value != NULL){
                     flag = 1;
-                    (*head) = target->next;
+                    (*head) = (*target)->next;
                 }
                 break;
             }
             prev = prev->next;
         }
-        free_node(target, head, prev, tmp, flag);
+        free_node((*target), head, prev, tmp, flag);
 }
 
 static void find_the_heredoc(t_token *token)
@@ -149,7 +149,7 @@ static int juge_heredoc(t_token *token)
 	{
 		token = tmp;
 		return(1);
-	}
+	}    
 	token = tmp;
 	return(0);
 }
@@ -178,7 +178,9 @@ int heredoc(t_token *token, t_token **head, int *nb_heredoc)
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
     if (juge_heredoc(*head))
-		delete_node_heredoc(token, head);
-	(*nb_heredoc) = (*nb_heredoc) - 1;
+        delete_node_heredoc(&token, head);
+    else
+        return((*nb_heredoc = (*nb_heredoc)- 1), EXIT_FAILURE);
+(*nb_heredoc) = (*nb_heredoc) - 1;
     return (EXIT_SUCCESS);
 }
