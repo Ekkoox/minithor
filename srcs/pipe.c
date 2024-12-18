@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 19:42:50 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:38:15 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	if (token->flag == 1)
 	{
 		int fd = open("Tmp_files", O_RDONLY);
-		dup2(fd, STDIN_FILENO);
+		dup2(fd, STDIN_FILENO);	
 	}
 	else if (cmd_index > 0)
 		dup2(pipex->pipes[cmd_index - 1][0], STDIN_FILENO);

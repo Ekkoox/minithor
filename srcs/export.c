@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:53:35 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/13 16:51:28 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:49:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void get_value_env(t_env *env, t_token *token)
 	env->value[j] = '\0';
 }
 
-void ft_export(t_env *env, t_token *token)
+int ft_export(t_env *env, t_token *token)
 {
 	t_env *tmp;
 	t_token *tmp1;
@@ -80,4 +80,6 @@ void ft_export(t_env *env, t_token *token)
 		env->next = ft_calloc(sizeof(t_env), 1);
 	}
 	get_value_env(env, token);
+	token->flag = 1;
+	return (EXIT_SUCCESS);
 }

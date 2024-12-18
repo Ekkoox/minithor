@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:16:19 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/20 18:21:07 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:53:29 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,6 @@ static char	*ft_strndup(const char *str, int index, int n)
 	s[i] = '\0';
 	return (s);
 }
-
-// static void	*ft_free(char **strs, int count)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < count)
-// 	{
-// 		free(strs[i]);
-// 		i++;
-// 	}
-// 	free(strs);
-// 	return (NULL);
-// }
 
 char	**ft_split_env(char const *s, char c)
 {

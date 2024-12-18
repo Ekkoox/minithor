@@ -4,17 +4,20 @@ C_FILES = main.c\
 		  cd.c\
 		  pwd.c\
 		  env.c\
-		  echo.c\
           pipe.c\
+		  echo.c\
 		  token.c\
           prompt.c\
+		  export.c\
+		  signal.c\
 		  builtin.c\
 		  heredoc.c\
 		  split_env.c\
           pipe_utils.c\
 		  token_utils.c\
 		  check_token.c\
-		  export.c\
+		  token_utils2.c\
+		  heredoc_utils.c\
 
 BOLD = \033[1m
 RED = \033[31m

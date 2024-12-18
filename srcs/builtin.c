@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 19:33:17 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:35:50 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ int count_heredoc(t_token *token)
 			i++;
 		token = token->next;
 	}
-	return (i);
+	return (EXIT_SUCCESS);
 }
 
 int is_builtin(t_minishell *minishell, t_token *token)
 {
-    if (ft_strcmp(token->value, "echo") == 0)
+	if (ft_strcmp(token->value, "echo") == 0)
 		ft_echo(token);
 	else if (ft_strcmp(token->value, "cd") == 0)
 		ft_cd(token, minishell->env);
 	else if (ft_strcmp(token->value, "pwd") == 0)
 		ft_pwd(token);
 	else if (ft_strcmp(token->value, "env") == 0)
-		ft_env(minishell);
+		ft_env(minishell, token);
 	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(minishell->env, token);
     return (EXIT_SUCCESS);
