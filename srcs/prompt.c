@@ -3,16 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 19:52:33 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:57:45 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -88,76 +84,53 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 	return (env);
 }
 
-void handle_sigint(int sig)
+int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
-    (void)sig;
+    char    *buffer;
+    t_token *head;
+    int nb_heredoc;
+    ssize_t    bytes_read;
 
-    rl_replace_line("", 0);
-    rl_on_new_line();
-	ft_printf("\n");
-    rl_redisplay();
+    bytes_read = 0;    
+    head = token;
+    minishell->env = creat_env_list(ev, minishell);
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, handle_sigint);
+    while(1)
+    {
+        buffer = readline(">");
+        if (!buffer)
+        {
+            ft_printf("exit\n");
+            return (EXIT_FAILURE);
+        }
+        bytes_read = ft_strlen(buffer);
+        buffer[bytes_read] = '\0';
+        if (exit_prompt(buffer) == 0)
+            break ;
+        minishell->buffer = buffer;
+        add_history(buffer);
+        tokenisation(token, minishell, pipex);
+        nb_heredoc = count_heredoc(token);
+        pipex->command_1 = token->value;
+        if (bytes_read > 0)
+        {
+            while(nb_heredoc)
+            {
+                if (ft_strcmp(token->type, "heredoc") == 0)
+                    if (heredoc(token, &head, &nb_heredoc) == 1)
+                        break;
+                token = token->next;
+            }
+            token = head;
+            if (is_builtin(minishell, token) == 0)
+                if(ft_strcmp(token->type, "heredoc") != 0)
+                    army_of_fork(ev, pipex, minishell, token);
+        }
+        free(buffer);
+    }
+    if (bytes_read < 0)
+        error_prompt(buffer, bytes_read);
+    free_env_list(minishell->env);
+    return (EXIT_SUCCESS);
 }
-
-int	creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
-{
-	char	*buffer;
-	t_token *head;
-	int nb_heredoc;
-	ssize_t	bytes_read;
-
-	bytes_read = 0;	
-	head = token;
-	minishell->env = creat_env_list(ev, minishell);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
-	while(1)
-	{
-		buffer = readline(">");
-		if (!buffer)
-		{
-			ft_printf("exit\n");
-			return (EXIT_FAILURE);
-		}
-		bytes_read = ft_strlen(buffer);
-		buffer[bytes_read] = '\0';
-		if (exit_prompt(buffer) == 0)
-			break ;
-		minishell->buffer = buffer;
-		add_history(buffer);
-		tokenisation(token, minishell, pipex);
-		nb_heredoc = count_heredoc(token);
-		pipex->command_1 = token->value;
-		if (bytes_read > 0)
-		{
-			while(nb_heredoc)
-			{
-				if (ft_strcmp(token->type, "heredoc") == 0)
-					if (heredoc(token, &head, &nb_heredoc) == 1)
-						break;
-				token = token->next;
-			}
-			token = head;
-			if (is_builtin(minishell, token) == 0)
-				if(ft_strcmp(token->type, "heredoc") != 0)
-					army_of_fork(ev, pipex, minishell, token);
-		}
-		free(buffer);
-	}
-	if (bytes_read < 0)
-		error_prompt(buffer, bytes_read);
-	free_env_list(minishell->env);
-	return (EXIT_SUCCESS);
-}
-
-
-
-//a tester
-//cote double cote ("") ('')
-//heredoc genre double heredoc
-//export en mode bien mechant
-
-
-
-//gere le cas avec les expand commande genre
-//export cmd="ls"
-//suffi de bien tout fusioner comme il faut

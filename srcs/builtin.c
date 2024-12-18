@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 09:49:01 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:51:51 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ int count_heredoc(t_token *token)
 			i++;
 		token = token->next;
 	}
-	return (i);
+	return (EXIT_SUCCESS);
 }
 
 int is_builtin(t_minishell *minishell, t_token *token)
 {
-	token->flag = 0;
-    if (ft_strcmp(token->value, "echo") == 0)
+	if (ft_strcmp(token->value, "echo") == 0)
 		ft_echo(token);
 	else if (ft_strcmp(token->value, "cd") == 0)
 		ft_cd(token, minishell->env);
@@ -39,5 +38,7 @@ int is_builtin(t_minishell *minishell, t_token *token)
 		ft_env(minishell, token);
 	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(minishell->env, token);
-    return (EXIT_SUCCESS);
+	else
+		return (0);		
+	return (1);
 }

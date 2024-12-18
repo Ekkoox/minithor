@@ -9,6 +9,7 @@ C_FILES = main.c\
 		  token.c\
           prompt.c\
 		  export.c\
+		  signal.c\
 		  builtin.c\
 		  heredoc.c\
 		  split_env.c\

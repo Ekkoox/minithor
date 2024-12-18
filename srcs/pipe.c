@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 10:18:55 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:56:36 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 
 static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_index,t_token *token, char *command)
 {
-	char *path;
 	int i;
+	int c;
+	int fd;
+	char *path;
 	(void)token;
 	
 	pipex->command_1 = command;
 	path = get_the_command(pipex);
-	int c = 0;
+	c = 0;
 	while(minishell->command_exac[c])
 	{
 		free(minishell->command_exac[c]);
@@ -77,21 +79,24 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int cmd_inde
 	}
 	if (token->flag == 1)
 	{
-		int fd = open("Tmp_files", O_RDONLY);
-		dup2(fd, STDIN_FILENO);
+		fd = open("Tmp_files", O_RDONLY);
+		dup2(fd, STDIN_FILENO);	
 	}
 	else if (cmd_index > 0)
 		dup2(pipex->pipes[cmd_index - 1][0], STDIN_FILENO);
 	else if (cmd_index < pipex->num_cmds - 1)
 		dup2(pipex->pipes[cmd_index][1], STDOUT_FILENO);
 	i = 0;
-	while (i < pipex->num_cmds - 1){
+	while (i < pipex->num_cmds - 1)
+	{
 		close(pipex->pipes[i][0]);
 		close(pipex->pipes[i][1]);
 		i++;
 	}
-	ft_printf("%s\n", minishell->command_exac[0]);
-	ft_printf("%s\n", minishell->command_exac[1]);
+	// ft_printf("%s\n", minishell->command_exac[0]);
+	// ft_printf("%s\n", minishell->command_exac[1]);
+	if (is_builtin(minishell, token) == 0)
+		free_all(pipex);
 	if (execve(path, minishell->command_exac, pipex->ev) == -1)
 		error_execve(pipex);
 }

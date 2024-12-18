@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 10:14:17 by enschnei         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:54:42 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ typedef struct s_pipex
 	t_minishell			*minishell;
 	pid_t				pid;
 }						t_pipex;
+
+// SIGNAL
+
+void 					handle_sigint(int sig);
 
 // BUILTIN
 int						ft_pwd(t_token *token);
