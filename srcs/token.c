@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/16 16:29:07 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:15:18 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,60 +27,6 @@ static void	creat_node(char *type, t_token *token, char *value,
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
-static void	clear_cot(char *buffer, char *dest, int *index, int start,
-		int *index_dest)
-{
-	int	i;
-
-	i = 0;
-	if (start == *index)
-	{
-		*index += 1;
-		while (((buffer[*index] != 34) || (buffer[*index] != 39))
-			&& buffer[*index])
-		{
-			dest[i] = buffer[*index];
-			i++;
-			*index += 1;
-		}
-		i--;
-		dest[i] = '\0';
-	}
-	else
-	{
-		while ((buffer[*index] != 34 || buffer[*index] != 39) && (buffer[*index]))
-		{
-			if(buffer[*index] == 34 || buffer[*index] == 39)
-				*index += 1;
-			dest[*index_dest] = buffer[*index];
-			*index += 1;
-			*index_dest += 1;
-		}
-		buffer[*index] = '\0';
-	}
-	return ;
-}
-
-static int	is_space(char *str, int *index)
-{
-	int	i;
-
-	i = *index;
-	
-	if (str[i] == ' ')
-		return(0);
-	else if(str[i] == '|')
-		return(0);
-	else if(str[i] == '<')
-	{
-		if (str[i + 1] == '<')
-			return (-1);
-		return(0);
-	}
-	else if (str[i] == '>')
-		return (0);
-	return (1);
-}
 
 static int get_line(t_minishell *minishell, int *index)
 {
@@ -150,8 +96,8 @@ static void	grap_mot(t_minishell *minishell, int *index)
 		minishell->current[j] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
 		{
-			clear_cot(minishell->buffer, minishell->current,  index, y, &j);
-			return;
+			clear_quote(minishell->buffer, minishell->current,  index, y, &j);
+			return ;
 		}
 		*index += 1;
 		j++;
@@ -187,61 +133,16 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex,
 	return (1);
 }
 
-static int	count_chef(char *mot)
-{
-	int		i;
-	int		c;
-	char	chef;
-
-	i = 0;
-	c = 0;
-	chef = 0;
-	while (mot[i])
-	{
-		if ((mot[i] == '"' || mot[i] == '\'') && (c == 0))
-			chef = mot[i];
-		if (mot[i] == chef)
-			c++;
-		i++;
-	}
-	return (c);
-}
-
-static char	*dans_cot(char *mot, int chef)
-{
-	int		i;
-	int		y;
-	char	*clear_mot;
-	char	cot;
-
-	i = 0;
-	y = 0;
-	cot = mot[i];
-	clear_mot = ft_calloc(sizeof(char), (ft_strlen(mot) - chef) + 1);
-	if (!clear_mot)
-		return (NULL);
-	while (mot[i])
-	{
-		if (mot[i] == cot)
-			i++;
-		clear_mot[y] = mot[i];
-		i++;
-		y++;
-	}
-	clear_mot[y] = '\0';
-	return (clear_mot);
-}
-
 static void	get_double_cot(char *mot, t_token *token, t_pipex *pipex, int chef,
 		t_minishell *minishell)
 {
-	int		i;
 	char	*in_cot;
+	int		i;
 	int		c;
 
 	i = 0;
 	c = 0;
-	in_cot = dans_cot(mot, chef);
+	in_cot = in_quote(mot, chef);
 	while (in_cot[i])
 	{
 		if (mot[i] == ' ')
@@ -298,13 +199,11 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
 			i++;
 		grap_mot(minishell, &i);
-		if (count_chef(minishell->current) != 0)
+		if (count_quote(minishell->current) != 0)
 			get_double_cot(minishell->current, token, pipex,
-				count_chef(minishell->current), minishell);
+				count_quote(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		// ft_printf("le type de la node: %s\n", token->type);
-		// ft_printf("la valeur de la node: %s\n", token->value);
 		token = token->next;
 		while (minishell->buffer[i] == ' ')
 			i++;

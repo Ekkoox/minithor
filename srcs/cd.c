@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:43:10 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/07 16:44:54 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:49:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int ft_cd(t_token *token, t_env *env)
         return (EXIT_FAILURE);
     }
 	update_env_list(env);
+	token->flag = 1;
     return (EXIT_SUCCESS);
 }

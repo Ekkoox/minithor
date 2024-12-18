@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 19:33:17 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:49:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int count_heredoc(t_token *token)
 
 int is_builtin(t_minishell *minishell, t_token *token)
 {
+	token->flag = 0;
     if (ft_strcmp(token->value, "echo") == 0)
 		ft_echo(token);
 	else if (ft_strcmp(token->value, "cd") == 0)
@@ -35,7 +36,7 @@ int is_builtin(t_minishell *minishell, t_token *token)
 	else if (ft_strcmp(token->value, "pwd") == 0)
 		ft_pwd(token);
 	else if (ft_strcmp(token->value, "env") == 0)
-		ft_env(minishell);
+		ft_env(minishell, token);
 	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(minishell->env, token);
     return (EXIT_SUCCESS);

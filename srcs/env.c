@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:24:17 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 16:49:05 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:49:01 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_env(t_minishell *minishell)
+int ft_env(t_minishell *minishell, t_token *token)
 {
 	t_env *tmp;
 
@@ -25,5 +25,6 @@ int ft_env(t_minishell *minishell)
 		minishell->env = minishell->env->next;
 	}
 	minishell->env = tmp;
+	token->flag = 1;
 	return (EXIT_SUCCESS);
 }

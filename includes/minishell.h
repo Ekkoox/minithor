@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/16 16:32:58 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 10:14:17 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -29,14 +28,6 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-enum					e_token
-{
-	PIPE,
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
-	REDIRECTION,
-};
 
 typedef struct s_pid
 {
@@ -59,12 +50,11 @@ typedef struct s_token
 	char				*heredoc;
 	struct s_token		*next;
 	struct s_token		*prev;
-	
+
 }						t_token;
 
 typedef struct s_minishell
 {
-	int					flag_builtin;
 	int					flag;
 	char				*current;
 	char				*buffer;
@@ -96,23 +86,23 @@ typedef struct s_pipex
 }						t_pipex;
 
 // BUILTIN
-int 					is_builtin(t_minishell *minishell, t_token *token);
+int						ft_pwd(t_token *token);
+int						ft_echo(t_token *token);
+int						ft_cd(t_token *token, t_env *env);
+int						ft_export(t_env *env, t_token *token);
+int						ft_env(t_minishell *minishell, t_token *token);
+int						is_builtin(t_minishell *minishell, t_token *token);
 
 // HEREDOC
-int 					count_heredoc(t_token *token);
-int 					heredoc(t_token *token, t_token **head, int *nb_heredoc);
+void 					close_fd(int sig);
+int						count_heredoc(t_token *token);
+int 					execut_heredoc(t_token *token);
+int						heredoc(t_token *token, t_token **head,
+							int *nb_heredoc);
 
 // UTILS
-void 					handle_sigint(int sig);
+void					handle_sigint(int sig);
 char					**ft_split_env(char const *s, char c);
-
-// FONCTION
-int 				ft_cd(t_token *token, t_env *env);
-int					ft_pwd(t_token *token);
-int					ft_env(t_minishell *minishell);
-int					ft_echo(t_token *token);
-void 				ft_export(t_env *env, t_token *token);
-
 
 // PROMPT
 int						exit_prompt(char *buffer);
@@ -130,9 +120,14 @@ char					*find_the_path(char **ev, t_pipex *pipex);
 char					*search_the_path(t_pipex *pipex, char *command);
 
 // TOKEN
-void					check_token(t_token *token, t_env *env);
+int						count_quote(char *mot);
+int						is_space(char *str, int *index);
+int						search_command_for_token(t_pipex *pipex, char *mot);
 int						tokenisation(t_token *token, t_minishell *minishell,
 							t_pipex *pipex);
-int						search_command_for_token(t_pipex *pipex, char *mot);
+char					*in_quote(char *mot, int quote);
+void					check_token(t_token *token, t_env *env);
+void					clear_quote(char *buffer, char *dest, int *index, int start,
+							int *index_dest);
 
 #endif

@@ -8,13 +8,15 @@ C_FILES = main.c\
           pipe.c\
 		  token.c\
           prompt.c\
+		  export.c\
 		  builtin.c\
 		  heredoc.c\
 		  split_env.c\
           pipe_utils.c\
 		  token_utils.c\
 		  check_token.c\
-		  export.c\
+		  token_utils2.c\
+		  heredoc_utils.c\
 
 BOLD = \033[1m
 RED = \033[31m
