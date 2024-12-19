@@ -7,6 +7,7 @@ C_FILES = main.c\
           pipe.c\
 		  echo.c\
 		  token.c\
+		  free.c\
           prompt.c\
 		  export.c\
 		  signal.c\

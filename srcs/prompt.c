@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:26:30 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:38:08 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,6 @@ int	exit_prompt(char *buffer)
 	return (EXIT_FAILURE);
 }
 
-static void free_env_list(t_env *env) 
-{
-    t_env *tmp;
-
-    while (env) 
-	{
-        tmp = env->next;
-        free(env->type);
-        free(env->value);
-        free(env);
-        env = tmp;
-    }
-}
-
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
@@ -66,19 +52,18 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 	while(ev[i])
 	{
 		split_env = ft_split_env(ev[i], '=');
-		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[0]));
-		if (!env->type)
+		env->type = ft_strdup(split_env[0]);
+		env->value = ft_strdup(split_env[1]);
+		if (!env->type || !env->value)
 			return (NULL);
-		env->type = ft_calloc(sizeof(char), ft_strlen(split_env[1]));
-		if (!env->type)
-			return (NULL);
-		env->type = split_env[0];
-		env->value = split_env[1];
 		env->next = ft_calloc(sizeof(t_env), 1);
 		if (!env->next)
 			return (NULL);
 		env = env->next;
 		i++;
+        free(split_env[0]);
+        free(split_env[1]);
+        free(split_env);
 	}
 	env = tmp;
 	return (env);
@@ -115,7 +100,6 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         pipex->command_1 = token->value;
         if (bytes_read > 0)
         {
-            ft_printf("%s\n", token->type);
             while(nb_heredoc)
             {
                 if (ft_strcmp(token->type, "heredoc") == 0)
@@ -126,13 +110,17 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
             token = head;
             if (is_builtin(minishell, token) == 0)
                 if(ft_strcmp(token->type, "heredoc") != 0)
-                    army_of_fork(ev, pipex, minishell, token);
+            army_of_fork(ev, pipex, minishell, token);
         }
-        free(buffer);
+        mini_free(minishell, pipex);
+        // free_tab(minishell->command_exac);
+        // free(buffer);
     }
+    free_env_list(minishell->env);
+    free_tok_list(token);
+    free_minishell_list(minishell);
     if (bytes_read < 0)
         error_prompt(buffer, bytes_read);
-    free_env_list(minishell->env);
     return (EXIT_SUCCESS);
 }
 

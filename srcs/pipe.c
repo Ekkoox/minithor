@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:38:15 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:08:29 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ static int count_command(t_token *token)
 }
 
 
+
+
 void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *token)
 {
 	int i;
@@ -179,7 +181,6 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 	creat_pipelin(pipex, token);
 	char **command = creat_tab_command(token, pipex->num_cmds);
 
-	pipex->pipes = malloc(sizeof(int *) * (pipex->num_cmds - 1));
 	int c = -1;
 	i = 0;
 	while (i < pipex->num_cmds - 1)
@@ -220,11 +221,11 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 		wait(NULL);
 		i++;
 	}
-	i = 0;
-	while (i < pipex->num_cmds - 1)
-	{
-		free(pipex->pipes[i]);
-		i++;
-	}
-	free(pipex->pipes);
+	// i = 0;
+	// while (i < pipex->num_cmds - 1)
+	// {
+	// 	free(pipex->pipes[i]);
+	// 	i++;
+	// }
+	repos_army(pipex, command);
 }

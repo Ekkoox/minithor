@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:34:13 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:01:37 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int						ft_pwd(t_token *token);
 int						ft_echo(t_token *token);
 int						ft_cd(t_token *token, t_env *env);
 int						ft_export(t_env *env, t_token *token);
-int						ft_env(t_minishell *minishell, t_token *token);
+int						ft_env(t_minishell *minishell);
 int						is_builtin(t_minishell *minishell, t_token *token);
 
 // HEREDOC
@@ -143,5 +143,14 @@ char					*in_quote(char *mot, int quote);
 void					check_token(t_token *token, t_env *env);
 void					clear_quote(char *buffer, char *dest, int *index, int start,
 							int *index_dest);
+
+//FREE
+void 					repos_army(t_pipex *pipex, char **command);
+void 					free_tok(t_token *token, t_minishell *minishell, t_pipex *pipex);
+void 					free_env_list(t_env *env);
+void    				free_tok_list(t_token *token);
+void    				free_minishell_list(t_minishell *minishell);
+void 					free_tab(char **tab);
+void					mini_free(t_minishell *minishell, t_pipex *pipex);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:35:50 by razouani         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:07:34 by razouani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int count_heredoc(t_token *token)
 			i++;
 		token = token->next;
 	}
-	return (EXIT_SUCCESS);
+	return (i);
 }
 
 int is_builtin(t_minishell *minishell, t_token *token)
@@ -35,8 +35,10 @@ int is_builtin(t_minishell *minishell, t_token *token)
 	else if (ft_strcmp(token->value, "pwd") == 0)
 		ft_pwd(token);
 	else if (ft_strcmp(token->value, "env") == 0)
-		ft_env(minishell, token);
+		ft_env(minishell);
 	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(minishell->env, token);
-    return (EXIT_SUCCESS);
+	else 
+		return(0);
+    return (1);
 }
