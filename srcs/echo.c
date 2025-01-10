@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:36:11 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:21:38 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_echo(t_token *token)
 
 	flag = 0;
     token = token->next;
-	while (token->value && token->value[0] == '-' && check_n(token->value + 1))
+	while (token->value && token->value[0] == '-' && check_n(token->value))
 	{	
 		flag = 1;
 		token = token->next;

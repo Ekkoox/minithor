@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:03:20 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:37:25 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:02:43 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int ft_pwd(t_token *token)
         perror("Erreur pwd");
         return (EXIT_FAILURE);
     }
-    ft_printf("%s\n", token->value);
-    free(token->value);
+   // free(token->value);
     return (EXIT_SUCCESS);
 }

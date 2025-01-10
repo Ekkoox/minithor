@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:30:51 by enschnei          #+#    #+#             */
-/*   Updated: 2024/01/26 15:18:12 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:34:31 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*ft_strndup(const char *str, int index, int n)
 	char	*s;
 
 	i = 0;
-	s = malloc(sizeof(char) * n + 1);
+	s = malloc(sizeof(char) * (n + 1));
 	if (!s)
 		return (NULL);
 	while (str[index] && i < n)

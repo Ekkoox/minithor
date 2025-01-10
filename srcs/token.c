@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/19 17:04:37 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/10 19:54:13 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	creat_node(char *type, t_token *token, char *value,
 	if (!token->type)
 		return ;
 	token->value = ft_strdup(value);
+	//ft_printf("l'addresse de la node: %p\n", token->value);
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
@@ -90,7 +91,7 @@ static void	grap_mot(t_minishell *minishell, int *index)
 	minishell->current = ft_calloc(sizeof(char), len + 1);
 	if (!minishell->current)
 		return ;
-	while (*index < i && minishell->buffer[*index])
+	while (j < len && minishell->buffer[*index])
 	{
 		minishell->current[j] = minishell->buffer[*index];
 		if (minishell->buffer[*index] == 34 || minishell->buffer[*index] == 39)
@@ -101,7 +102,7 @@ static void	grap_mot(t_minishell *minishell, int *index)
 		*index += 1;
 		j++;
 	}
-	minishell->current[*index] = '\0';
+	minishell->current[j] = '\0';
 }
 
 static int	get_type(char *mot, t_token *token, t_pipex *pipex,
@@ -124,7 +125,7 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex,
 		return (creat_node("argument", token, mot, minishell), 0);
 	}
 	else if (search_command_for_token(pipex, mot) == 0)
-		return (free(pipex->path), creat_node("commande", token, mot, minishell), 0);
+		return (creat_node("commande", token, mot, minishell), 0);
 	else if (ft_strcmp(mot, "|") == 0)
 		return (creat_node("pipe", token, mot, minishell), 0);
 	else
@@ -204,10 +205,11 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 				count_quote(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
+		//ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
 		token = token->next;
 		while (minishell->buffer[i] == ' ')
 			i++;
+		free(minishell->current);
 	}
 	token = tmp;
 	put_in(token, minishell);

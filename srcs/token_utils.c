@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/19 16:57:17 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/10 19:21:59 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	**split_the_path_for_the_token(t_pipex *pipex)
 		return (NULL);
 	pipex->path = ft_split(pipex->ligne_path + 5, ':');
 	if (!pipex->path)
-		return(NULL);
+		return (NULL);
 	return (pipex->path);
 }
 
@@ -99,6 +99,12 @@ int	search_command_for_token(t_pipex *pipex, char *mot)
 	find_the_path_for_token(pipex);
 	split_the_path_for_the_token(pipex);
 	if (get_the_command_for_the_token(pipex) == 0)
+	{
+		free_tab(pipex->path);
+		pipex->path = NULL;
 		return (0);
+	}
+	free_tab(pipex->path);
+	pipex->path = NULL;
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/19 17:38:08 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/10 19:52:57 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         minishell->buffer = buffer;
         add_history(buffer);
         tokenisation(token, minishell, pipex);
+        check_token(token, minishell->env);
         nb_heredoc = count_heredoc(token);
         pipex->command_1 = token->value;
         if (bytes_read > 0)
@@ -112,13 +113,12 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
                 if(ft_strcmp(token->type, "heredoc") != 0)
             army_of_fork(ev, pipex, minishell, token);
         }
-        mini_free(minishell, pipex);
-        // free_tab(minishell->command_exac);
-        // free(buffer);
+        token = head;
+        mini_free(minishell, pipex, token);
     }
     free_env_list(minishell->env);
-    free_tok_list(token);
-    free_minishell_list(minishell);
+    free_tok_list(token, 0);
+    // free_minishell_list(minishell);
     if (bytes_read < 0)
         error_prompt(buffer, bytes_read);
     return (EXIT_SUCCESS);

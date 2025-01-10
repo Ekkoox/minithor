@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2024/12/19 17:39:46 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:00:20 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,45 +78,71 @@ void free_env_list(t_env *env)
     }
 }
 
-void    free_tok_list(t_token *token)
+void    free_tok_list(t_token *token, int flag)
 {
     t_token *target;
-    int i = 0;
+    t_token *tmp;
+    int index;
     
-    while(token)
+    tmp = token;
+    index = 0;
+    if (flag)
     {
-        ft_printf("%d\n", i);
-        target = token;
-        token = token->next;
-        if (target->type)
-            free(target->type);
-        if (target->value)
-            free(target->value);
-        target->type = NULL;
-        target->value = NULL;
-        free(target);
-        target = NULL;
-        i++;
+         while(token)
+        {
+            target = token;
+            token = token->next;
+            if (target->type)
+            {
+                free(target->type);
+                target->type = NULL;
+            }
+            if (target->value)
+            {
+                free(target->value);
+                target->value = NULL;
+            }
+            if (index)
+            {
+                free(target);
+                target = NULL;
+            }
+            index++;
+        }
     }
+    token = tmp;
+    if (!flag)
+        free(token);
+    // while(token)
+    // {
+    //     target = token;
+    //     token = token->next;
+    //     if (target->type)
+    //         free(target->type);
+    //     if (target->value)
+    //         free(target->value);
+    //     target->type = NULL;
+    //     target->value = NULL;
+    //     free(target);
+    //     target = NULL;
+    // }
 }
 
-void    free_minishell_list(t_minishell *minishell)
-{
-    if (minishell->buffer)
-        free(minishell->buffer);
-    if (minishell->current)
-        free(minishell->current);
-    // if (minishell->pid)
-    //     free(minishell->pid);
-}
+// void    free_minishell_list(t_minishell *minishell)
+// {
+//     // if (minishell->pid)
+//     //     free(minishell->pid);
+// }
 
-void mini_free(t_minishell *minishell, t_pipex *pipex)
+void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token)
 {
-    //free_tok_list(minishell->token);
+    free_tok_list(token, 1);
     free(minishell->buffer);
     minishell->buffer = NULL;
-    free(minishell->current);
-    minishell->current = NULL;
+    // free(minishell->current);
+    // minishell->current = NULL;
     free_tab(minishell->command_exac);
-    free_tab(pipex->path);
+    if(pipex->path)
+        free_tab(pipex->path);
+    pipex->path = NULL;
 }
