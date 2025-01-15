@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/10 20:00:20 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:07:42 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void    free_tok_list(t_token *token, int flag)
         {
             target = token;
             token = token->next;
+            ft_printf("%s\n", target->value);
             if (target->type)
             {
                 free(target->type);
