@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/10 20:07:42 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:55:10 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void free_tab(char **tab)
     int i;
 
     i = 0;
+    // AJOUT DEBUG
+    if (tab == NULL)
+        return;
+    // AJOUT DEBUG
+        
     while(tab[i])
     {
         free(tab[i]);

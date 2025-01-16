@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/13 22:55:57 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:59:14 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static int  count_sign(char *value)
 
 	i = 0;
 	sign = 0;
+	//AJOUT DEBUG
+	if (value == NULL)
+		return (0);
+	//AJOUT DEBUG
+	
 	while(value[i])
 	{
 		if (value[i] == '$')

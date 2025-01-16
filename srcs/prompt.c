@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/10 19:52:57 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:07:18 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
     int nb_heredoc;
 	ssize_t	bytes_read;
 
+    // AJOUT DEBUG
+    int flag = 0;
+
     bytes_read = 0;    
     head = token;
     minishell->env = creat_env_list(ev, minishell);
@@ -95,7 +98,9 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
             break ;
         minishell->buffer = buffer;
         add_history(buffer);
-        tokenisation(token, minishell, pipex);
+        flag = tokenisation(token, minishell, pipex);
+        if (flag == EXIT_FAILURE)
+            continue;
         check_token(token, minishell->env);
         nb_heredoc = count_heredoc(token);
         pipex->command_1 = token->value;

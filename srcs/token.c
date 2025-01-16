@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/10 19:54:13 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:54:29 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,21 +164,33 @@ static void	put_in(t_token *token, t_minishell *minishell)
 	int		i;
 	int		len;
 
+	if (!token || !minishell)
+        return;
 	tmp = token;
 	len = 0;
 	i = 0;
-	while (token->next != NULL)
+	while (tmp && token->next != NULL)
 	{
 		token = token->next;
 		len++;
 	}
 	token = tmp;
 	minishell->command_exac = ft_calloc(sizeof(char *), len + 1);
+	if (!minishell->command_exac)
+		return ;
 	while (token->next != NULL)
 	{
 		// minishell->command_exac[i] = ft_calloc(sizeof(char),
 		// 		ft_strlen(token->value) + 1);
 		minishell->command_exac[i] = ft_strdup(token->value);
+		if (!minishell->command_exac[i])
+		{
+		    while (i > 0)
+		        free(minishell->command_exac[--i]);
+		    free(minishell->command_exac);
+		    minishell->command_exac = NULL;
+		    return;
+		}
 		token = token->next;
 		i++;
 	}
@@ -195,6 +207,15 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	pipex->path = pipex->ev;
 	i = 0;
 	tmp = token;
+
+	// AJOUT DEBUG
+    if (minishell->buffer == NULL || minishell->buffer[0] == '\0')
+    {
+        ft_putstr_fd("Input is empty\n", 2);
+        return (EXIT_FAILURE);
+    }
+	// AJOUT DEBUG
+
 	while (minishell->buffer[i])
 	{
 		while((minishell->buffer[i] == ' ' || minishell->buffer[i] == '\t') && (minishell->buffer[i]))
