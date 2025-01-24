@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/16 17:55:10 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/23 17:39:32 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ void free_tab(char **tab)
     int i;
 
     i = 0;
-    // AJOUT DEBUG
     if (tab == NULL)
         return;
-    // AJOUT DEBUG
-        
     while(tab[i])
     {
         free(tab[i]);
@@ -97,7 +94,7 @@ void    free_tok_list(t_token *token, int flag)
         {
             target = token;
             token = token->next;
-            ft_printf("%s\n", target->value);
+            //ft_printf("%s\n", target->value);
             if (target->type)
             {
                 free(target->type);
@@ -119,26 +116,8 @@ void    free_tok_list(t_token *token, int flag)
     token = tmp;
     if (!flag)
         free(token);
-    // while(token)
-    // {
-    //     target = token;
-    //     token = token->next;
-    //     if (target->type)
-    //         free(target->type);
-    //     if (target->value)
-    //         free(target->value);
-    //     target->type = NULL;
-    //     target->value = NULL;
-    //     free(target);
-    //     target = NULL;
-    // }
 }
 
-// void    free_minishell_list(t_minishell *minishell)
-// {
-//     // if (minishell->pid)
-//     //     free(minishell->pid);
-// }
 
 void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token)
 {
@@ -148,7 +127,7 @@ void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token)
     // free(minishell->current);
     // minishell->current = NULL;
     free_tab(minishell->command_exac);
-    if(pipex->path)
+    if (pipex->path)
         free_tab(pipex->path);
     pipex->path = NULL;
 }

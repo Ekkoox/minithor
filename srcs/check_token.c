@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/16 17:59:14 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:37:57 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,14 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 }
 
 
-static void check_file(char *file, char *chevron)
+static void check_file(char *file, char *chevron, t_token *token, t_pipex *pipex)
 {
 	if (ft_strlen(chevron) == 1)
-		open(file, O_CREAT | O_WRONLY);
+		pipex->fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
-		open(file, O_CREAT | O_APPEND);
+		pipex->fd = open(file, O_CREAT | O_APPEND,  0644);
+	free(token->next->type);
+	token->next->type = ft_strdup("file");
 }
 
 static void change_le_plan(t_token *token, int index, int start)
@@ -225,17 +227,37 @@ static int juge_expand(t_token *token, int *index, t_env *env, int *nb_sign)
 	return (free(expand), change_le_plan(token, i, *index), 0);
 }
 
-void	check_token(t_token *token, t_env *env)
+
+int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 {
 	int i;
+	int index_command;
 	int nb_sign;
+	t_token *tmp;
 
 	i = 0;
+	index_command = 1;
+	tmp = token;
+	if (ft_strcmp(token->type, "pipe") == 0)
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		var_g = 2;
+		return (1);
+	}
 	while(token->next)
 	{
+		if (ft_strcmp(token->type, "commande") == 0)
+			token->index = index_command++;
 		nb_sign = count_sign(token->value);
 		while(token->value[i] && nb_sign > 0)
 		{	
+			if (token->value[i] == '$' && token->value[i + 1] == '?')
+			{
+				free(token->value);
+				token->value = ft_itoa(var_g);
+				i++;
+				break;
+			}
 			if(token->value[i] == '$' && juge_expand(token, &i, env, &nb_sign))
 			{
 				i++;
@@ -246,11 +268,9 @@ void	check_token(t_token *token, t_env *env)
 				i++;
 		}
 		if (ft_strcmp(token->type, "redirect output") == 0)
-		check_file(token->next->value, token->type);
+			check_file(token->next->value, token->value, token, pipex);
 		token = token->next;
 		i = 0;
 	}
+	return (0);
 }
-
-
-

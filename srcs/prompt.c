@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/16 18:07:18 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:31:13 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,35 @@ static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 	return (env);
 }
 
+int     count_size_lst(t_env *env)
+{
+    int i;
+
+    i = 0;
+    while (env)
+    {
+        env = env->next;
+        i++;
+    }
+    return (i);
+}
+
 int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
     char    *buffer;
     t_token *head;
+    int flag; 
     int nb_heredoc;
 	ssize_t	bytes_read;
 
-    // AJOUT DEBUG
-    int flag = 0;
-
+    flag = 0;
     bytes_read = 0;    
     head = token;
     minishell->env = creat_env_list(ev, minishell);
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
+    if (count_size_lst(minishell->env) > 6)
+        pipex->flag = 1;
     while(1)
     {
         buffer = readline(">");
@@ -101,43 +115,45 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         flag = tokenisation(token, minishell, pipex);
         if (flag == EXIT_FAILURE)
             continue;
-        check_token(token, minishell->env);
-        nb_heredoc = count_heredoc(token);
-        pipex->command_1 = token->value;
-        if (bytes_read > 0)
-        {
-            while(nb_heredoc)
+        if (check_token(token, minishell->env, pipex) == 0)
+        { 
+            while(token->next)
             {
-                if (ft_strcmp(token->type, "heredoc") == 0)
-                    if (heredoc(token, &head, &nb_heredoc) == 1)
-                        break;
+                ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
+                if (ft_strcmp(token->type, "commande") == 0)
+                    ft_printf("index %d\n", token->index);
                 token = token->next;
             }
             token = head;
-            if (is_builtin(minishell, token) == 0)
-                if(ft_strcmp(token->type, "heredoc") != 0)
-            army_of_fork(ev, pipex, minishell, token);
+            nb_heredoc = count_heredoc(token);
+            pipex->command_1 = token->value;
+            if (bytes_read > 0)
+            {
+                while(nb_heredoc)
+                {
+                    if (ft_strcmp(token->type, "heredoc") == 0)
+                        if (heredoc(token, &head, &nb_heredoc) == 1)
+                            break;
+                    token = token->next;
+                }
+                token = head;
+                if (is_builtin(minishell, token) == 0)
+                    if(ft_strcmp(token->type, "heredoc") != 0)
+                army_of_fork(ev, pipex, minishell, token);
+            }
         }
         token = head;
         mini_free(minishell, pipex, token);
     }
     free_env_list(minishell->env);
     free_tok_list(token, 0);
-    // free_minishell_list(minishell);
     if (bytes_read < 0)
         error_prompt(buffer, bytes_read);
     return (EXIT_SUCCESS);
 }
 
-
-
-//a tester
-//cote double cote ("") ('')
-//heredoc genre double heredoc
-//export en mode bien mechant
-
-
-
-//gere le cas avec les expand commande genre
-//export cmd="ls"
-//suffi de bien tout fusioner comme il faut
+ /*
+ A VOIR /!\
+ les UNSET: pourvoir suprimer queluqe chose dans l'environnement;
+ lse redirection: les 2 comme ca > , >> et comme ca <;
+ */

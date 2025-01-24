@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:43:10 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/15 17:24:16 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:16:52 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ int ft_cd(t_token *token, t_env *env)
     token = token->next;
     if (chdir(token->value) == -1) 
     {
-        perror("cd error");
-        return (EXIT_FAILURE);
+        ft_printf("bash: cd: %s: No such file or directory\n", token->value);
+		var_g = 1;
+        return (EXIT_FAILURE);	
     }
 	update_env_list(env);
     return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/10 19:52:27 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:24:14 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000
 # endif
+
+extern int var_g ;
 
 # include "ft_printf.h"
 # include "libft.h"
@@ -57,6 +59,7 @@ typedef struct s_token
 	char				*type;
 	char				*value;
 	char				*heredoc;
+	int 				index;
 	struct s_token		*next;
 	struct s_token		*prev;
 
@@ -69,6 +72,7 @@ typedef struct s_minishell
 	char				*current;
 	char				*buffer;
 	char				**command_exac;
+	char 				**sup_command;
 	t_token				*token;
 	t_env				*env;
 	t_pid				*pid;
@@ -83,7 +87,8 @@ typedef struct s_historique
 
 typedef struct s_pipex
 {
-	int					*fd;
+	int					fd;
+	int 				flag;
 	int					**pipes;
 	int					num_cmds;
 	char				**ev;
@@ -117,6 +122,7 @@ int						heredoc(t_token *token, t_token **head,
 // UTILS
 void					handle_sigint(int sig);
 char					**ft_split_env(char const *s, char c);
+int 					count_command(t_token *token);
 
 // PROMPT
 int						exit_prompt(char *buffer);
@@ -132,6 +138,7 @@ char					*get_the_command(t_pipex *pipex);
 char					**split_the_path(t_pipex *pipex);
 char					*find_the_path(char **ev, t_pipex *pipex);
 char					*search_the_path(t_pipex *pipex, char *command);
+int 					count_pipe(t_token *token);
 
 // TOKEN
 int						count_quote(char *mot);
@@ -140,7 +147,7 @@ int						search_command_for_token(t_pipex *pipex, char *mot);
 int						tokenisation(t_token *token, t_minishell *minishell,
 							t_pipex *pipex);
 char					*in_quote(char *mot, int quote);
-void					check_token(t_token *token, t_env *env);
+int						check_token(t_token *token, t_env *env, t_pipex *pipex);
 void					clear_quote(char *buffer, char *dest, int *index, int start,
 							int *index_dest);
 

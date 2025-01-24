@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:59:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 14:31:31 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:33:19 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,5 @@ void	clear_quote(char *buffer, char *dest, int *index, int start,
 	}
 	return ;
 }
+
+

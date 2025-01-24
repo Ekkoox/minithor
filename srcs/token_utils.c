@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/10 19:21:59 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/23 17:24:34 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ static char	**split_the_path_for_the_token(t_pipex *pipex)
 	if (!pipex->ligne_path)
 		return (NULL);
 	pipex->path = ft_split(pipex->ligne_path + 5, ':');
+	// ft_printf("asdasd %p\n", pipex->path[0]);
 	if (!pipex->path)
 		return (NULL);
+	// printf("%s\n", pipex->path[0]);
 	return (pipex->path);
 }
 
@@ -95,7 +97,6 @@ static int get_the_command_for_the_token(t_pipex *pipex)
 int	search_command_for_token(t_pipex *pipex, char *mot)
 {
 	pipex->command_1 = mot;
-	//ft_split(pipex->command_1, '0');
 	find_the_path_for_token(pipex);
 	split_the_path_for_the_token(pipex);
 	if (get_the_command_for_the_token(pipex) == 0)
@@ -104,7 +105,8 @@ int	search_command_for_token(t_pipex *pipex, char *mot)
 		pipex->path = NULL;
 		return (0);
 	}
-	free_tab(pipex->path);
+	if (pipex->flag == 1)
+		free_tab(pipex->path);
 	pipex->path = NULL;
 	return (1);
 }

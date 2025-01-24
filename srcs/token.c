@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/16 17:54:29 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:27:48 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	creat_node(char *type, t_token *token, char *value,
 	if (!token->type)
 		return ;
 	token->value = ft_strdup(value);
-	//ft_printf("l'addresse de la node: %p\n", token->value);
 	token->next = ft_calloc(sizeof(t_token), 1);
 }
 
@@ -47,13 +46,20 @@ static void cas_spe(t_minishell *minishell, int *index, int flag)
 	int len;
 
 	j = 0;
-	if(flag == 1)
+	if (minishell->buffer[*index] == '>' && minishell->buffer[*index + 1] == '>')
+	{
+		minishell->current = ft_calloc(sizeof(char), 3);
+		minishell->current[0] = minishell->buffer[*index];
+		minishell->current[1] = minishell->buffer[*index + 1];
+		minishell->current[2] = '\0';
+		*index += 2;
+	}
+	else if(flag == 1)
 	{
 		minishell->current = ft_calloc(sizeof(char), 2);
 		minishell->current[0] = minishell->buffer[*index];
 		minishell->current[1] = '\0';
 		*index +=1;
-		return;
 	}
 	else if (flag == 2)
 	{
@@ -65,7 +71,6 @@ static void cas_spe(t_minishell *minishell, int *index, int flag)
 			*index += 1;
 			j++;
 		}
-		return;
 	}
 }
 
@@ -111,13 +116,10 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex,
 	if (mot[0] == '<')
 		if(mot[1] == '<')
 			return(creat_node("heredoc", token, mot, minishell), 0);
-	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
-	{
-		if (ft_strcmp(mot, ">") == 0)
-			return (creat_node("redirect output", token, mot, minishell), 0);
-		else if (ft_strcmp(mot, "<") == 0)
-			return (creat_node("redirect input", token, mot, minishell), 0);
-	}
+	if ((ft_strcmp(mot, ">") == 0 || ft_strcmp(mot, ">>") == 0))
+		return (creat_node("redirect output", token, mot, minishell), 0);
+	else if (ft_strcmp(mot, "<") == 0)
+		return (creat_node("redirect input", token, mot, minishell), 0);
 	else if (minishell->flag == 1)
 	{
 		if (ft_strcmp(mot, "|") == 0)
@@ -226,7 +228,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 				count_quote(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		//ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
+		// ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
 		token = token->next;
 		while (minishell->buffer[i] == ' ')
 			i++;

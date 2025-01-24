@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 16:24:04 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:30:19 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	**split_the_path(t_pipex *pipex)
 	pipex->path = ft_split(pipex->ligne_path + 5, ':');
 	if (!pipex->path)
 	{
-		ft_putstr_fd("No such file or directory\n", 2);
+		ft_putstr_fd("3 No such file or directory\n", 2);
 		// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
 		// exit(EXIT_FAILURE);
 	}
@@ -94,10 +94,9 @@ char	*get_the_command(t_pipex *pipex)
 		path = search_the_path(pipex, pipex->command_1);
 		if (!path)
 		{
-			ft_printf("%s a changer:", pipex->command_1);
-			ft_putstr_fd(" Command not found\n", 2);
-			free_all(pipex);
-			exit(EXIT_FAILURE);
+			ft_printf("bash: %s: ", pipex->command_1);
+			ft_putstr_fd("command not found\n", 2);
+			return (NULL);
 		}
 		return (path);
 	}
