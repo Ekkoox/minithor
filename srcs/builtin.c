@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/22 17:41:50 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/25 13:32:14 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int is_builtin(t_minishell *minishell, t_token *token)
 		ft_env(minishell);
 	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(minishell->env, token);
+	// else if (ft_strcmp(token->value, "unset") == 0)
+	// 	ft_unset(minishell->env, token);
 	else 
 		return(0);
     return (1);

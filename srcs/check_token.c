@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/24 23:37:57 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:48:38 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 		if (ft_strcmp(token->type, "commande") == 0)
 			token->index = index_command++;
 		nb_sign = count_sign(token->value);
+		ft_printf("%s\n", token->value);
 		while(token->value[i] && nb_sign > 0)
 		{	
 			if (token->value[i] == '$' && token->value[i + 1] == '?')
@@ -272,5 +273,6 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 		token = token->next;
 		i = 0;
 	}
+	token = tmp;
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/24 23:48:28 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:06:41 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 {
 	(void)*command;
 	t_token *tmp;
-	int i;
+	//int i;
 	int y;
 	int c;
 
 	tmp = token;
-	i = 0;
+	//i = 0;
 	y = 0;
 	c = 0;
 	if (*cmd_index == 0)
@@ -69,7 +69,7 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 				c++;
 				token = token->next;
 			}
-			i = 0;
+			//i = 0;
 			token = tmp;
 			while(ft_strcmp(token->type, command) != 0 && token->index != *cmd_index + 1)
 			{
@@ -85,15 +85,15 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 			//token = token->next;
 		}
 	minishell->command_exac = ft_calloc(sizeof(char *), c + 1);
-	ft_printf("asdasd%s\n", token->value);
-	ft_printf("%d\n", c);
+	// ft_printf("asdasd%s\n", token->value);
+	// ft_printf("%d\n", c);
 	while(y < c && token->next)
 	{
 		if (ft_strcmp(token->value, ">>") == 0)
 			token = token->next;
 		if ((ft_strcmp(token->type, "commande") == 0) || (ft_strcmp(token->type, "trash") == 0) || (ft_strcmp(token->type, "argument") == 0) || (ft_strcmp(token->type, "file") == 0))
 			minishell->command_exac[y] = ft_strdup(token->value);
-		ft_printf("%s\n", minishell->command_exac[y]);
+		// ft_printf("%s\n", minishell->command_exac[y]);
 		token = token->next;
 		y++;
 	}

@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 13:32:00 by zizi             ###   ########.fr       */
+/*   Created: 2025/01/25 13:14:51 by zizi              #+#    #+#             */
+/*   Updated: 2025/01/25 13:20:55 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include"minishell.h"
 
-int var_g = 0;
-
-int main(int ac, char **av, char **ev)
+void    ft_unset(t_env *env, t_token *token)
 {
-	(void) ac;
-	(void) av;
-	t_pipex pipex;
-	t_token *token;
-	t_minishell minishell;
+    t_token *tmp_token;
+    t_env *tmp_env;
 
-	ft_printf("%s\n", ev[0]);
-	token = ft_calloc(sizeof(t_token), 1);
-	pipex.ev = ev;
-	creat_the_prompt(ev, &pipex, token, &minishell);
-	return (EXIT_SUCCESS);
+    tmp_token = token;
+    tmp_env = env;
+    token = token->next;
+    
+    while(ft_strcmp(env->type, token->value) != 0) 
+        env = env->next;
+    delete_node(tmp_env, env, token->value)
 }
-
