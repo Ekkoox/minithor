@@ -6,7 +6,7 @@
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 13:42:28 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/25 14:37:25 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
             continue;
         if (check_token(token, minishell->env, pipex) == 0)
         { 
-            while(token->next)
-            {
-                ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
-                if (ft_strcmp(token->type, "commande") == 0)
-                    ft_printf("index %d\n", token->index);
-                token = token->next;
-            }
+            // while(token->next)
+            // {
+            //     ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
+            //     if (ft_strcmp(token->type, "commande") == 0)
+            //         ft_printf("index %d\n", token->index);
+            //     token = token->next;
+           // }
             token = head;
             nb_heredoc = count_heredoc(token);
             pipex->command_1 = token->value;

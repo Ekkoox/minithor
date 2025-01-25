@@ -6,7 +6,7 @@
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 12:48:38 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/25 20:43:58 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ static void check_file(char *file, char *chevron, t_token *token, t_pipex *pipex
 {
 	if (ft_strlen(chevron) == 1)
 		pipex->fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (chevron[0] == '<')
+		pipex->fd = open(file, O_RDONLY);
 	else
 		pipex->fd = open(file, O_CREAT | O_APPEND,  0644);
 	free(token->next->type);
@@ -249,7 +251,6 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 		if (ft_strcmp(token->type, "commande") == 0)
 			token->index = index_command++;
 		nb_sign = count_sign(token->value);
-		ft_printf("%s\n", token->value);
 		while(token->value[i] && nb_sign > 0)
 		{	
 			if (token->value[i] == '$' && token->value[i + 1] == '?')
@@ -268,7 +269,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 			if(token->value[i] != '$' && token->value[i])
 				i++;
 		}
-		if (ft_strcmp(token->type, "redirect output") == 0)
+		if ((ft_strcmp(token->type, "redirect output") == 0) || (ft_strcmp(token->type, "redirect input") == 0))
 			check_file(token->next->value, token->value, token, pipex);
 		token = token->next;
 		i = 0;

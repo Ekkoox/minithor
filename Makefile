@@ -20,6 +20,7 @@ C_FILES = main.c\
 		  check_token.c\
 		  token_utils2.c\
 		  heredoc_utils.c\
+		  unset.c\
 
 BOLD = \033[1m
 RED = \033[31m

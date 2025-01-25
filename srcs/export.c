@@ -6,7 +6,7 @@
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:53:35 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/25 12:56:55 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/25 14:38:56 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void get_value_env(t_env *env, t_token *token)
 	i = 0;
 	j = 0;
 	token = token->next;
-	ft_printf("%s\n", token->value);
 	if(env->value)
 	{
 		free(env->value);

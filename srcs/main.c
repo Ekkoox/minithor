@@ -6,7 +6,7 @@
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 13:32:00 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/25 14:36:55 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int main(int ac, char **av, char **ev)
 	t_token *token;
 	t_minishell minishell;
 
-	ft_printf("%s\n", ev[0]);
 	token = ft_calloc(sizeof(t_token), 1);
 	pipex.ev = ev;
 	creat_the_prompt(ev, &pipex, token, &minishell);

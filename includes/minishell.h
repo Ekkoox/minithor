@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/24 23:24:14 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/25 14:31:29 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int						ft_cd(t_token *token, t_env *env);
 int						ft_export(t_env *env, t_token *token);
 int						ft_env(t_minishell *minishell);
 int						is_builtin(t_minishell *minishell, t_token *token);
+void    				ft_unset(t_env *env, t_token *token);
 
 // HEREDOC
 void 					close_fd(int sig);
