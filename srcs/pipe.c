@@ -6,7 +6,7 @@
 /*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 21:02:40 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/26 00:29:35 by zizi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,27 @@ static int	 find_the_thing(t_token *token, char *thing)
 	return (1);
 }
 
+// static int run_too_redirect(t_token *token)
+// {
+
+// 	while(token->next)
+// 	{
+		
+// 		ft_printf("2345234%s\n", token->value);
+// 		if (ft_strcmp(token->type, "pipe") == 0)
+// 			return(0);
+// 		if (ft_strcmp(token->type, "redirect output") == 0 ||
+// 		 ft_strcmp(token->type, "redirect input") == 0)
+// 		 	return (1);
+// 		token = token->next;
+// 	}
+// 	return (0);
+// }
+
 static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_index,t_token *token, char *command)
 {
 	char *path;
+	t_token *tmp;
 	int i;
 	(void)token;
 	
@@ -163,10 +181,21 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	}
 	if (find_the_thing(token, "file") == 0)
 	{
-		dup2(pipex->fd, STDOUT_FILENO);
+		tmp = token;
+		while ((ft_strcmp(token->type, "redirect output") != 0) &&
+		 (ft_strcmp(token->type, "redirect input") != 0))
+				token = token->next;
+		if (ft_strcmp(token->value, ">") == 0)
+				dup2(pipex->fd, STDOUT_FILENO);
+		else if (ft_strcmp(token->value, ">>") == 0)
+				dup2(pipex->fd, STDOUT_FILENO);
+		else if (ft_strcmp(token->value, "<") == 0)
+			dup2(pipex->fd, STDIN_FILENO);
+		close(pipex->fd);
+		token = tmp;
 	}
 	// ft_printf("%s\n", minishell->command_exac[0]);
-	// ft_printf("%s\n", minishell->command_exac[1]);
+	// ft_printf("%s\n", minishell->command_exac[1]);	
 	
 	//if (is_command_builtin(minishell->command_exac[0], token, minishell) == 0)
 		if (execve(path, minishell->command_exac, pipex->ev) == -1)
@@ -314,6 +343,8 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 			
 			execute_command(pipex, minishell, &c, token, command[c]);
 		}
+		// if (pipex->fd)
+		// 	close(pipex->fd);
 		if (i > 0)
 			close(pipex->pipes[i - 1][0]);
 		if (i < pipex->num_cmds - 1)
