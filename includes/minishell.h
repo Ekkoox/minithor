@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 14:31:29 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/27 21:08:37 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@
 
 extern int var_g ;
 
-# include "ft_printf.h"
 # include "libft.h"
+# include "ft_printf.h"
 # include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
 # include <stdio.h>
+# include <signal.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/wait.h>
 # include <unistd.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 enum					e_token
 {
@@ -160,5 +161,8 @@ void    				free_tok_list(t_token *token, int flag);
 void    				free_minishell_list(t_minishell *minishell);
 void 					free_tab(char **tab);
 void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token);
+
+// ERROR
+void 					check_permissions();
 
 #endif

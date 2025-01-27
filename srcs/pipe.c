@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/26 00:29:35 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/27 21:17:38 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,9 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	char *path;
 	t_token *tmp;
 	int i;
-	(void)token;
 	
 	pipex->command_1 = command;
+	// check_permissions();
 	path = get_the_command(pipex);
 	if (path == NULL)
 	{
