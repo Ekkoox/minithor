@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: razouani <razouani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2024/12/18 15:03:23 by razouani         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:23:34 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int	creat_the_heredoc(t_token *token)
 	return (EXIT_SUCCESS);
 }
 
-int	heredoc(t_token *token, t_token **head, int *nb_heredoc)
+int	heredoc(t_token *token, t_token **head, int *nb_heredoc, t_minishell *minishell, t_pipex *pipex)
 {
 	int	pid;
 	int	status;
@@ -150,7 +150,13 @@ int	heredoc(t_token *token, t_token **head, int *nb_heredoc)
 		signal(SIGINT, close_fd);
 		if (creat_the_heredoc(token) == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
-		exit(EXIT_SUCCESS);
+		//repos_army(pipex, minishell->sup_command);
+		mini_free(minishell, pipex, (*head), 0);
+		free_env_list(minishell->env);
+		free_tok_list(token, 0);
+		//free_tab(minishell->sup_command);
+		exit(0);
+		//exit(EXIT_SUCCESS);
 	}
 	wait(&status);
 	signal(SIGQUIT, SIG_IGN);

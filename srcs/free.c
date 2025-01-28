@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/23 17:39:32 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:23:21 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void repos_army(t_pipex *pipex, char **command)
         free_tab(command);
     if (pipex->pipes)
         free_tab_int(pipex->pipes, pipex->num_cmds);
+    
 }
 
 // void free_tok(t_token *token, t_minishell *minishell, t_pipex *pipex)
@@ -119,7 +120,7 @@ void    free_tok_list(t_token *token, int flag)
 }
 
 
-void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token)
+void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag)
 {
     free_tok_list(token, 1);
     free(minishell->buffer);
@@ -127,7 +128,10 @@ void mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token)
     // free(minishell->current);
     // minishell->current = NULL;
     free_tab(minishell->command_exac);
-    if (pipex->path)
+    if (flag)
+    {
         free_tab(pipex->path);
-    pipex->path = NULL;
+        pipex->path = NULL;
+    }
+    // ft_printf("%s\n", pipex->path);
 }

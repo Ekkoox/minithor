@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 14:37:25 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/28 18:25:45 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,14 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
             continue;
         if (check_token(token, minishell->env, pipex) == 0)
         { 
-            // while(token->next)
-            // {
-            //     ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
-            //     if (ft_strcmp(token->type, "commande") == 0)
-            //         ft_printf("index %d\n", token->index);
-            //     token = token->next;
-           // }
-            token = head;
+        //     while(token->next)
+        //     {
+        //         ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
+        //         if (ft_strcmp(token->type, "commande") == 0)
+        //             ft_printf("index %d\n", token->index);
+        //         token = token->next;
+        //    }
+        //     token = head;
             nb_heredoc = count_heredoc(token);
             pipex->command_1 = token->value;
             if (bytes_read > 0)
@@ -132,18 +132,19 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
                 while(nb_heredoc)
                 {
                     if (ft_strcmp(token->type, "heredoc") == 0)
-                        if (heredoc(token, &head, &nb_heredoc) == 1)
+                        if (heredoc(token, &head, &nb_heredoc, minishell, pipex) == 1)
                             break;
                     token = token->next;
                 }
                 token = head;
                 if (is_builtin(minishell, token) == 0)
                     if(ft_strcmp(token->type, "heredoc") != 0)
-                army_of_fork(ev, pipex, minishell, token);
+                        army_of_fork(ev, pipex, minishell, token);
             }
         }
         token = head;
-        mini_free(minishell, pipex, token);
+        if (ft_strcmp(token->type, "heredoc") != 0)
+            mini_free(minishell, pipex, token, 1);
     }
     free_env_list(minishell->env);
     free_tok_list(token, 0);
@@ -152,8 +153,3 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
     return (EXIT_SUCCESS);
 }
 
- /*
- A VOIR /!\
- les UNSET: pourvoir suprimer queluqe chose dans l'environnement;
- lse redirection: les 2 comme ca > , >> et comme ca <;
- */

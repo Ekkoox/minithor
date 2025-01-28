@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/23 17:24:34 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:19:50 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ int	search_command_for_token(t_pipex *pipex, char *mot)
 		return (0);
 	}
 	if (pipex->flag == 1)
+	{
 		free_tab(pipex->path);
-	pipex->path = NULL;
+		pipex->path = NULL;
+	}
 	return (1);
 }

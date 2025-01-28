@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 14:31:29 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/27 18:24:14 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void 					close_fd(int sig);
 int						count_heredoc(t_token *token);
 int 					execut_heredoc(t_token *token);
 int						heredoc(t_token *token, t_token **head,
-							int *nb_heredoc);
+							int *nb_heredoc, t_minishell *minishell, t_pipex *pipex);
 
 // UTILS
 void					handle_sigint(int sig);
@@ -159,6 +159,6 @@ void 					free_env_list(t_env *env);
 void    				free_tok_list(t_token *token, int flag);
 void    				free_minishell_list(t_minishell *minishell);
 void 					free_tab(char **tab);
-void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token);
+void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag);
 
 #endif

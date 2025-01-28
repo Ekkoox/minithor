@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/26 00:29:35 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/28 18:26:43 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void error_execve(t_pipex *pipex, t_minishell *minishell, t_token *token)
 {
 	ft_printf("bash: %s: Is a directory\n", token->value);
 	repos_army(pipex, minishell->sup_command);
-	mini_free(minishell, pipex, token);
+	mini_free(minishell, pipex, token, 1);
 	free_env_list(minishell->env);
 	free_tok_list(token, 0);
 	//free_tab(minishell->sup_command);
@@ -50,18 +50,9 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 	}
 	else
 		{
-			while(ft_strcmp(token->type, command) != 0 && token->index != *cmd_index + 1)
-			{
+			while(ft_strcmp(token->type, command) != 0 && 
+			token->index != *cmd_index + 1)
 				token = token->next;
-				// if (ft_strcmp(token->type, "pipe") == 0)
-				// {
-				// 	i++;
-				// 	if (i == *cmd_index)
-				// 		break;
-				// }
-				// token = token->next;
-			}
-			//token = token->next;
 			while(token->next && ft_strcmp(token->type, "pipe") != 0)
 			{
 				if (ft_strcmp(token->value, ">>") == 0)
@@ -69,20 +60,10 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 				c++;
 				token = token->next;
 			}
-			//i = 0;
 			token = tmp;
-			while(ft_strcmp(token->type, command) != 0 && token->index != *cmd_index + 1)
-			{
+			while(ft_strcmp(token->type, command) != 0 && 
+			token->index != *cmd_index + 1)
 				token = token->next;
-				// if (ft_strcmp(token->type, "pipe") == 0)
-				// {
-				// 	i++;
-				// 	if (i == *cmd_index)
-				// 		break;
-				// }
-				// token = token->next;
-			}
-			//token = token->next;
 		}
 	minishell->command_exac = ft_calloc(sizeof(char *), c + 1);
 	// ft_printf("asdasd%s\n", token->value);
@@ -91,7 +72,7 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 	{
 		if (ft_strcmp(token->value, ">>") == 0)
 			token = token->next;
-		if ((ft_strcmp(token->type, "commande") == 0) || (ft_strcmp(token->type, "trash") == 0) || (ft_strcmp(token->type, "argument") == 0) || (ft_strcmp(token->type, "file") == 0))
+		if ((ft_strcmp(token->type, "commande") == 0) || (ft_strcmp(token->type, "trash") == 0) || (ft_strcmp(token->type, "argument") == 0))
 			minishell->command_exac[y] = ft_strdup(token->value);
 		// ft_printf("%s\n", minishell->command_exac[y]);
 		token = token->next;
@@ -112,41 +93,30 @@ static int	 find_the_thing(t_token *token, char *thing)
 			token = tmp;
 			return (0);
 		}
+		if (ft_strcmp(token->type, "pipe") == 0 )
+		{
+			token = tmp;
+			return (1);
+		}
 		token = token->next;
 	}
 	token = tmp;
 	return (1);
 }
 
-// static int run_too_redirect(t_token *token)
-// {
-
-// 	while(token->next)
-// 	{
-		
-// 		ft_printf("2345234%s\n", token->value);
-// 		if (ft_strcmp(token->type, "pipe") == 0)
-// 			return(0);
-// 		if (ft_strcmp(token->type, "redirect output") == 0 ||
-// 		 ft_strcmp(token->type, "redirect input") == 0)
-// 		 	return (1);
-// 		token = token->next;
-// 	}
-// 	return (0);
-// }
 
 static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_index,t_token *token, char *command)
 {
 	char *path;
 	t_token *tmp;
 	int i;
-	(void)token;
 	
 	pipex->command_1 = command;
+	tmp = token;
 	path = get_the_command(pipex);
 	if (path == NULL)
 	{
-		mini_free(minishell, pipex, token);
+		mini_free(minishell, pipex, token, 1);
 		free_env_list(minishell->env);
 		free_tok_list(token, 0);
 		free_tab(minishell->sup_command);
@@ -157,7 +127,7 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	if (!path)
 	{
 		ft_putstr_fd("1 No such file or directory\n", 2);
-		mini_free(minishell, pipex, token);
+		mini_free(minishell, pipex, token, 1);
 		free_env_list(minishell->env);
 		free_tok_list(token, 0);
 		free_tab(minishell->sup_command);
@@ -165,20 +135,8 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	}
 	// ft_printf("%s\n", minishell->command_exac[0]);
 	// ft_printf("%s\n", minishell->command_exac[1]);
-	// ft_printf("%s\n", minishell->command_exaccommand:[2]);
-	if (count_pipe(token) > 0)
-	{
-		if (*cmd_index == 0)
-			dup2(pipex->pipes[*cmd_index - 1][0], STDIN_FILENO);
-		else if (*cmd_index < pipex->num_cmds - 1)
-			dup2(pipex->pipes[*cmd_index][1], STDOUT_FILENO);
-	}
-	i = 0;
-	while (i < pipex->num_cmds - 1){
-		close(pipex->pipes[i][0]);
-		close(pipex->pipes[i][1]);
-		i++;
-	}
+	while(ft_strcmp(token->value, minishell->command_exac[0]) != 0)
+		token = token->next;
 	if (find_the_thing(token, "file") == 0)
 	{
 		tmp = token;
@@ -186,13 +144,35 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 		 (ft_strcmp(token->type, "redirect input") != 0))
 				token = token->next;
 		if (ft_strcmp(token->value, ">") == 0)
-				dup2(pipex->fd, STDOUT_FILENO);
+		{
+			dup2(pipex->fd, STDOUT_FILENO);
+		}
 		else if (ft_strcmp(token->value, ">>") == 0)
-				dup2(pipex->fd, STDOUT_FILENO);
+			dup2(pipex->fd, STDOUT_FILENO);
 		else if (ft_strcmp(token->value, "<") == 0)
 			dup2(pipex->fd, STDIN_FILENO);
 		close(pipex->fd);
 		token = tmp;
+	}
+	if (count_pipe(tmp) > 0)
+	{
+		// ft_printf("asdasda%s\n", token->value);
+		if (*cmd_index == 0)
+			dup2(pipex->pipes[0][1], STDOUT_FILENO);
+		else if (*cmd_index < pipex->num_cmds - 1)
+		{
+			dup2(pipex->pipes[*cmd_index - 1][0], STDIN_FILENO);
+       		dup2(pipex->pipes[*cmd_index][1], STDOUT_FILENO);
+		}
+		else
+			dup2(pipex->pipes[*cmd_index - 1][0], STDIN_FILENO);
+		i = 0;
+		while (i < pipex->num_cmds - 1)
+		{
+			close(pipex->pipes[i][0]);
+			close(pipex->pipes[i][1]);
+			i++;
+		}
 	}
 	// ft_printf("%s\n", minishell->command_exac[0]);
 	// ft_printf("%s\n", minishell->command_exac[1]);	

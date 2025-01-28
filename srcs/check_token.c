@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zizi <zizi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/25 23:51:16 by zizi             ###   ########.fr       */
+/*   Updated: 2025/01/28 16:43:01 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,12 @@ static void	expand_env(t_token *token, t_env *env, int *index)
 
 static void check_file(char *file, char *chevron, t_token *token, t_pipex *pipex)
 {
-	if (chevron[0] == '>')
+	if (ft_strcmp(chevron, ">") == 0)
 		pipex->fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (chevron[0] == '<')
+	else if (ft_strcmp(chevron, "<") == 0)
 		pipex->fd = open(file, O_RDONLY, 0644);
 	else
-		pipex->fd = open(file, O_CREAT | O_APPEND,  0644);
+		pipex->fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	free(token->next->type);
 	token->next->type = ft_strdup("file");
 	if (pipex->fd == -1)
