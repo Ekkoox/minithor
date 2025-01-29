@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 18:25:45 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/29 18:48:29 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,19 @@ int     count_size_lst(t_env *env)
     return (i);
 }
 
+void free_list(t_env *env)
+{
+    t_env *tmp;
+
+    while (env)
+    {
+        tmp = env;
+        env = env->next;
+        free(tmp->value);
+        free(tmp);
+    }
+}
+
 int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *minishell)
 {
     char    *buffer;
@@ -103,6 +116,8 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         buffer = readline(">");
         if (!buffer)
         {
+            free(token);
+            free_env_list(minishell->env);
             ft_printf("exit\n");
             return (EXIT_FAILURE);
         }

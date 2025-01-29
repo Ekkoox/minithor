@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/23 13:30:19 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:08:54 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*find_the_path(char **ev, t_pipex *pipex)
 		}
 		i++;
 	}
+	if (access(pipex->command_1, F_OK | X_OK) == 0)
+		check_permissions(pipex->command_1);
 	return (pipex->ligne_path);
 }
 
@@ -100,7 +102,7 @@ char	*get_the_command(t_pipex *pipex)
 		}
 		return (path);
 	}
-	if (access(pipex->command_1, F_OK | X_OK) == 0)
+	if (access(pipex->command_1, F_OK | X_OK) != 0)
 		return (pipex->command_1);
 	return (NULL);
 }

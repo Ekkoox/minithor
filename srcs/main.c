@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 19:28:46 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/29 15:56:21 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,7 @@ minishell-:echo "$PWD"
 0:ca doit  etre un probleme au niveau des free
 */
 
+// echo $ ca bloque on peut plus faire de commande, le prompt bug
+// echo '$PWD' ca segfault il expande alors quil ne devrait pas
+// cat donne un prompt avec >> au lieu de >, ignorer le signaus dans le parents
+// unset premiere variable denvironnement ne marche pas

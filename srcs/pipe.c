@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 19:39:09 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/29 17:45:16 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 		free_tab(minishell->sup_command);
 		exit(127);
 	}
+	check_permissions(path);
 	free_tab(minishell->command_exac);	
 	get_the_next_command(token, minishell, command, cmd_index);
 	if (!path)
@@ -133,8 +134,6 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 		free_tab(minishell->sup_command);
 		exit(127);
 	}
-	// ft_printf("%s\n", minishell->command_exac[0]);
-	// ft_printf("%s\n", minishell->command_exac[1]);
 	while(ft_strcmp(token->value, minishell->command_exac[0]) != 0)
 		token = token->next;
 	if (find_the_thing(token, "file") == 0)
@@ -156,7 +155,6 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	}
 	if (count_pipe(tmp) > 0)
 	{
-		// ft_printf("asdasda%s\n", token->value);
 		if (*cmd_index == 0)
 			dup2(pipex->pipes[0][1], STDOUT_FILENO);
 		else if (*cmd_index < pipex->num_cmds - 1)
@@ -174,10 +172,6 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 			i++;
 		}
 	}
-	// ft_printf("%s\n", minishell->command_exac[0]);
-	// ft_printf("%s\n", minishell->command_exac[1]);	
-	
-	//if (is_command_builtin(minishell->command_exac[0], token, minishell) == 0)
 		if (execve(path, minishell->command_exac, pipex->ev) == -1)
 			error_execve(pipex, minishell, token);
 }
@@ -342,7 +336,3 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 	}
 	repos_army(pipex, command);
 }
-
-// probleme commande
-// /
-// chmod 
