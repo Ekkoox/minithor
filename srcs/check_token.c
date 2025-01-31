@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:26:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 19:12:00 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,13 +182,18 @@ static void check_file(char *file, char *chevron, t_token *token, t_pipex *pipex
 		pipex->fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	free(token->next->type);
 	token->next->type = ft_strdup("file");
+	if (!token->next->type)
+		return ;
 	if (pipex->fd == -1)
-    	perror("Erreur ouverture fichier");
-	// printf("🔹 Fichier %s ouvert avec succès (fd=%d)\n", file, pipex->fd);
-    	
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n	", 2);
+		g_var = 2;
+		return ;
+	}	
+	// printf("🔹 Fichier %s ouvert avec succès (fd=%d)\n", file, pipex->fd);	
 }
 
-static void change_le_plan(t_token *token, int index, int start)
+static void swap_plan(t_token *token, int index, int start)
 {
 	int i;
 	int len;
@@ -199,9 +204,13 @@ static void change_le_plan(t_token *token, int index, int start)
 	j = 0; 
 	len = start;
 	dup_value = ft_strdup(token->value);
+	if (!dup_value)
+		return ;
 	len = (ft_strlen(token->value) - i);
 	free(token->value);
 	token->value = ft_calloc(sizeof(char), len + 1);
+	if (!token->value)
+		return ;
 	while(j < start)
 	{
 		token->value[j] = dup_value[j];
@@ -232,6 +241,8 @@ static int juge_expand(t_token *token, int *index, t_env *env, int *nb_sign)
 	if (i == *index + 1)
 		return (0);
 	expand = ft_calloc(sizeof(char), i + 1);
+	if (!expand)
+		return (EXIT_FAILURE);
 	i = *index + 1;
 	while(token->value[i] && (token->value[i] != ' ' && token->value[i] != '$'))
 	{
@@ -247,7 +258,7 @@ static int juge_expand(t_token *token, int *index, t_env *env, int *nb_sign)
 	}
 	*nb_sign = *nb_sign - 1;
 	env = tmp;
-	return (free(expand), change_le_plan(token, i, *index), 0);
+	return (free(expand), swap_plan(token, i, *index), 0);
 }
 
 
@@ -265,7 +276,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
 		g_var = 2;
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	while(token->next)
 	{
@@ -278,6 +289,8 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 			{
 				free(token->value);
 				token->value = ft_itoa(g_var);
+				if (!token->value)
+					return (EXIT_FAILURE);
 				i++;
 				break;
 			}

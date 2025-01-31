@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 17:08:54 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 17:38:13 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ char	*get_the_command(t_pipex *pipex)
 		path = search_the_path(pipex, pipex->command_1);
 		if (!path)
 		{
-			ft_printf("bash: %s: ", pipex->command_1);
-			ft_putstr_fd("command not found\n", 2);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(pipex->command_1, 2);
+			ft_putstr_fd(": command not found\n", 2);
 			return (NULL);
 		}
 		return (path);

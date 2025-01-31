@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:25:08 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 19:00:21 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void 					free_tab_int(int **tab, int num_cmds);
 void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag);
 
 // ERROR
+int 					check_error(t_minishell *minishell, int *index);
 void					check_permissions(char *path);
 
 #endif

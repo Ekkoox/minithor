@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:36:34 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:31:03 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ static void	execute_command(t_pipex *pipex, t_minishell *minishell,
 		free_env_list(minishell->env);
 		free_tok_list(token, 0);
 		free_tab(minishell->sup_command);
+		free(pipex->pipes);
 		exit(127);
 	}
 	check_permissions(path);
@@ -282,7 +283,7 @@ void	army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell,
 	pipex->num_cmds = count_command(token);
 	if (pipex->num_cmds == 0)
 	{
-		ft_putstr_fd("2 No such file or directory\n", 2);
+		// ft_putstr_fd("2 No such file or directory\n", 2);
 		return ;
 	}
 	creat_pipeline(pipex, token);
