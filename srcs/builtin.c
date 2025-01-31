@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 02:59:45 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:25:37 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int count_pipe(t_token *token)
+int	count_pipe(t_token *token)
 {
-	int i;
-	t_token *tmp;
-	
+	int		i;
+	t_token	*tmp;
+
 	i = 0;
 	tmp = token;
-	while(token->next)
+	while (token->next)
 	{
 		if (ft_strcmp(token->type, "pipe") == 0)
 			i++;
@@ -29,12 +29,12 @@ int count_pipe(t_token *token)
 	return (i);
 }
 
-int count_heredoc(t_token *token)
+int	count_heredoc(t_token *token)
 {
-	int i;
-	
-	i  = 0;
-	while(token->next)
+	int	i;
+
+	i = 0;
+	while (token->next)
 	{
 		if (ft_strcmp(token->type, "heredoc") == 0)
 			i++;
@@ -43,7 +43,7 @@ int count_heredoc(t_token *token)
 	return (i);
 }
 
-int is_builtin(t_minishell *minishell, t_token *token)
+int	is_builtin(t_minishell *minishell, t_token *token)
 {
 	if (count_pipe(token) > 0)
 		return (0);

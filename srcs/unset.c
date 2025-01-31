@@ -3,44 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 13:14:51 by zizi              #+#    #+#             */
-/*   Updated: 2025/01/31 03:08:44 by roane            ###   ########.fr       */
+/*   Created: 2025/01/25 13:14:51 by enschnei          #+#    #+#             */
+/*   Updated: 2025/01/31 15:41:28 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
+#include "minishell.h"
 
-static void    free_node(t_env *target)
+static void	free_node(t_env *target)
 {
-    free(target->type);
-    free(target->value);
-    target->type = NULL;
-    target->value = NULL;
-    free(target);
+	free(target->type);
+	free(target->value);
+	target->type = NULL;
+	target->value = NULL;
+	free(target);
 }
 
-static void    delete_node(t_env *head, t_env *target)
+static void	delete_node(t_env *head, t_env *target)
 {
-    t_env *env;
-    t_env *prev;
+	t_env	*env;
+	t_env	*prev;
 
-    env = head;
-    prev = NULL;
-    while(env->next != target)
-        env = env->next;
-    prev = env;
-    if (target->next != NULL)
-    {
-        prev->next = target->next;
-        free_node(target);
-    }
-    else
-    {
-        prev->next = NULL;
-        free_node(target);
-    }
+	env = head;
+	prev = NULL;
+	while (env->next != target)
+		env = env->next;
+	prev = env;
+	if (target->next != NULL)
+	{
+		prev->next = target->next;
+		free_node(target);
+	}
+	else
+	{
+		prev->next = NULL;
+		free_node(target);
+	}
 }
 static int find_the_thing_env(t_env *env, char *thing)
 {
@@ -62,8 +62,8 @@ static int find_the_thing_env(t_env *env, char *thing)
 
 void    ft_unset(t_minishell *minishell, t_token *token)
 {
-    t_token *tmp_token;
-    t_env *tmp_env;
+	t_token *tmp_token;
+	t_env *tmp_env;
 
     tmp_token = token;
     tmp_env = minishell->env;

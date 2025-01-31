@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 03:35:50 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:33:28 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	creat_the_heredoc(t_token *token)
 		buffer = readline("heredoc>");
 		if (!buffer)
 		{
-			dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->heredoc);
+			dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->heredoc); // a changer
 			close(fd);
 			free(token->heredoc);
 			unlink("Tmp_file");
@@ -132,7 +132,8 @@ static int	creat_the_heredoc(t_token *token)
 	return (EXIT_SUCCESS);
 }
 
-int	heredoc(t_token *token, t_token **head, int *nb_heredoc, t_minishell *minishell, t_pipex *pipex)
+int	heredoc(t_token *token, t_token **head, int *nb_heredoc,
+		t_minishell *minishell, t_pipex *pipex)
 {
 	int	pid;
 	int	status;
