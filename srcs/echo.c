@@ -6,14 +6,14 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:48:28 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/09 18:21:38 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:49:09 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int check_n(char *str)
-{  
+static int	check_n(char *str)
+{
 	int	i;
 
 	i = 0;
@@ -23,19 +23,19 @@ static int check_n(char *str)
 	{
 		if (str[i] != 'n')
 			return (EXIT_FAILURE);
-        i++;
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
 int	ft_echo(t_token *token)
 {
-	int flag;
+	int	flag;
 
 	flag = 0;
-    token = token->next;
+	token = token->next;
 	while (token->value && token->value[0] == '-' && check_n(token->value))
-	{	
+	{
 		flag = 1;
 		token = token->next;
 	}
@@ -46,7 +46,7 @@ int	ft_echo(t_token *token)
 		ft_printf("%s", token->value);
 		if (token->next->value)
 			ft_printf(" ");
-        token = token->next;
+		token = token->next;
 	}
 	if (!flag)
 		ft_printf("\n");
