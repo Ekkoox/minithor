@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/31 03:48:57 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:50:15 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	grap_mot(t_minishell *minishell, int *index)
 		if ((minishell->buffer[i] ==  39 || minishell->buffer[i] == 34) && minishell->buffer[i + 1])
 		{
 			i++;
-			while (minishell->buffer[i] && (minishell->buffer[i] !=  39 || minishell->buffer[i] != 34))
+			while (minishell->buffer[i] && (minishell->buffer[i] !=  39 && minishell->buffer[i] != 34))
 				i++;
 		}
 		else
