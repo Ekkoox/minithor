@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 16:43:01 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/30 17:55:53 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 	if (ft_strcmp(token->type, "pipe") == 0)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
-		var_g = 2;
+		g_var = 2;
 		return (1);
 	}
 	while(token->next)
@@ -260,7 +260,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 			if (token->value[i] == '$' && token->value[i + 1] == '?')
 			{
 				free(token->value);
-				token->value = ft_itoa(var_g);
+				token->value = ft_itoa(g_var);
 				i++;
 				break;
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/27 18:23:34 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/30 18:17:36 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	creat_the_heredoc(t_token *token)
 		buffer = readline("heredoc>");
 		if (!buffer)
 		{
-			dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->heredoc);
+			dprintf(2, "bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", __LINE__, token->heredoc); // a changer
 			close(fd);
 			free(token->heredoc);
 			unlink("Tmp_file");
@@ -132,7 +132,8 @@ static int	creat_the_heredoc(t_token *token)
 	return (EXIT_SUCCESS);
 }
 
-int	heredoc(t_token *token, t_token **head, int *nb_heredoc, t_minishell *minishell, t_pipex *pipex)
+int	heredoc(t_token *token, t_token **head, int *nb_heredoc,
+		t_minishell *minishell, t_pipex *pipex)
 {
 	int	pid;
 	int	status;
@@ -150,13 +151,10 @@ int	heredoc(t_token *token, t_token **head, int *nb_heredoc, t_minishell *minish
 		signal(SIGINT, close_fd);
 		if (creat_the_heredoc(token) == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
-		//repos_army(pipex, minishell->sup_command);
 		mini_free(minishell, pipex, (*head), 0);
 		free_env_list(minishell->env);
 		free_tok_list(token, 0);
-		//free_tab(minishell->sup_command);
 		exit(0);
-		//exit(EXIT_SUCCESS);
 	}
 	wait(&status);
 	signal(SIGQUIT, SIG_IGN);

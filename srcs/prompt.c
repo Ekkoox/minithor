@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 18:48:29 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:13:05 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,4 +167,3 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         error_prompt(buffer, bytes_read);
     return (EXIT_SUCCESS);
 }
-

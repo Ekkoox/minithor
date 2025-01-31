@@ -6,13 +6,13 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 15:56:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:56:03 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int var_g = 0;
+int g_var = 0;
 
 int main(int ac, char **av, char **ev)
 {
