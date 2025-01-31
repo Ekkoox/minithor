@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 19:28:46 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/29 16:13:58 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ regarde les expand genre;
 minishell-:echo "$PWD"
 1:le echo affiche bien la valeur de $PWD mais je sexfault juste apres
 0:ca doit  etre un probleme au niveau des free
+regarde la premier evariable de l'env et le controle C dasn le cat
 */
 

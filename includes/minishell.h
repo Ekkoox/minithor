@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/28 19:37:51 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 03:02:58 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int						ft_cd(t_token *token, t_env *env);
 int						ft_export(t_env *env, t_token *token);
 int						ft_env(t_minishell *minishell);
 int						is_builtin(t_minishell *minishell, t_token *token);
-void    				ft_unset(t_env *env, t_token *token);
+void    				ft_unset(t_minishell *minishell, t_token *token);
 
 // HEREDOC
 void 					close_fd(int sig);
@@ -125,6 +125,7 @@ int						heredoc(t_token *token, t_token **head,
 void					handle_sigint(int sig);
 char					**ft_split_env(char const *s, char c);
 int 					count_command(t_token *token);
+int	 					find_the_thing(t_token *token, char *thing, int flag);		
 
 // PROMPT
 int						exit_prompt(char *buffer);
@@ -154,12 +155,13 @@ void					clear_quote(char *buffer, char *dest, int *index, int start,
 							int *index_dest);
 
 //FREE
-void 					repos_army(t_pipex *pipex, char **command);
+void 					repos_army(t_pipex *pipex, char **command, t_token *token);
 void 					free_tok(t_token *token, t_minishell *minishell, t_pipex *pipex);
 void 					free_env_list(t_env *env);
 void    				free_tok_list(t_token *token, int flag);
 void    				free_minishell_list(t_minishell *minishell);
 void 					free_tab(char **tab);
+void 					free_tab_int(int **tab, int num_cmds);
 void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag);
 
 // ERROR
