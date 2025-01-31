@@ -6,17 +6,18 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/27 18:23:21 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 03:32:54 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void free_tab_int(int **tab, int num_cmds)
+void free_tab_int(int **tab, int num_cmds)
 {
     int i;
 
     i = 0;
+    
     while(i < num_cmds - 1)
     {
         free(tab[i]);
@@ -44,11 +45,11 @@ void free_tab(char **tab)
     tab = NULL;
 }
 
-void repos_army(t_pipex *pipex, char **command)
+void repos_army(t_pipex *pipex, char **command, t_token *token)
 {
     if (command)
         free_tab(command);
-    if (pipex->pipes)
+    if (count_command(token))
         free_tab_int(pipex->pipes, pipex->num_cmds);
     
 }
@@ -80,6 +81,7 @@ void free_env_list(t_env *env)
         target = NULL;
     }
 }
+
 
 void    free_tok_list(t_token *token, int flag)
 {

@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:43:10 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 17:46:58 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:15:45 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void update_PWD(char *oldone, int flag, t_env *env)
+{
+	oldone = ft_strdup(env->value);
+	if (!oldone)
+		return ;
+	if(flag == 1)
+	{
+		free(env->value);
+		env->value = NULL;
+		env->value = getcwd(env->value, 1000);
+	}
+}
 
 static void update_env_list(t_env *env)
 {
@@ -23,17 +36,7 @@ static void update_env_list(t_env *env)
 	while(env->next)
 	{
 		if (ft_strcmp(env->type, "PWD") == 0)
-		{
-			oldone = ft_strdup(env->value);
-			if (!oldone)
-				return ;
-			if(flag == 1)
-			{
-				free(env->value);
-				env->value = NULL;
-				env->value = getcwd(env->value, 1000);
-			}
-		}
+			update_PWD(oldone, flag, env);
 		if(ft_strcmp(env->type, "OLDPWD") == 0 && (flag == 0))
 		{
 			free(env->value);

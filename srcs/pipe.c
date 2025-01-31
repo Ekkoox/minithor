@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 17:45:16 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:17:15 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void error_execve(t_pipex *pipex, t_minishell *minishell, t_token *token)
 {
 	ft_printf("bash: %s: Is a directory\n", token->value);
-	repos_army(pipex, minishell->sup_command);
+	repos_army(pipex, minishell->sup_command, token);
 	mini_free(minishell, pipex, token, 1);
 	free_env_list(minishell->env);
 	free_tok_list(token, 0);
@@ -81,7 +81,7 @@ static void get_the_next_command(t_token *token, t_minishell *minishell, char *c
 	minishell->command_exac[y] = NULL;
 }
 
-static int	 find_the_thing(t_token *token, char *thing)
+int	 find_the_thing(t_token *token, char *thing, int flag)
 {
 	t_token *tmp;
 
@@ -93,7 +93,7 @@ static int	 find_the_thing(t_token *token, char *thing)
 			token = tmp;
 			return (0);
 		}
-		if (ft_strcmp(token->type, "pipe") == 0 )
+		if (ft_strcmp(token->type, "pipe") == 0 && flag == 0)
 		{
 			token = tmp;
 			return (1);
@@ -136,7 +136,7 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 	}
 	while(ft_strcmp(token->value, minishell->command_exac[0]) != 0)
 		token = token->next;
-	if (find_the_thing(token, "file") == 0)
+	if (find_the_thing(token, "file", 0) == 0)
 	{
 		tmp = token;
 		while ((ft_strcmp(token->type, "redirect output") != 0) &&
@@ -171,7 +171,18 @@ static void execute_command(t_pipex *pipex, t_minishell *minishell, int *cmd_ind
 			close(pipex->pipes[i][1]);
 			i++;
 		}
+		free_tab_int(pipex->pipes, count_command(tmp));
 	}
+	// ft_printf("%s\n", minishell->command_exac[0]);
+	// ft_printf("%s\n", minishell->command_exac[1]);	
+	
+	//if (is_command_builtin(minishell->command_exac[0], token, minishell) == 0)
+	// if (*cmd_index == count_command(tmp) - 1)
+	// {
+	// 	ft_printf("%d\n", *cmd_index);
+	// 	ft_printf("%d\n", count_command(tmp));
+	// 	free_tab_int(pipex->pipes, count_command(tmp));
+	// }
 		if (execve(path, minishell->command_exac, pipex->ev) == -1)
 			error_execve(pipex, minishell, token);
 }
@@ -218,14 +229,6 @@ static char **creat_tab_command(t_token *token, int command_n)
 	tmp = token;
 	while(token->next)
 	{
-		// if (i == 0 && ft_strcmp(token->type, "commande") == 0)
-		// 	res[i] = ft_strdup(token->value);
-		// else if ((ft_strcmp(token->type,command: "pipe") == 0) && i != 0){
-		// 	res[i] = ft_strdup(token->next->value);
-		// 	if (!res[i])
-		// 		return(NULL);
-		// 	token = token->next;
-		// }
 		if ((ft_strcmp(token->type, "commande") == 0 || ft_strcmp(token->type, "trash") == 0) && (flag == 0))
 		{
 			res[i] = ft_strdup(token->value);
@@ -272,7 +275,9 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 	int i;
 	int status;
 	pid_t pid;
+	t_token *tmp;
 
+	tmp = token;
 	find_the_path(ev, pipex);
 	split_the_path(pipex);
 	pipex->num_cmds = count_command(token);
@@ -287,18 +292,6 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 	status = 0;
 	int c = -1;
 	i = 0;
-	while (i < pipex->num_cmds - 1)
-	{
-		pipex->pipes[i] = malloc(sizeof(int) * 2);
-		if (pipe(pipex->pipes[i]) == -1)
-		{
-			perror("Pipe creation failed");
-			free_all(pipex);
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}     
-	i = 0;
 	while (i < pipex->num_cmds)
 	{
 		c++;
@@ -310,15 +303,7 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)
-		{
-			// ft_printf("command: %s\n", command[0]);
-			// ft_printf("command: %s\n", command[1]);
-			// ft_printf(" %d\n", c);
-			
 			execute_command(pipex, minishell, &c, token, command[c]);
-		}
-		// if (pipex->fd)
-		// 	close(pipex->fd);
 		if (i > 0)
 			close(pipex->pipes[i - 1][0]);
 		if (i < pipex->num_cmds - 1)
@@ -334,5 +319,5 @@ void army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell, t_token *to
 		wait(NULL);
 		i++;
 	}
-	repos_army(pipex, command);
+	repos_army(pipex, command, tmp);
 }

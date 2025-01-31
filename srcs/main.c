@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 15:56:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:16:03 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ regarde les expand genre;
 minishell-:echo "$PWD"
 1:le echo affiche bien la valeur de $PWD mais je sexfault juste apres
 0:ca doit  etre un probleme au niveau des free
+regarde la premier evariable de l'env et le controle C dasn le cat
 */
 
 // echo $ ca bloque on peut plus faire de commande, le prompt bug

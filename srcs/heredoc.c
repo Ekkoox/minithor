@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/27 18:23:34 by roane            ###   ########.fr       */
+/*   Updated: 2025/01/31 03:35:50 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,13 +150,10 @@ int	heredoc(t_token *token, t_token **head, int *nb_heredoc, t_minishell *minish
 		signal(SIGINT, close_fd);
 		if (creat_the_heredoc(token) == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
-		//repos_army(pipex, minishell->sup_command);
 		mini_free(minishell, pipex, (*head), 0);
 		free_env_list(minishell->env);
 		free_tok_list(token, 0);
-		//free_tab(minishell->sup_command);
 		exit(0);
-		//exit(EXIT_SUCCESS);
 	}
 	wait(&status);
 	signal(SIGQUIT, SIG_IGN);

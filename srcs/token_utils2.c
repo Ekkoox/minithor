@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:59:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/22 19:33:19 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/29 20:21:19 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	is_space(char *str, int *index)
 
 	i = *index;
 	
-	if (str[i] == ' ')
+	if (!str[i])
+		return (1);
+	else if (str[i] == ' ')
 		return(0);
 	else if(str[i] == '|')
 		return(0);
@@ -103,9 +105,12 @@ void	clear_quote(char *buffer, char *dest, int *index, int start,
 		{
 			if(buffer[*index] == 34 || buffer[*index] == 39)
 				*index += 1;
-			dest[*index_dest] = buffer[*index];
-			*index += 1;
-			*index_dest += 1;
+			else 
+			{
+				dest[*index_dest] = buffer[*index];
+				*index += 1;
+				*index_dest += 1;
+			}
 		}
 		buffer[*index] = '\0';
 	}
