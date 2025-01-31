@@ -6,13 +6,13 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/31 15:32:49 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:41:07 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tab_int(int tab, int num_cmds)
+void	free_tab_int(int **tab, int num_cmds)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ void	free_tab_int(int tab, int num_cmds)
 	tab = NULL;
 }
 
-void	free_tab(char tab)
+void	free_tab(char **tab)
 {
 	int	i;
 
@@ -44,7 +44,7 @@ void	free_tab(char tab)
 	tab = NULL;
 }
 
-void	repos_army(t_pipex pipex, char **command, t_token token)
+void	repos_army(t_pipex *pipex, char **command, t_token *token)
 {
 	if (command)
 		free_tab(command);
@@ -63,9 +63,9 @@ void	repos_army(t_pipex pipex, char **command, t_token token)
 //         free(minishell->current);
 // }
 
-void	free_env_list(t_env env)
+void	free_env_list(t_env *env)
 {
-	t_env target;
+	t_env *target;
 	while (env)
 	{
 		target = env;
@@ -79,11 +79,11 @@ void	free_env_list(t_env env)
 	}
 }
 
-void	free_tok_list(t_token token, int flag)
+void	free_tok_list(t_token *token, int flag)
 {
-	t_token	tmp;
+	t_token	*tmp;
 	int		index;
-	t_token	target;
+	t_token	*target;
 
 	tmp = token;
 	index = 0;
@@ -117,7 +117,7 @@ void	free_tok_list(t_token token, int flag)
 		free(token);
 }
 
-void	mini_free(t_minishell minishell, t_pipex pipex, t_token token, int flag)
+void	mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag)
 {
 	free_tok_list(token, 1);
 	free(minishell->buffer);
