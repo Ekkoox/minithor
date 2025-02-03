@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 18:31:03 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:12:23 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ void	army_of_fork(char **ev, t_pipex *pipex, t_minishell *minishell,
 		if (pid == -1)
 		{
 			perror("Fork failed");
-			free_all(pipex);
+			// free_all(pipex);
 			exit(EXIT_FAILURE);
 		}
 		if (pid == 0)

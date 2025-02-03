@@ -58,6 +58,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 size_t	ft_strlen(const char *s);
 size_t	ft_count_line_split(char **split);
+size_t	ft_strspn(const char *s, const char *accept);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 long	ft_atol(char *str);

@@ -2,25 +2,26 @@ NAME = minishell
 
 C_FILES = main.c\
 		  cd.c\
-		  pwd.c\
 		  env.c\
-          pipe.c\
+		  pwd.c\
 		  echo.c\
+		  exit.c\
 		  free.c\
-		  token.c\
+          pipe.c\
 		  error.c\
-          prompt.c\
+		  token.c\
+		  unset.c\
 		  export.c\
+          prompt.c\
 		  signal.c\
 		  builtin.c\
 		  heredoc.c\
 		  split_env.c\
           pipe_utils.c\
-		  token_utils.c\
 		  check_token.c\
+		  token_utils.c\
 		  token_utils2.c\
 		  heredoc_utils.c\
-		  unset.c\
 
 BOLD = \033[1m
 RED = \033[31m

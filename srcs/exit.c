@@ -6,13 +6,32 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:57:31 by enschnei          #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:13 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:51:27 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_exit(t_token *token)
+static void free_tokens(t_token *token)
 {
-    return (EXIT_SUCCESS);
+    t_token *tmp;
+
+    while (token)
+    {
+        tmp = token->next;
+        free(token->value);
+        free(token);
+        token = tmp;
+    }
+}
+
+
+int ft_exit(t_minishell *minishell, t_token *token)
+{   
+    free(token->type);
+    free_tokens(token);
+    free_tab(minishell->command_exac);
+    free_env_list(minishell->env);
+    ft_putstr_fd("Bisous mon chou <3\n", 1);
+    exit(EXIT_SUCCESS);
 }

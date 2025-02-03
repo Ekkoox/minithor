@@ -6,20 +6,20 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 17:38:13 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:25:07 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_all(t_pipex *pipex)
-{
-	if (pipex->path)
-		return ;
-		// ft_free(pipex->path, ft_count_line_split(pipex->path));
-	// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
-	// exit(EXIT_SUCCESS);
-}
+// void	free_all(t_pipex *pipex)
+// {
+// 	if (pipex->path)
+// 		return ;
+// 		// ft_free(pipex->path, ft_count_line_split(pipex->path));
+// 	// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
+// 	// exit(EXIT_SUCCESS);
+// }
 
 char	*find_the_path(char **ev, t_pipex *pipex)
 {
@@ -88,7 +88,6 @@ char	*get_the_command(t_pipex *pipex)
 	if (!pipex->command_1)
 	{
 		ft_putstr_fd("Malloc error\n", 2);
-		free_all(pipex);
 		exit(EXIT_FAILURE);
 	}
 	if (!ft_strchr(pipex->command_1, '/') && pipex->command_1[0] != '.')

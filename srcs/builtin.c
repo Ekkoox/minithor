@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:47:16 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:25:37 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:58:55 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	is_builtin(t_minishell *minishell, t_token *token)
 		ft_export(minishell->env, token);
 	else if (ft_strcmp(token->value, "unset") == 0)
 		ft_unset(minishell, token);
+	else if (ft_strcmp(token->value, "exit") == 0)
+		ft_exit(minishell, token);
 	else 
 		return(0);
     return (1);

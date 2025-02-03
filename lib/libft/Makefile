@@ -15,6 +15,7 @@ SRCS = ft_atoi.c\
        ft_strdup.c\
        ft_substr.c\
 	   ft_strcmp.c\
+       ft_strspn.c\
        ft_memmove.c\
        ft_isalpha.c\
        ft_isdigit.c\

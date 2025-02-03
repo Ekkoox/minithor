@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 17:03:28 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/27 18:19:50 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/03 17:12:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int get_the_command_for_the_token(t_pipex *pipex)
 	if (!pipex->command_1)
 	{
 		ft_putstr_fd("Malloc error\n", 2);
-		free_all(pipex);
+		// free_all(pipex);
 		// exit(EXIT_FAILURE);
 	}
 	if (!ft_strchr(pipex->command_1, '/') && pipex->command_1[0] != '.')
@@ -84,7 +84,7 @@ static int get_the_command_for_the_token(t_pipex *pipex)
 		if (!path)
 		{
 			//ft_putstr_fd("Command not found\n", 2);
-			free_all(pipex);
+			// free_all(pipex);
 			return (EXIT_FAILURE);
 		}
 		return (free(path), EXIT_SUCCESS);

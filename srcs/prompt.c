@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:13:05 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:52:25 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ int	error_prompt(char *buffer, ssize_t bytes_read)
 	return (EXIT_SUCCESS);
 }
 
-int	exit_prompt(char *buffer)
-{
-	if (ft_strcmp(buffer, "exit") == 0)
-	{
-		ft_putstr_fd("Bisous mon chou <3\n", 1);
-		return (EXIT_SUCCESS);
-	}
-	return (EXIT_FAILURE);
-}
+// int	exit_prompt(char *buffer)
+// {
+// 	if (ft_strcmp(buffer, "exit") == 0)
+// 	{
+// 		ft_putstr_fd("Bisous mon chou <3\n", 1);
+// 		return (EXIT_SUCCESS);
+// 	}
+// 	return (EXIT_FAILURE);
+// }
 
 static t_env	*creat_env_list(char **ev, t_minishell *minishell)
 {
@@ -123,23 +123,13 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         }
         bytes_read = ft_strlen(buffer);
         buffer[bytes_read] = '\0';
-        if (exit_prompt(buffer) == 0)
-            break ;
         minishell->buffer = buffer;
         add_history(buffer);
         flag = tokenisation(token, minishell, pipex);
         if (flag == EXIT_FAILURE)
             continue;
         if (check_token(token, minishell->env, pipex) == 0)
-        { 
-        //     while(token->next)
-        //     {
-        //         ft_printf("le type: %s. de la valeur de:  %s\n", token->type, token->value);
-        //         if (ft_strcmp(token->type, "commande") == 0)
-        //             ft_printf("index %d\n", token->index);
-        //         token = token->next;
-        //    }
-        //     token = head;
+        {
             nb_heredoc = count_heredoc(token);
             pipex->command_1 = token->value;
             if (bytes_read > 0)

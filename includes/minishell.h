@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 19:00:21 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:30:50 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int						ft_cd(t_token *token, t_env *env);
 int						ft_export(t_env *env, t_token *token);
 int						ft_env(t_minishell *minishell);
 int						is_builtin(t_minishell *minishell, t_token *token);
+int 					ft_exit(t_minishell *minishell, t_token *token);
 void    				ft_unset(t_minishell *minishell, t_token *token);
 
 // HEREDOC
@@ -129,7 +130,7 @@ int						creat_the_prompt(char **ev, t_pipex *pipex,
 							t_token *token, t_minishell *minishell);
 
 // PIPE
-void					free_all(t_pipex *pipex);
+// void					free_all(t_pipex *pipex);
 void					army_of_fork(char **ev, t_pipex *pipex,
 							t_minishell *minishell, t_token *token);
 char					*get_the_command(t_pipex *pipex);
