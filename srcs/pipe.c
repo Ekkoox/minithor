@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 19:21:20 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/07 15:33:24 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/07 17:51:28 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ static void	execute_command(t_pipex *pipex, t_minishell *minishell,
 
 	pipex->command_1 = command;
 	tmp = token;
+	check_error(token);
 	path = get_the_command(pipex);
 	if (path == NULL)
 	{
@@ -124,21 +125,20 @@ static void	execute_command(t_pipex *pipex, t_minishell *minishell,
 		free_env_list(minishell);
 		free_tok_list(token, 0);
 		free_tab(minishell->sup_command);
-		free(pipex->pipes);
 		exit(127);
 	}
 	check_permissions(path);
 	free_tab(minishell->command_exac);
 	get_the_next_command(token, minishell, command, cmd_index);
-	if (!path)
-	{
-		ft_putstr_fd("1 No such file or directory\n", 2);
-		mini_free(minishell, pipex, token, 1);
-		free_env_list(minishell);
-		free_tok_list(token, 0);
-		free_tab(minishell->sup_command);
-		exit(127);
-	}
+	// if (!path)
+	// {
+	// 	ft_putstr_fd("1 No such file or directory\n", 2);
+	// 	mini_free(minishell, pipex, token, 1);
+	// 	free_env_list(minishell);
+	// 	free_tok_list(token, 0);
+	// 	free_tab(minishell->sup_command);
+	// 	exit(127);
+	// }
 	if (find_the_thing(tmp, "file", 1) == 0 && find_the_thing(tmp, "pipe", 1) == 0)
 		while (ft_strcmp(token->value, minishell->command_exac[0]) != 0)
 				token = token->next;

@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:05:21 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/03 18:37:10 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:47:24 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,41 +30,61 @@ void check_permissions(char *path)
     }
 }
 
-static int error_directory(t_minishell *minishell, int *index)
+static int error_directory(t_token *token)
 {
-    int i;
+    t_token *tmp;
     int j;
     
-    i = *index;
-    if (ft_strspn(minishell->buffer + i, "/") == ft_strlen(minishell->buffer + i))
+    tmp = token;
+    j = 2;
+    while (token)
     {
-        ft_putstr_fd("bash: ", 2);
-        ft_putstr_fd(minishell->buffer + i, 2);
-        ft_putstr_fd(": Is a directory\n", 2);
-        g_var = 126;
-        return (EXIT_FAILURE);
-    }
-    if (ft_strncmp(minishell->buffer + i, "/.", 2) == 0) 
-    {
-        j = i + 2;
-        while (minishell->buffer[j] == '/' || (minishell->buffer[j] == '.' && minishell->buffer[j - 1] == '/'))
-            j++;
-        if (minishell->buffer[j] == '\0')
+        if (!token->value)
+        {
+            token = token->next;
+            continue;
+        }
+        if (ft_strncmp(token->value, "/", 1) == 0)
         {
             ft_putstr_fd("bash: ", 2);
-            ft_putstr_fd(minishell->buffer + i, 2);
+            ft_putstr_fd(token->value, 2);
             ft_putstr_fd(": Is a directory\n", 2);
             g_var = 126;
             return (EXIT_FAILURE);
         }
+            // printf("YO\n");
+        if (ft_strncmp(token->value, "/.", 2) == 0)
+        {
+            while (token->value[j] == '/' || (token->value[j] == '.' && token->value[j - 1] == '/'))
+                j++;
+            if (token->value[j] == '\0')    
+            {
+                ft_putstr_fd("bash: ", 2);
+                ft_putstr_fd(token->value, 2);
+                ft_putstr_fd(": Is a directory\n", 2);
+                g_var = 126;
+                return (EXIT_FAILURE);
+            }
+        }
+        j = 0;
+        while (token->value[j] == '/')
+            j++;
+        if (token->value[j] == '\0') // Si on est à la fin de la chaîne, c'est un dossier
+        {
+            ft_putstr_fd("bash: ", 2);
+            ft_putstr_fd(token->value, 2);
+            ft_putstr_fd(": Is a directory\n", 2);
+            g_var = 126;
+            return (EXIT_FAILURE);
+        }
+        token = token->next;
     }
     return (EXIT_SUCCESS);
 }
 
-
-int check_error(t_minishell *minishell, int *index)
+int check_error(t_token *token)
 {
-    if (error_directory(minishell, index) == 1)
+    if (error_directory(token) == 1)
         return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }

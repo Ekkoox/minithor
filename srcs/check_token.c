@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/07 15:33:01 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/07 15:41:33 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ static int juge_expand(t_token *token, int *index, t_env *env, int *nb_sign)
 	env = tmp;
 	return (free(expand), swap_plan(token, i, *index), 0);
 }
+
 static void check_dollar(t_token *token, t_env *env)
 {
 	int i;
@@ -306,7 +307,6 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 		if (ft_strcmp(token->type, "commande") == 0)
 			token->index = index_command++;
 		check_dollar(token, env);
-	
 		if (((ft_strcmp(token->type, "redirect output") == 0) || (ft_strcmp(token->type, "redirect input") == 0)) && (token->next->type))
 			check_file(token->next->value, token->value, token, pipex);
 		check = token;

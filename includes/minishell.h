@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
+/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/07 15:32:08 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:13:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void 					free_tab_int(int **tab, int num_cmds);
 void					mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag);
 
 // ERROR
-int 					check_error(t_minishell *minishell, int *index);
+int 					check_error(t_token *token);
 void					check_permissions(char *path);
 
 #endif

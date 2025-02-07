@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:57:31 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/06 17:15:24 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:45:26 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int ft_exit(t_minishell *minishell, t_token *token)
     free(token->type);
     free_tokens(token);
     free_tab(minishell->command_exac);
-    free_env_list(minishell->env);
+    free_env_list(minishell);
     ft_putstr_fd("Bisous mon chou <3\n", 1);
     exit(EXIT_SUCCESS);
 }
