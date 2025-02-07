@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 18:28:48 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:25:08 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:22:59 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void					clear_quote(char *buffer, char *dest, int *index,
 //FREE
 void 					repos_army(t_pipex *pipex, char **command, t_token *token);
 void 					free_tok(t_token *token, t_minishell *minishell, t_pipex *pipex);
-void 					free_env_list(t_env *env);
+void 					free_env_list(t_minishell *minishell);
 void    				free_tok_list(t_token *token, int flag);
 void    				free_minishell_list(t_minishell *minishell);
 void 					free_tab(char **tab);

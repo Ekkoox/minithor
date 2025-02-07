@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:53:35 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/30 17:57:04 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/06 02:35:07 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ static char	*get_type_env(t_token *token)
 
 	i = 0;
 	j = 0;
-	token = token->next;
 	while (token->value[i] != '=')
 		i++;
-	res = ft_calloc(sizeof(char), i);
+	res = ft_calloc(sizeof(char), i + 1);
 	while (token->value[i] && i > j)
 	{
 		res[j] = token->value[j];
@@ -33,14 +32,15 @@ static char	*get_type_env(t_token *token)
 	return (res);
 }
 
-static void	get_value_env(t_env *env, t_token *token)
+static void	get_value_env(t_env *env, t_token *token, char *type)
 {
 	int	i;
 	int	j;
+	t_token *tmp;
 
 	i = 0;
 	j = 0;
-	token = token->next;
+	tmp = token;
 	if (env->value)
 	{
 		free(env->value);
@@ -57,30 +57,47 @@ static void	get_value_env(t_env *env, t_token *token)
 		j++;
 	}
 	env->value[j] = '\0';
+	free(type);
+	token = tmp;
+}
+
+static void creation(t_env *env, t_token *token, char *type)
+{
+	int flag;
+
+	flag = 0;
+	while (env->next->type)
+		{
+			if (ft_strcmp(env->type, type) == 0)
+			{
+				get_value_env(env, token, type);
+				flag = 1;
+			}
+			env = env->next;
+		}
+		if (ft_strcmp(env->type, type) != 0 && flag == 0)
+		{
+			env = env->next;
+			env->type = ft_strdup(type);
+			env->next = ft_calloc(sizeof(t_env), 1);
+			get_value_env(env, token, type);
+		}
 }
 
 int	ft_export(t_env *env, t_token *token)
 {
 	t_env	*tmp;
-	t_token	*tmp1;
 	char	*type;
 
 	tmp = env;
-	tmp1 = token;
-	type = get_type_env(token);
-	token = tmp1;
-	while (env->next->type)
+	token = token->next;
+	while(token->value)
 	{
-		env = env->next;
+		type = get_type_env(token);
+		creation(env, token, type);
+		env = tmp;
+		token = token->next;
 	}
-	if (ft_strcmp(env->type, type) != 0)
-	{
-		env = env->next;
-		env->type = ft_strdup(type);
-		env->next = ft_calloc(sizeof(t_env), 1);
-	}
-	get_value_env(env, token);
 	token->flag = 1;
-	env = tmp;
 	return (EXIT_SUCCESS);
 }

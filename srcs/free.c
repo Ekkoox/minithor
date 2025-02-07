@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/31 15:52:40 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/07 15:22:25 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ void	repos_army(t_pipex *pipex, char **command, t_token *token)
 //         free(minishell->current);
 // }
 
-void	free_env_list(t_env *env)
+void	free_env_list(t_minishell *minishell)
 {
 	t_env *target;
-	while (env)
+	while (minishell->env)
 	{
-		target = env;
-		env = env->next;
+		target = minishell->env;
+		minishell->env = minishell->env->next;
 		free(target->type);
 		free(target->value);
 		target->type = NULL;

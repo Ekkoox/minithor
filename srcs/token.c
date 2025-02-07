@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/01/31 15:52:47 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/03 21:35:35 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex,
 	if (mot[0] == '<')
 		if(mot[1] == '<')
 			return(creat_node("heredoc", token, mot, minishell), 0);
-	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
+	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0) || (ft_strcmp(mot, ">>") == 0))
 	{
-		if (ft_strcmp(mot, ">") == 0)
+		if (ft_strcmp(mot, ">") == 0 || (ft_strcmp(mot, ">>") == 0))
 			return (creat_node("redirect output", token, mot, minishell), 0);
 		else if (ft_strcmp(mot, "<") == 0)
 			return (creat_node("redirect input", token, mot, minishell), 0);
@@ -232,7 +232,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 				count_quote(minishell->current), minishell);
 		else
 			get_type(minishell->current, token, pipex, minishell);
-		//ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
+		// ft_printf("le type: %s. de la valeur de: %s\n", token->type, token->value);
 		token = token->next;
 		while (minishell->buffer[i] == ' ')
 			i++;

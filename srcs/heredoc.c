@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:49:43 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:33:28 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:26:11 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int	heredoc(t_token *token, t_token **head, int *nb_heredoc,
 		if (creat_the_heredoc(token) == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
 		mini_free(minishell, pipex, (*head), 0);
-		free_env_list(minishell->env);
+		free_env_list(minishell);
 		free_tok_list(token, 0);
 		exit(0);
 	}
