@@ -6,7 +6,7 @@
 /*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:57:31 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/03 18:51:27 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:15:24 by enschnei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void free_tokens(t_token *token)
         token = tmp;
     }
 }
-
 
 int ft_exit(t_minishell *minishell, t_token *token)
 {   
