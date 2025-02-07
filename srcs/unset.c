@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:14:51 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/31 15:41:28 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:16:35 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	delete_node(t_env *head, t_env *target)
 		free_node(target);
 	}
 }
+
 static int find_the_thing_env(t_env *env, char *thing)
 {
 	t_env *tmp;
@@ -59,6 +60,24 @@ static int find_the_thing_env(t_env *env, char *thing)
 	env = tmp;
 	return (1);
 }
+static void what_i_do(t_minishell *minishell, t_token *token, t_env *tmp_env)
+{
+	if (find_the_thing_env(minishell->env, token->value) == 0)
+		{
+			if (ft_strcmp(minishell->env->type, token->value) == 0)
+			{
+				tmp_env = minishell->env;
+				minishell->env = minishell->env->next;
+				free_node(tmp_env);  
+			}
+			else
+			{   
+				while(ft_strcmp(minishell->env->type, token->value) != 0) 
+					minishell->env =  minishell->env->next;
+				delete_node(tmp_env,  minishell->env);
+			}   
+		}
+}
 
 void    ft_unset(t_minishell *minishell, t_token *token)
 {
@@ -68,21 +87,26 @@ void    ft_unset(t_minishell *minishell, t_token *token)
     tmp_token = token;
     tmp_env = minishell->env;
     token = token->next;
-    if (find_the_thing_env(minishell->env, token->value) == 0)
-    {
-        if (ft_strcmp(minishell->env->type, token->value) == 0)
-        {
-            tmp_env = minishell->env;
-            minishell->env = minishell->env->next;
-            free_node(tmp_env);  
-        }
-        else
-        {   
-            while(ft_strcmp(minishell->env->type, token->value) != 0) 
-                minishell->env =  minishell->env->next;
-            delete_node(tmp_env,  minishell->env);
-            minishell->env = tmp_env;
-            token = tmp_token;
-        }   
-    }
+	while(token->value)
+	{	
+		what_i_do(minishell, token, tmp_env);
+		// if (find_the_thing_env(minishell->env, token->value) == 0)
+		// {
+		// 	if (ft_strcmp(minishell->env->type, token->value) == 0)
+		// 	{
+		// 		tmp_env = minishell->env;
+		// 		minishell->env = minishell->env->next;
+		// 		free_node(tmp_env);  
+		// 	}
+		// 	else
+		// 	{   
+		// 		while(ft_strcmp(minishell->env->type, token->value) != 0) 
+		// 			minishell->env =  minishell->env->next;
+		// 		delete_node(tmp_env,  minishell->env);
+		// 	}   
+		// }
+		minishell->env = tmp_env;
+		token = token->next;
+	}
+	token = tmp_token;
 }

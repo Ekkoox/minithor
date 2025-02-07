@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/03 17:52:25 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:33:33 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         if (!buffer)
         {
             free(token);
-            free_env_list(minishell->env);
+            free_env_list(minishell);
             ft_printf("exit\n");
             return (EXIT_FAILURE);
         }
@@ -148,10 +148,12 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
             }
         }
         token = head;
-        if (ft_strcmp(token->type, "heredoc") != 0)
+        if (ft_strcmp(token->type, "heredoc") == 0)
+            mini_free(minishell, pipex, token, 0);
+        else 
             mini_free(minishell, pipex, token, 1);
     }
-    free_env_list(minishell->env);
+    free_env_list(minishell);
     free_tok_list(token, 0);
     if (bytes_read < 0)
         error_prompt(buffer, bytes_read);

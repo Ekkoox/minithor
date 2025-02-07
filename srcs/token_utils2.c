@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:59:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/01/29 20:21:19 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/03 21:24:54 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ int	is_space(char *str, int *index)
 		return(0);
 	}
 	else if (str[i] == '>')
-		return (0);
+	{
+		if (str[i + 1] == '>')
+			return (-1);
+		return(0);
+	}
 	return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/02/03 17:00:09 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:33:52 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,9 @@ static int	get_type(char *mot, t_token *token, t_pipex *pipex,
 	if (mot[0] == '<')
 		if(mot[1] == '<')
 			return(creat_node("heredoc", token, mot, minishell), 0);
-	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0))
+	if ((ft_strcmp(mot, ">") == 0) || (ft_strcmp(mot, "<") == 0) || (ft_strcmp(mot, ">>") == 0))
 	{
-		if (ft_strcmp(mot, ">") == 0)
+		if (ft_strcmp(mot, ">") == 0 || (ft_strcmp(mot, ">>") == 0))
 			return (creat_node("redirect output", token, mot, minishell), 0);
 		else if (ft_strcmp(mot, "<") == 0)
 			return (creat_node("redirect input", token, mot, minishell), 0);
