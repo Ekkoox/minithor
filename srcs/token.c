@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/02/07 17:06:31 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/02/09 00:39:59 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static int	grap_mot(t_minishell *minishell, int *index)
 	int	j;
 	int	y;
 
+	// if (check_error(minishell, index))
+	// 	return (EXIT_FAILURE);
 	i = *index;
 	y = *index;
 	j = 0;
