@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 17:59:59 by razouani          #+#    #+#             */
-/*   Updated: 2025/02/07 15:33:52 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:12:14 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ static int	grap_mot(t_minishell *minishell, int *index)
 	int	j;
 	int	y;
 
-	if (check_error(minishell, index))
-		return (EXIT_FAILURE);
+	// if (check_error(minishell, index))
+	// 	return (EXIT_FAILURE);
 	i = *index;
 	y = *index;
 	j = 0;
