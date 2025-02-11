@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:41:58 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/09 00:38:45 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/09 03:02:27 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ int		check_token(t_token *token, t_env *env, t_pipex *pipex)
 	}
 	if (ft_strcmp(check->type, "pipe") == 0)
 		return(token = tmp, 1);
-	if (ft_strcmp(check->type, "redirect output") == 0 || ft_strcmp(check->type, "redirect input") == 0 || ft_strcmp(check->type, "heredoc") == 0)
+	if (ft_strcmp(check->type, "redirect output") == 0 || ft_strcmp(check->type, "redirect input") == 0)
 		return(ft_printf("syntax error near unexpected token `newline'\n"), 1);
 	 return (token=tmp, 0);
 }

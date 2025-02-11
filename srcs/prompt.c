@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/07 15:33:33 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/09 02:19:48 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,46 +27,40 @@ int	error_prompt(char *buffer, ssize_t bytes_read)
 	return (EXIT_SUCCESS);
 }
 
-// int	exit_prompt(char *buffer)
-// {
-// 	if (ft_strcmp(buffer, "exit") == 0)
-// 	{
-// 		ft_putstr_fd("Bisous mon chou <3\n", 1);
-// 		return (EXIT_SUCCESS);
-// 	}
-// 	return (EXIT_FAILURE);
-// }
+static void init_env(t_minishell *minishell, char **ev, int *index)
+{
+    	char **split_env;
 
-static t_env	*creat_env_list(char **ev, t_minishell *minishell)
+
+        split_env = ft_split_env(ev[*index], '=');
+		minishell->env->type = ft_strdup(split_env[0]);
+		minishell->env->value = ft_strdup(split_env[1]);
+		if (!minishell->env->type || !minishell->env->value)
+			return;
+		minishell->env->next = ft_calloc(sizeof(t_env), 1);
+		if (!minishell->env->next)
+			return;
+		minishell->env = minishell->env->next;
+		*index += 1;
+        free(split_env[0]);
+        free(split_env[1]);
+        free(split_env); 
+}
+
+static void	    creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
-	char **split_env;
-	t_env *env = minishell->env;
+	//char **split_env;
 	t_env *tmp;
 
 	i = 0;
-	env = ft_calloc(sizeof(t_env), 1);
-	if (!env)
-		return (NULL);
-	tmp = env;
+	minishell->env = ft_calloc(sizeof(t_env), 1);
+	if (!minishell->env)
+		return;
+	tmp = minishell->env;
 	while(ev[i])
-	{
-		split_env = ft_split_env(ev[i], '=');
-		env->type = ft_strdup(split_env[0]);
-		env->value = ft_strdup(split_env[1]);
-		if (!env->type || !env->value)
-			return (NULL);
-		env->next = ft_calloc(sizeof(t_env), 1);
-		if (!env->next)
-			return (NULL);
-		env = env->next;
-		i++;
-        free(split_env[0]);
-        free(split_env[1]);
-        free(split_env);
-	}
-	env = tmp;
-	return (env);
+        init_env(minishell, ev, &i);
+	minishell->env = tmp;
 }
 
 int     count_size_lst(t_env *env)
@@ -106,7 +100,7 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
     flag = 0;
     bytes_read = 0;    
     head = token;
-    minishell->env = creat_env_list(ev, minishell);
+    creat_env_list(ev, minishell);
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, handle_sigint);
     if (count_size_lst(minishell->env) > 6)

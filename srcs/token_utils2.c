@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:59:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/03 21:24:54 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/09 00:55:25 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,22 @@ char	*in_quote(char *mot, int quote)
 	return (clear_word);
 }
 
+static void not_the_same(int *index, int *index_dest, char *buffer, char *dest)
+{
+	while ((buffer[*index] != 34 || buffer[*index] != 39) && (buffer[*index]))
+		{
+			if(buffer[*index] == 34 || buffer[*index] == 39)
+				*index += 1;
+			else 
+			{
+				dest[*index_dest] = buffer[*index];
+				*index += 1;
+				*index_dest += 1;
+			}
+		}
+		buffer[*index] = '\0';
+}
+
 void	clear_quote(char *buffer, char *dest, int *index, int start,
 		int *index_dest)
 {
@@ -104,20 +120,7 @@ void	clear_quote(char *buffer, char *dest, int *index, int start,
 		dest[i] = '\0';
 	}
 	else
-	{
-		while ((buffer[*index] != 34 || buffer[*index] != 39) && (buffer[*index]))
-		{
-			if(buffer[*index] == 34 || buffer[*index] == 39)
-				*index += 1;
-			else 
-			{
-				dest[*index_dest] = buffer[*index];
-				*index += 1;
-				*index_dest += 1;
-			}
-		}
-		buffer[*index] = '\0';
-	}
+		not_the_same(index, index_dest, buffer, dest);
 	return ;
 }
 

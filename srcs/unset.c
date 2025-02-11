@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:14:51 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/07 15:16:35 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/09 01:37:30 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,29 @@ static int find_the_thing_env(t_env *env, char *thing)
 	env = tmp;
 	return (1);
 }
-static void what_i_do(t_minishell *minishell, t_token *token, t_env *tmp_env)
+static int what_i_do(t_minishell *minishell, t_token *token, t_env *tmp_env)
 {
+	t_env *target;
+
 	if (find_the_thing_env(minishell->env, token->value) == 0)
 		{
 			if (ft_strcmp(minishell->env->type, token->value) == 0)
 			{
-				tmp_env = minishell->env;
+				target = minishell->env;
 				minishell->env = minishell->env->next;
-				free_node(tmp_env);  
+				tmp_env = tmp_env->next;
+				free_node(target);
+				return (0);
 			}
 			else
 			{   
 				while(ft_strcmp(minishell->env->type, token->value) != 0) 
 					minishell->env =  minishell->env->next;
 				delete_node(tmp_env,  minishell->env);
+				return (1);
 			}   
 		}
+		return (0);
 }
 
 void    ft_unset(t_minishell *minishell, t_token *token)
@@ -87,25 +93,12 @@ void    ft_unset(t_minishell *minishell, t_token *token)
     tmp_token = token;
     tmp_env = minishell->env;
     token = token->next;
+	int i = 0;
 	while(token->value)
 	{	
-		what_i_do(minishell, token, tmp_env);
-		// if (find_the_thing_env(minishell->env, token->value) == 0)
-		// {
-		// 	if (ft_strcmp(minishell->env->type, token->value) == 0)
-		// 	{
-		// 		tmp_env = minishell->env;
-		// 		minishell->env = minishell->env->next;
-		// 		free_node(tmp_env);  
-		// 	}
-		// 	else
-		// 	{   
-		// 		while(ft_strcmp(minishell->env->type, token->value) != 0) 
-		// 			minishell->env =  minishell->env->next;
-		// 		delete_node(tmp_env,  minishell->env);
-		// 	}   
-		// }
-		minishell->env = tmp_env;
+		i++;
+		if(what_i_do(minishell, token, tmp_env) == 1)
+			minishell->env = tmp_env;
 		token = token->next;
 	}
 	token = tmp_token;

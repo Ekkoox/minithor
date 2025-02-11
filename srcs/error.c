@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:05:21 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/09 00:38:53 by roane            ###   ########.fr       */
+/*   Updated: 2025/02/09 00:41:14 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static int error_directory(t_token *token)
         }
         token = token->next;
     }
+    token = tmp;
     return (EXIT_SUCCESS);
 }
 
