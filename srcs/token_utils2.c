@@ -102,6 +102,20 @@ static void not_the_same(int *index, int *index_dest, char *buffer, char *dest)
 		buffer[*index] = '\0';
 }
 
+static int another_word(char *buffer, int *index)
+{
+	int i;
+
+	i = *index;
+	while(buffer[i])
+	{
+		if (buffer[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	clear_quote(char *buffer, char *dest, int *index, int start,
 		int *index_dest)
 {
@@ -111,15 +125,24 @@ void	clear_quote(char *buffer, char *dest, int *index, int start,
 	if (start == *index)
 	{
 		*index += 1;
-		while (((buffer[*index] != 34) || (buffer[*index] != 39))
-			&& buffer[*index])
+		while (buffer[*index] && ((buffer[*index] != 34) || (buffer[*index] != 39)))
 		{
+			ft_printf("%c\n", buffer[*index]);
+			if ((buffer[*index] == 34 || buffer[*index] == 39) && (buffer[*index + 1] == ' ') && (another_word(buffer, index)))
+			{
+				ft_printf("CACA\n");
+				*index += 1;
+				break;
+			}
+			else if ((buffer[*index] == 34 || buffer[*index] == 39) && (buffer[*index + 1] != ' '))
+					*index += 1;
 			dest[i] = buffer[*index];
 			i++;
-			*index += 1;
+			if(buffer[*index + 1] != '\0')
+				*index += 1;
 		}
-		i--;
 		dest[i] = '\0';
+		//ft_printf("%s\n", dest);
 	}
 	else
 		not_the_same(index, index_dest, buffer, dest);

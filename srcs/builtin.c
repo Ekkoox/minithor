@@ -45,6 +45,8 @@ int	count_heredoc(t_token *token)
 
 int	is_builtin(t_minishell *minishell, t_token *token)
 {
+	if (token->next->value)
+		return (0);
 	if (count_pipe(token) > 0)
 		return (0);
 	if (ft_strcmp(token->value, "echo") == 0)

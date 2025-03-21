@@ -44,14 +44,14 @@ static int error_directory(t_token *token)
             token = token->next;
             continue;
         }
-        if (ft_strncmp(token->value, "/", 1) == 0)
-        {
-            ft_putstr_fd("bash: ", 2);
-            ft_putstr_fd(token->value, 2);
-            ft_putstr_fd(": Is a directory\n", 2);
-            g_var = 126;
-            return (EXIT_FAILURE);
-        }
+        // if (ft_strncmp(token->value, "/", 1) == 0)
+        // {
+        //     ft_putstr_fd("bash: ", 2);
+        //     ft_putstr_fd(token->value, 2);
+        //     ft_putstr_fd(": Is a directory\n", 2);
+        //     g_var = 126;
+        //     return (EXIT_FAILURE);
+        // }
         if (ft_strncmp(token->value, "/.", 2) == 0)
         {
             while (token->value[j] == '/' || (token->value[j] == '.' && token->value[j - 1] == '/'))

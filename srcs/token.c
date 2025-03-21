@@ -81,7 +81,7 @@ static int creat_current(t_minishell *minishell, int *index, int i, int j, int y
 		return (1);
 	minishell->current = ft_calloc(sizeof(char), len + 1);
 	if (!minishell->current)
-		return (1);
+	return (1);
 	while (j < len && minishell->buffer[*index])
 	{
 		minishell->current[j] = minishell->buffer[*index];
@@ -251,6 +251,61 @@ static int creat_lst(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	token = tmp;
 	return (1);
 }
+static char *get_supos_command(char *srcs, char *find)
+{
+	int i;
+	int len;
+	char *res;
+
+	i = 0;
+	while(srcs[i])
+	{
+		while(srcs[i] == find[i])
+			i++;
+		len = i;
+		while(srcs[len])
+			len++;
+		res = ft_calloc(sizeof(char), (len - i) + 1);
+		len = 0;
+		while(srcs[i])
+		{
+			res[len] = srcs[i];
+			i++;
+			len++;
+		}
+		res[len] = '\0';
+	}
+	return(res);
+}
+
+
+static void is_a_absolut(t_token *token, t_pipex *pipex)
+{
+	int i;
+	char *command;
+	t_token *tmp;
+
+	i = 0;
+	tmp = token;
+	while(token->value)
+	{
+		if (token->value[0] == '/' && ft_strncmp(token->value, "/bin/", 5) == 0)
+		{
+			command = get_supos_command(token->value, "/bin/");
+			if (search_command_for_token(pipex, command) == 0)
+			{
+				free(token->value);
+				free(token->type);
+				token->value = ft_strdup(command);
+				token->type  = ft_strdup("commande");
+			}
+			free(command);
+			command = NULL;
+		}
+		token = token->next;
+	}
+	token = tmp;
+}
 
 int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 {
@@ -265,6 +320,7 @@ int	tokenisation(t_token *token, t_minishell *minishell, t_pipex *pipex)
 	if (creat_lst(token, minishell, pipex) == 0)
 		return (0);
 	put_in(token, minishell);
+	is_a_absolut(token, pipex);
 	minishell->flag = 0;
 	return (1);
 }

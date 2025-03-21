@@ -170,10 +170,9 @@ static void	execute_command(t_pipex *pipex, t_minishell *minishell,
 	path = get_the_command(pipex);
 	if (path == NULL)
 		free_error_execut(minishell, pipex, token);
-	check_permissions(path);
+	//check_permissions(path);
 	free_tab(minishell->command_exac);
 	get_the_next_command(token, minishell, command, cmd_index);
-	
 	if (find_the_thing(tmp, "file", 1) == 0 && find_the_thing(tmp, "pipe", 1) == 0)
 		while (ft_strcmp(token->value, minishell->command_exac[0]) != 0)
 				token = token->next;
