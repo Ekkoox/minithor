@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 21:43:01 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/09 02:19:48 by roane            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:11:49 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void init_env(t_minishell *minishell, char **ev, int *index)
 static void	    creat_env_list(char **ev, t_minishell *minishell)
 {
 	int i;
-	//char **split_env;
 	t_env *tmp;
 
 	i = 0;
@@ -120,7 +119,7 @@ int    creat_the_prompt(char **ev, t_pipex *pipex, t_token *token, t_minishell *
         minishell->buffer = buffer;
         add_history(buffer);
         flag = tokenisation(token, minishell, pipex);
-        if (flag == EXIT_FAILURE)
+        if (flag == 0)
             continue;
         if (check_token(token, minishell->env, pipex) == 0)
         {

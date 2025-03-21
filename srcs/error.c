@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:05:21 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/09 00:41:14 by roane            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:10:22 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static int error_directory(t_token *token)
             g_var = 126;
             return (EXIT_FAILURE);
         }
-            // printf("YO\n");
         if (ft_strncmp(token->value, "/.", 2) == 0)
         {
             while (token->value[j] == '/' || (token->value[j] == '.' && token->value[j - 1] == '/'))

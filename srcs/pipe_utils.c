@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enschnei <enschnei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 18:53:42 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/03 18:25:07 by enschnei         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:11:21 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	free_all(t_pipex *pipex)
-// {
-// 	if (pipex->path)
-// 		return ;
-// 		// ft_free(pipex->path, ft_count_line_split(pipex->path));
-// 	// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
-// 	// exit(EXIT_SUCCESS);
-// }
 
 char	*find_the_path(char **ev, t_pipex *pipex)
 {
@@ -49,8 +41,6 @@ char	**split_the_path(t_pipex *pipex)
 	if (!pipex->path)
 	{
 		ft_putstr_fd("3 No such file or directory\n", 2);
-		// ft_free(pipex->command_1, ft_count_line_split(pipex->command_1));
-		// exit(EXIT_FAILURE);
 	}
 	return (pipex->path);
 }

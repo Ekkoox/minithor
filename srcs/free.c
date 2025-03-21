@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:36:02 by razouani          #+#    #+#             */
-/*   Updated: 2025/02/07 15:33:08 by roane            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:10:52 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,6 @@ void	repos_army(t_pipex *pipex, char **command, t_token *token)
 	if (count_command(token))
 		free_tab_int(pipex->pipes, pipex->num_cmds);
 }
-
-// void free_tok(t_token token, t_minishellminishell, t_pipex pipex)
-// {
-//     (void)token;
-//     // if (pipex->command_1)
-//     //     free_tab(pipex->command_1);
-//     if (pipex->path)
-//         free_tab(pipex->path);
-//     if (minishell->current)
-//         free(minishell->current);
-// }
 
 void	free_env_list(t_minishell *minishell)
 {
@@ -121,13 +110,10 @@ void	mini_free(t_minishell *minishell, t_pipex *pipex, t_token *token, int flag)
 	free_tok_list(token, 1);
 	free(minishell->buffer);
 	minishell->buffer = NULL;
-	// free(minishell->current);
-	// minishell->current = NULL;
 	free_tab(minishell->command_exac);
 	if (flag)
 	{
 		free_tab(pipex->path);
 		pipex->path = NULL;
 	}
-	// ft_printf("%s\n", pipex->path);
 }

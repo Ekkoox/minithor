@@ -6,7 +6,7 @@
 /*   By: roane <roane@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 12:54:39 by enschnei          #+#    #+#             */
-/*   Updated: 2025/02/09 20:03:27 by roane            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:11:14 by roane            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,3 @@ int main(int ac, char **av, char **ev)
 	creat_the_prompt(ev, &pipex, token, &minishell);
 	return (EXIT_SUCCESS);
 }
-
-//regarde ca 
-// ls | asdasd | ls
-//1:
